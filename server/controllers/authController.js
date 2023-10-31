@@ -79,7 +79,7 @@ exports.authenticateToken = async (req, res, next) => {
                 })
             }
 
-            req.user = currentUser
+            req.user = currentUser[0]
             next()
         })
     } catch (e) {
@@ -91,3 +91,16 @@ exports.authenticateToken = async (req, res, next) => {
     }
 
 }
+
+exports.restrictAccessTo = (...roles) => {
+    return (req, res, next) => {
+        if (!roles.includes(req.user.role)) {
+            return res.status(401).json({
+                status: "Failed",
+                message: "You don't have permission to access this feature"
+            })
+        }
+        next()
+    }
+}
+
