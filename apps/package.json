@@ -1,0 +1,45 @@
+{
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint --dir .",
+    "lint:fix": "next lint --fix --dir ."
+  },
+  "dependencies": {
+    "@blockfrost/blockfrost-js": "^5.4.0",
+    "@next/font": "^13.4.19",
+    "@tiptap/extension-bold": "^2.1.12",
+    "@tiptap/extension-heading": "^2.1.10",
+    "@tiptap/extension-image": "^2.1.10",
+    "@tiptap/extension-italic": "^2.1.12",
+    "@tiptap/extension-underline": "^2.1.10",
+    "@tiptap/pm": "^2.1.10",
+    "@tiptap/react": "^2.1.10",
+    "@typescript-eslint/eslint-plugin": "^6.7.0",
+    "antd": "^5.11.0",
+    "eslint-config-next": "^13.4.19",
+    "eslint-plugin-prettier": "^5.0.0",
+    "json-bigint": "^1.0.0",
+    "next": "latest",
+    "next-transpile-modules": "^10.0.1",
+    "postgres": "^3.4.0",
+    "protocol": "*",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-dropzone": "^14.2.3",
+    "react-tooltip": "^5.21.1",
+    "swr": "^2.2.4"
+  },
+  "devDependencies": {
+    "@types/node": "20.4.4",
+    "@types/react": "18.2.16",
+    "classnames": "^2.3.2",
+    "eslint-config-prettier": "^9.0.0",
+    "lucid-cardano": "^0.10.7",
+    "prettier": "3.0.3",
+    "sass": "^1.66.0",
+    "typescript": "5.1.6"
+  }
+}
