@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, Statistic } from "antd";
-import imge from "../../../../public/image/check-3.svg";
+import imge from "../../../../public/image/check-2.svg";
 import Image from "next/image";
 
 const Registrations: React.FC = () => (
