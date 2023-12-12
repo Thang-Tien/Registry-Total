@@ -61,6 +61,7 @@ export default function NavBar({ active }: Props) {
     const [openKeys, setOpenKeys] = useState([""]);
 
     const onOpenChange: MenuProps["onOpenChange"] = (keys) => {
+        // Boolean indicate if closing a submenu
         const isSubMenuOpen = keys.length > openKeys.length;
 
         setOpenKeys(keys);
