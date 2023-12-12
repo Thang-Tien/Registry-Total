@@ -8,7 +8,7 @@
     "lint:fix": "next lint --fix --dir ."
   },
   "dependencies": {
-    "@ant-design/plots": "^1.2.5",
+    "@ant-design/plots": "^1.2.6",
     "@blockfrost/blockfrost-js": "^5.4.0",
     "@next/font": "^13.4.19",
     "@tiptap/extension-bold": "^2.1.12",
