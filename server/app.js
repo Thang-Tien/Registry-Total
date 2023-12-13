@@ -17,4 +17,7 @@ app.use('/api/v1/inspections', inspectionRoute);
 app.use('/api/v1/centres', centreRoute)
 app.use('/api/v1/users', userRoute)
 
+app.get('/test', (req, res) => {
+    return res.send("Hello")
+})
 module.exports = app;
