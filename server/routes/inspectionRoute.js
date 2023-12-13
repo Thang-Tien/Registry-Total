@@ -6,6 +6,16 @@ router.get(
 	"/stat/each_centre/count/:centreId",
 	inspectionController.countInspectionsOfEachCentre
 );
+// đếm tổng số lượng đăng kiểm của centre mà staff đang làm việc trong tháng này
+router.get(
+	"/stat/each_centre/count/month/:centreId",
+	inspectionController.countInspectionsOfEachCentreThisMonth
+);
+// đếm tổng số lượng đăng kiểm của centre mà staff đang làm việc trong năm này
+router.get(
+	"/stat/each_centre/count/year/:centreId",
+	inspectionController.countInspectionsOfEachCentreThisYear
+);
 // DONE nhưng không liên quan
 // đếm tổng số lượng đăng kiểm đã hết hạn của trung tâm mà staff đang làm việc
 router.get(
