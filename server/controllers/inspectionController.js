@@ -35,7 +35,78 @@ exports.countInspectionsOfEachCentre = async (req, res) => {
 		}
 	);
 };
-
+// đếm tổng số lượng đăng kiểm của centre mà staff đang làm việc trong tháng này
+exports.countInspectionsOfEachCentreThisMonth = async (req, res) => {
+	const centreId = req.params.centreId; // Extract centreId from the URL
+	const firstDayOfMonth = new Date(
+		new Date().getFullYear(),
+		new Date().getMonth(),
+		1
+	);
+	let queryString = utils.generateQueryStringWithDate(
+		req.query,
+		"inspection_date"
+	);
+	connection.query(
+		`SELECT COUNT(*) as total 
+                     FROM inspections i 
+                     INNER JOIN registration_centres r 
+                     ON i.centre_id = r.centre_id 
+                     WHERE ${
+							queryString ? queryString : 1
+						} AND i.inspection_date <= LAST_DAY(NOW()) AND i.centre_id = ? AND i.inspection_date >= ?`,
+		[centreId, firstDayOfMonth],
+		(err, result, fields) => {
+			if (err) {
+				return res.status(500).json({
+					status: "Failed",
+					error: err,
+				});
+			} else {
+				return res.status(200).json({
+					status: "Success",
+					data: result,
+				});
+			}
+		}
+	);
+};
+// đếm tổng số lượng đăng kiểm của centre mà staff đang làm việc trong năm này
+exports.countInspectionsOfEachCentreThisYear = async (req, res) => {
+	const centreId = req.params.centreId; // Extract centreId from the URL
+	const firstDayOfMonth = new Date(
+		new Date().getFullYear(),
+		new Date().getMonth(),
+		1
+	);
+	let queryString = utils.generateQueryStringWithDate(
+		req.query,
+		"inspection_date"
+	);
+	connection.query(
+		`SELECT COUNT(*) as total 
+                     FROM inspections i 
+                     INNER JOIN registration_centres r 
+                     ON i.centre_id = r.centre_id 
+                     WHERE ${
+							queryString ? queryString : 1
+						} AND YEAR(i.inspection_date) = YEAR(NOW()) AND i.centre_id = ? `,
+		[centreId, firstDayOfMonth],
+		(err, result, fields) => {
+			if (err) {
+				return res.status(500).json({
+					status: "Failed",
+					error: err,
+				});
+			} else {
+				return res.status(200).json({
+					status: "Success",
+					data: result,
+				});
+			}
+		}
+	);
+};
 // DONE nhưng không liên quan
 // đếm tổng số lượng đăng kiểm đã hết hạn của trung tâm mà staff đang làm việc
 exports.countTotalExpiredInspectionsOfEachCentre = async (req, res) => {
