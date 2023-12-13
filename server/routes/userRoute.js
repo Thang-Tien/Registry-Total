@@ -4,5 +4,6 @@ const authController = require('../controllers/authController')
 const router = express.Router()
 
 router.post('/login', authController.login)
+router.post('/change-password', authController.authenticateToken, authController.changePassword)
 
 module.exports = router

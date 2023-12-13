@@ -19,31 +19,31 @@ const generateAccessToken = (user, res) => {
 
 exports.login = async (req, res) => {
 
-    connection.query('SELECT * FROM users WHERE email = ?', req.body.email, (err, user, field) => {
+    connection.query('SELECT * FROM users WHERE email = ?', req.body.email, (err, results, field) => {
         if (err) {
             return res.status(500).json({
                 status: "Failed",
                 message: err
             })
-        } else if (user.length == 0) {
+        } else if (results[0].length == 0) {
             return res.status(401).json({
                 status: "Failed",
                 message: `Incorrect email or password`
             })
         } else {
-            bcrypt.compare(req.body.password, user.password, (result) => {
+            bcrypt.compare(req.body.password, results[0].password, (err, result) => {
                 if (!result) {
                     return res.status(401).json({
                         status: "Failed",
                         message: `Incorrect email or password`
                     })
                 }
-                token = generateAccessToken(user[0], res);
+                token = generateAccessToken(results[0], res);
                 console.log(req.headers)
                 return res.status(200).json({
                     status: "Success",
                     token,
-                    user,
+                    user: results,
                 })
             })
 
@@ -71,7 +71,7 @@ exports.authenticateToken = async (req, res, next) => {
         console.log(decode)
 
         connection.query(`SELECT * FROM users WHERE user_id = ${decode.id}`, (err, currentUser, fields) => {
-            
+
             if (!currentUser) {
                 return res.status(401).json({
                     status: "Failed",
@@ -104,3 +104,51 @@ exports.restrictAccessTo = (...roles) => {
     }
 }
 
+exports.changePassword = async (req, res) => {
+    connection.query(`SELECT password FROM users WHERE user_id = ${req.user.user_id}`, (err, results, field) => {
+        if (err) {
+            return res.status(500).json({
+                status: "Failed",
+                message: err
+            })
+        }
+        else {
+            bcrypt.compare(req.body.currentPassword, results[0].password, (err, result) => {
+                if (!result) {
+                    return res.status(401).json({
+                        status: "Failed",
+                        message: "Wrong current password"
+                    })
+                } else {
+                    bcrypt.compare(req.body.newPassword, results[0].password, (err, result) => {
+                        if (result) {
+                            return res.status(400).json({
+                                status: "Failed",
+                                message: "New password is the same as current password"
+                            })
+                        } else {
+                            bcrypt.hash(req.body.newPassword, 12, (err, hash) => {
+                                connection.query(`UPDATE users SET password = "${hash}" WHERE user_id = ${req.user.user_id}`,
+                                    (err, results, field) => {
+                                        if (err) {
+                                            return res.status(500).json({
+                                                status: "Failed",
+                                                message: err
+                                            })
+                                        } else {
+                                            return res.status(200).json({
+                                                status: "Success",
+                                                message: "Change password successfully"
+                                            })
+                                        }
+
+                                    })
+                            })
+
+                        }
+                    })
+                }
+            })
+        }
+    })
+}
