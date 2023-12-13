@@ -8,6 +8,7 @@ import ThisMonth from "./containers/ThisMonth";
 import ChartLine from "./containers/ChartLine";
 import ChartPie from "./containers/ChartPie";
 import Registrations from "./containers/Registrations";
+import RecentRegistrations from "./containers/RecentRegistrations";
 
 export type Props = {
     className?: string;
@@ -17,7 +18,7 @@ export type Props = {
 export default function HomePage({ className, style }: Props) {
     return (
         <div className={cx(className, styles.container)} style={style}>
-            <Flex.Row style={{ height: "100vh", width: "100vw" }} padding={"0"}>
+            <Flex.Row style={{ width: "100vw" }} padding={"0"}>
                 <NavBar active="centers" />
                 <div
                     style={{
@@ -36,6 +37,9 @@ export default function HomePage({ className, style }: Props) {
                         <Flex.Row gap={"20px"}>
                             <ChartLine />
                             <ChartPie />
+                        </Flex.Row>
+                        <Flex.Row>
+                            <RecentRegistrations />
                         </Flex.Row>
                     </Flex.Col>
                 </div>
