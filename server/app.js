@@ -6,11 +6,13 @@ const carRouter = require('./routes/carRoute')
 const inspectionRoute = require('./routes/inspectionRoute')
 const centreRoute = require('./routes/centreRoute')
 const userRoute = require('./routes/userRoute')
-
 const app = express();
 
 app.use(morgan("dev"));
 app.use(bodyParser())
+
+// use static built frontend
+app.use('/', express.static('../apps/.next'))
 
 app.use('/api/v1/cars', carRouter);
 app.use('/api/v1/inspections', inspectionRoute);
