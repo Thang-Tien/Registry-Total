@@ -26,6 +26,7 @@ export default function HomePage({ className, style }: Props) {
                     }}
                 >
                     <Flex.Col gap={"20px"} style={{ padding: "24px 32px" }}>
+                        {/* top, down: 24px, left, right: 32px */}
                         <Flex.Row gap={"20px"}>
                             <All />
                             <ThisYear />
