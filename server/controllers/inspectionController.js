@@ -100,14 +100,14 @@ exports.countTotalExpiredInspectionsOfEachCentreThisMonth = async (
 };
 
 // DONE
-// đếm tổng số lượng đăng kiểm sắp hết hạn của các trung tâm staff đang làm việc
+// đếm tổng số lượng đăng kiểm sắp hết hạn của các trung tâm staff đang làm việc (hiện tại <= ngày hết hạn <= hiện tại + 1 tháng)
 exports.countTotalAboutToExpiredInspectionsOfEachCentre = async (req, res) => {
 	const centreId = req.params.centreId;
 	connection.query(
 		`SELECT COUNT(*) 
                     FROM inspections 
-                    WHERE expired_date >= DATE_SUB(NOW(), INTERVAL 1 MONTH) 
-                            AND expired_date <= NOW() AND centre_id = ?`,
+                    WHERE expired_date >= NOW() 
+                            AND expired_date <= DATE_ADD(NOW(), INTERVAL 1 MONTH) AND centre_id = ?`,
 		[centreId],
 		(err, result, fields) => {
 			if (err) {
@@ -126,7 +126,35 @@ exports.countTotalAboutToExpiredInspectionsOfEachCentre = async (req, res) => {
 		}
 	);
 };
-
+// đếm tổng số lượng đăng kiểm sắp hết hạn của các trung tâm staff đang làm việc trong tháng này
+exports.countTotalAboutToExpiredInspectionsOfEachCentreThisMonth = async (
+	req,
+	res
+) => {
+	const centreId = req.params.centreId;
+	connection.query(
+		`SELECT COUNT(*) 
+                    FROM inspections 
+                    WHERE expired_date >= NOW() 
+                            AND expired_date <= LAST_DAY(NOW()) AND centre_id = ?`,
+		[centreId],
+		(err, result, fields) => {
+			if (err) {
+				return res.status(500).json({
+					status: "Failed",
+					error: {
+						err,
+					},
+				});
+			} else {
+				return res.status(200).json({
+					status: "Success",
+					data: result,
+				});
+			}
+		}
+	);
+};
 // NOT DONE
 // dự đoán số lượng xe đăng kiểm mới của mỗi trung tâm
 // (xe đăng ký dự đoán ở tỉnh nào thì dự đoán số lượng xe đăng kiểm mới của trung tâm ở tỉnh đó)
