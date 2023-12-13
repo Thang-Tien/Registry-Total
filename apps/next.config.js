@@ -10,4 +10,5 @@ module.exports = {
     ],
   },
   transpilePackages: ["protocol"],
+  output: "export"
 };

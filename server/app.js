@@ -12,7 +12,7 @@ app.use(morgan("dev"));
 app.use(bodyParser())
 
 // use static built frontend
-app.use('/', express.static('../apps/.next'))
+app.use('/', express.static('../apps/out'))
 
 app.use('/api/v1/cars', carRouter);
 app.use('/api/v1/inspections', inspectionRoute);
