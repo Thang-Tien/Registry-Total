@@ -107,8 +107,10 @@ const RecentRegistrations: React.FC = () => (
                     // padding: "0 10px",
                 }}
             >
-                Xem thêm
-                <ForwardFilled style={{ marginLeft: 10 }} />
+                <a href="/" style={{ alignItems: "center" }}>
+                    Xem thêm
+                    <ForwardFilled style={{ paddingLeft: 5 }} />
+                </a>
             </div>
         )}
         dataSource={dataSource}
