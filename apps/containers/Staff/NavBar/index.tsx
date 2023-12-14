@@ -35,19 +35,26 @@ function getItem(
 }
 
 export type Props = {
-    active: "" | "centers" | "cars" | "search" | "statistics" | "account";
+    active:
+        | ""
+        | "inspection"
+        | "inspection/create"
+        | "cars/search"
+        | "statistics"
+        | "account";
 };
 
 export default function NavBar({ active }: Props) {
     const items: MenuItem[] = [
         // <AppstoreOutlined />, <InboxOutlined />, <CarOutlined />, <SearchOutlined />, <LineChartOutlined />, <UserOutlined /> are icons
         getItem("Bảng điều khiển", "", <AppstoreOutlined />),
-        getItem("Quản lý các trung tâm", "centers", <InboxOutlined />),
-        getItem("Quản lý phương tiện", "cars", <CarOutlined />, [
-            getItem("Tra cứu phương tiện", "cars"),
-            getItem("Tải lên dữ liệu", "upload"),
+        getItem("Quản lý đăng kiểm", "inspection", <CarOutlined />, [
+            getItem("Tất cả đăng kiểm", "inspection/all"),
+            getItem("Đăng kiểm của tôi", "inspection/me"),
+            getItem("Tra cứu đăng kiểm", "inspection/search"),
         ]),
-        getItem("Tra cứu đăng kiểm", "search", <SearchOutlined />),
+        getItem("Tạo đăng kiểm", "inspection/create", <InboxOutlined />),
+        getItem("Tra cứu phương tiện", "cars/search", <SearchOutlined />),
         getItem("Thống kê", "statistics", <LineChartOutlined />),
         getItem("Tài khoản", "account", <UserOutlined />, [
             getItem("Cài đặt", "settings"),

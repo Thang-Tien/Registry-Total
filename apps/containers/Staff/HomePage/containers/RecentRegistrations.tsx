@@ -107,7 +107,7 @@ const RecentRegistrations: React.FC = () => (
                     // padding: "0 10px",
                 }}
             >
-                <a href="/" style={{ alignItems: "center" }}>
+                <a href="/centers" style={{ alignItems: "center" }}>
                     Xem thêm
                     <ForwardFilled style={{ paddingLeft: 5 }} />
                 </a>
