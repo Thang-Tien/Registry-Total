@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import {
-    InboxOutlined,
+    PlusCircleOutlined,
     CarOutlined,
     SearchOutlined,
     LineChartOutlined,
@@ -53,7 +53,7 @@ export default function NavBar({ active }: Props) {
             getItem("Đăng kiểm của tôi", "inspection/me"),
             getItem("Tra cứu đăng kiểm", "inspection/search"),
         ]),
-        getItem("Tạo đăng kiểm", "inspection/create", <InboxOutlined />),
+        getItem("Tạo đăng kiểm", "inspection/create", <PlusCircleOutlined />),
         getItem("Tra cứu phương tiện", "cars/search", <SearchOutlined />),
         getItem("Thống kê", "statistics", <LineChartOutlined />),
         getItem("Tài khoản", "account", <UserOutlined />, [
