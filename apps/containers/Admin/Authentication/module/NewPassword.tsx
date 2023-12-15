@@ -9,7 +9,6 @@ interface NewPasswordProps {
 
 const NewPassword = (props: NewPasswordProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
   const { error } = notification;
 
   const onFinish = async (values: { password: string; passwordConfirm: string }) => {

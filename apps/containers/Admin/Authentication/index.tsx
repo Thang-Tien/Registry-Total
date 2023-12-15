@@ -6,6 +6,7 @@ import IntroCarousel from "./module/IntroCarousel";
 import AuthenticationForm from "./module/AuthenticationForm";
 import "./../../../modules/ui/styles/page.css"
 
+
 const AuthenticationPage = () => {
   useEffect(() => {
     document.title = "Đăng nhập";
