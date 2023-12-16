@@ -48,5 +48,5 @@ router.get(
 	"/get_inspection_owner/:centreId",
 	inspectionController.getInspectionAndOwner
 );
-
+router.post("/createInspection/", inspectionController.createInspection);
 module.exports = router;
