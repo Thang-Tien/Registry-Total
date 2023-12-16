@@ -320,3 +320,64 @@ exports.getInspectionAndOwner = (req, res) => {
 		}
 	);
 };
+
+// Tạo đăng kiểm
+// đang để tạm user_id = 1, centre_id = 1, specify = "carry_people$lte:9-personal+manufacture$lte:7~36~24", first_time = 0
+// vì chưa có chức năng đăng nhập
+exports.createInspection = (req, res) => {
+	const number_plate = req.body.number_plate; // Thay vì sử dụng req.params, đọc từ req.body
+	let queryString = utils.generateQueryString(req.query);
+
+	connection.query(
+		`SELECT *
+        FROM inspections i
+        INNER JOIN cars c ON c.car_id = i.car_id WHERE i.car_id = (SELECT car_id FROM cars WHERE number_plate = ?)`,
+		[number_plate],
+		(err, result, fields) => {
+			if (err) {
+				return res.status(500).json({
+					status: "Failed",
+					message: err,
+				});
+			} else {
+				const inspection_date = new Date();
+				const expired_date = new Date(inspection_date);
+				expired_date.setMonth(expired_date.getMonth() + 6);
+				connection.query(
+					`INSERT INTO inspections (inspection_id, inspection_number, inspection_date, car_id, user_id, centre_id, specify, first_time, expired_date)
+						SELECT
+    						COALESCE(MAX(inspection_id), 0) + 1,
+							CONCAT(YEAR(CURDATE()), '-', LPAD(COALESCE(MAX(CAST(SUBSTRING(inspection_number, 6) AS UNSIGNED)), 0) + 1, 6, '0')),
+							?,
+							(SELECT car_id FROM cars WHERE number_plate = ?),
+							?, ?, ?, ?,
+							?
+						FROM inspections;`,
+					[
+						inspection_date,
+						number_plate,
+						"1",
+						"1",
+						"carry_people$lte:9-personal+manufacture$lte:7~36~24",
+						"0",
+						expired_date,
+					],
+					(insertErr, insertResult, insertFields) => {
+						if (insertErr) {
+							return res.status(500).json({
+								status: "Failed",
+								message: insertErr,
+							});
+						} else {
+							return res.status(201).json({
+								status: "Success",
+								message: "Create inspection successfully",
+								data: insertResult,
+							});
+						}
+					}
+				);
+			}
+		}
+	);
+};
