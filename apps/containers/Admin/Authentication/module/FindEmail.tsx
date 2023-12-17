@@ -28,14 +28,14 @@ const FindEmail = (props: FindEmailProps) => {
           body: JSON.stringify(values),
         }
       );
-        console.log(response);
       if (!response.ok) {
         props.openNotification("Lỗi", "Không tìm thấy email này.");
         props.setStatus("error");
         setIsSubmitting(false);
         throw new Error("Could not find email.");
       }
-      console.log(response);
+      const res = await response.json()
+      console.log(res)
       props.setStatus("finish");
       props.setFindingEmail(false);
       props.setVerifying(true);

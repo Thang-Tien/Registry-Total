@@ -162,49 +162,51 @@ exports.handleForgotPassword = async (req, res) => {
                 message: err
             })
         }
-        if (!results) {
+        if (!results[0]) {
+            console.log("invalid")
             return res.status(401).json({
                 status: "Failed",
                 message: "Invalid email"
             })
         }
+        crypto.randomBytes(48, async (err, buffer) => {
+            const hashedToken = buffer.toString('hex');
+            connection.query(`UPDATE users SET reset_password_token = "${hashedToken}", token_expired_date = NOW() + INTERVAL 3 HOUR WHERE email = "${req.body.email}"`, (err, results, fields) => {
+                if (err) {
+                    return res.status(500).json({
+                        status: "Failed",
+                        message: err
+                    })
+                }
+            })
+            sendEmail({
+                email: req.body.email,
+                subject: 'Password reset token (only valid for 3 hours)',
+                text: hashedToken
+            }, (err, info) => {
+                if (err) {
+                    return res.status(500).json({
+                        status: "Failed",
+                        message: err
+                    })
+                } 
+                // else {
+                //     return res.status(200).json({
+                //         status: "Success",
+                //         message: `Token has been sent to your email ${req.body.email}`,
+                //         token: hashedToken
+                //     })
+                // }
+            })
+    
+            res.status(200).json({
+                status: "Success",
+                message: `Token has been sent to your email ${req.body.email}`,
+                token: hashedToken
+            })
+        })
     })
-    crypto.randomBytes(48, async (err, buffer) => {
-        const hashedToken = buffer.toString('hex');
-        connection.query(`UPDATE users SET reset_password_token = "${hashedToken}", token_expired_date = NOW() + INTERVAL 3 HOUR WHERE email = "${req.body.email}"`, (err, results, fields) => {
-            if (err) {
-                return res.status(500).json({
-                    status: "Failed",
-                    message: err
-                })
-            }
-        })
-        sendEmail({
-            email: req.body.email,
-            subject: 'Password reset token (only valid for 3 hours)',
-            text: hashedToken
-        }, (err, info) => {
-            if (err) {
-                return res.status(500).json({
-                    status: "Failed",
-                    message: err
-                })
-            } 
-            // else {
-            //     return res.status(200).json({
-            //         status: "Success",
-            //         message: `Token has been sent to your email ${req.body.email}`,
-            //         token: hashedToken
-            //     })
-            // }
-        })
-
-        res.status(200).json({
-            status: "Success",
-            message: `Token has been sent to your email ${req.body.email}`,
-            token: hashedToken
-        })
-    })
+    
 
 
 }
