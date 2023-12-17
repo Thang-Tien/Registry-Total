@@ -189,12 +189,20 @@ exports.handleForgotPassword = async (req, res) => {
                     status: "Failed",
                     message: err
                 })
-            } else {
-                return res.status(200).json({
-                    status: "Success",
-                    message: `Token has been sent to your email ${req.body.email}`
-                })
-            }
+            } 
+            // else {
+            //     return res.status(200).json({
+            //         status: "Success",
+            //         message: `Token has been sent to your email ${req.body.email}`,
+            //         token: hashedToken
+            //     })
+            // }
+        })
+
+        res.status(200).json({
+            status: "Success",
+            message: `Token has been sent to your email ${req.body.email}`,
+            token: hashedToken
         })
     })
 
