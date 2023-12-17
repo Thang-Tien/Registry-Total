@@ -64,7 +64,7 @@ const ResetForm = (props: ResetFormProps) => {
     <div className={classes.reset}>
       {contextHolder}
       <Steps
-        status= "process"
+        status={status === "process" || status === "finish" ||  status ==="wait"|| status === "error" ? status : "process"}
         progressDot
         size="small"
         current={current}

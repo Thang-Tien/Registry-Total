@@ -9,6 +9,8 @@ import {
 import classes from "./../styles/Login.module.css";
 import { useState } from "react";
 import { IoLockClosedOutline, IoMailOutline } from "react-icons/io5";
+import { useRouter } from 'next/navigation'
+import jwt from "jsonwebtoken";
 
 interface LoginFormProps {
   turnOnForgotMode: () => void;
@@ -18,6 +20,8 @@ const LoginForm = (props: LoginFormProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [api, contextHolder] = notification.useNotification();
+
+  const router = useRouter();
 
   const openNotification = () => {
     api.error({
@@ -48,19 +52,16 @@ const LoginForm = (props: LoginFormProps) => {
       }
 
       const res = await response.json();
-
-      // if (
-      //   signIn({
-      //     token: res.token,
-      //     expiresIn: 480,
-      //     tokenType: "Bearer",
-      //     authState: {
-      //       data: res.data.user,
-      //     },
-      //   })
-      // ) {
-      //   navigate("/");
-      // }
+      console.log(res);
+      localStorage.setItem("accessToken", res.token);
+    
+    if ( res.token) {
+      router.push("/HomePage"); 
+      
+    } else {
+      setIsSubmitting(false);
+      throw new Error("Failed to authenticate.");
+    }
     } catch (err) {
       setIsSubmitting(false);
       console.error(err);

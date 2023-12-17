@@ -6,6 +6,4 @@ import "modules/ui/styles/page.css"
 
 export default function RouteToHomePage() {
   return <AuthenticationPage/>
- 
-  
 }

@@ -23,6 +23,7 @@
     "eslint-config-next": "^13.4.19",
     "eslint-plugin-prettier": "^5.0.0",
     "json-bigint": "^1.0.0",
+    "jsonwebtoken": "^9.0.2",
     "next": "^14.0.3",
     "next-transpile-modules": "^10.0.1",
     "postgres": "^3.4.0",

@@ -19,7 +19,7 @@ const generateAccessToken = (user, res) => {
 }
 
 exports.login = async (req, res) => {
-
+    console.log(req.body);
     connection.query('SELECT * FROM users WHERE email = ?', req.body.email, (err, results, fields) => {
         if (err) {
             return res.status(500).json({
