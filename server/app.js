@@ -1,6 +1,7 @@
 const express = require('express');
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
+const cors = require('cors')
 
 const carRouter = require('./routes/carRoute')
 const inspectionRoute = require('./routes/inspectionRoute')
@@ -10,6 +11,7 @@ const userRoute = require('./routes/userRoute')
 const app = express();
 
 app.use(morgan("dev"));
+app.use(cors())
 app.use(bodyParser())
 
 app.use('/api/v1/cars', carRouter);
