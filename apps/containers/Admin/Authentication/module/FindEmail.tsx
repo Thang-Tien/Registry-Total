@@ -19,7 +19,7 @@ const FindEmail = (props: FindEmailProps) => {
     setIsSubmitting(true);
     try {
       const response = await fetch(
-        `http://localhost:8000/api/v1/users/forgotPassword`,
+        `http://localhost:8000/api/v1/users/forgot-password`,
         {
           method: "POST",
           headers: {
@@ -28,7 +28,7 @@ const FindEmail = (props: FindEmailProps) => {
           body: JSON.stringify(values),
         }
       );
-
+        console.log(response);
       if (!response.ok) {
         props.openNotification("Lỗi", "Không tìm thấy email này.");
         props.setStatus("error");
