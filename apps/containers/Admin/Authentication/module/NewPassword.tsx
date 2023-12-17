@@ -16,7 +16,7 @@ const NewPassword = (props: NewPasswordProps) => {
 
     try {
       const response = await fetch(
-        `http://localhost:3000/api/v1/users/resetPassword/${props.tokenReset}`,
+        `http://localhost:8000/api/v1/users/resetPassword/${props.tokenReset}`,
         {
           method: "PATCH",
           headers: {

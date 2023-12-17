@@ -19,7 +19,7 @@ const FindEmail = (props: FindEmailProps) => {
     setIsSubmitting(true);
     try {
       const response = await fetch(
-        `http://localhost:3000/api/v1/users/forgotPassword`,
+        `http://localhost:8000/api/v1/users/forgotPassword`,
         {
           method: "POST",
           headers: {
@@ -35,13 +35,14 @@ const FindEmail = (props: FindEmailProps) => {
         setIsSubmitting(false);
         throw new Error("Could not find email.");
       }
-
+      console.log(response);
       props.setStatus("finish");
       props.setFindingEmail(false);
       props.setVerifying(true);
       props.next();
     } catch (err) {
       console.error(err);
+      console.log("loi me roi dit cu");
     }
   };
 
