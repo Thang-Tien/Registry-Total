@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router({mergeParams: true})
 const inspectionController = require('../controllers/inspectionController')
 
+// add queries to filter inspections to count
 router.get('/stat/all_centre/count/', 
     inspectionController.countInspectionsOfAllCentre)
 
@@ -14,6 +15,7 @@ router.get('/stat/all_centre/count/about_to_expired',
 router.get('/stat/all_centre/prediction/about_to_inspect', 
     inspectionController.predictAboutToInspect)
     
+// add queries to filter inspection
 router.get('/', 
     inspectionController.getInspection)
 

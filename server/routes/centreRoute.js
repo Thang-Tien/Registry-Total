@@ -8,7 +8,7 @@ router.get('/count/total_centres',
 
 router.get('/most_inspects', 
     centreController.centresWithMostInspects)
-
+// get centre, add queries ()
 router.get('/', 
     centreController.getCentre)
 

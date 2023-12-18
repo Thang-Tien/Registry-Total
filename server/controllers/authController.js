@@ -169,9 +169,13 @@ exports.handleForgotPassword = async (req, res) => {
                 message: "Invalid email"
             })
         }
-        crypto.randomBytes(48, async (err, buffer) => {
-            const hashedToken = buffer.toString('hex');
-            connection.query(`UPDATE users SET reset_password_token = "${hashedToken}", token_expired_date = NOW() + INTERVAL 3 HOUR WHERE email = "${req.body.email}"`, (err, results, fields) => {
+        const otp = Math.floor(100000 + Math.random() * 900000)
+        bcrypt.hash(otp.toString(), 12, (err, hashedOTP) => {
+            if (err) {
+                console.log(err)
+            }
+            console.log(hashedOTP)
+            connection.query(`UPDATE users SET reset_password_otp = "${hashedOTP}", token_expired_date = NOW() + INTERVAL 3 HOUR WHERE email = "${req.body.email}"`, (err, results, fields) => {
                 if (err) {
                     return res.status(500).json({
                         status: "Failed",
@@ -181,65 +185,9 @@ exports.handleForgotPassword = async (req, res) => {
             })
             sendEmail({
                 email: req.body.email,
-                subject: 'Password reset token (only valid for 3 hours)',
-                text: hashedToken
+                subject: 'Password reset otp (only valid for 3 hours)',
+                text: otp
             }, (err, info) => {
-                if (err) {
-                    return res.status(500).json({
-                        status: "Failed",
-                        message: err
-                    })
-                } 
-                // else {
-                //     return res.status(200).json({
-                //         status: "Success",
-                //         message: `Token has been sent to your email ${req.body.email}`,
-                //         token: hashedToken
-                //     })
-                // }
-            })
-    
-            res.status(200).json({
-                status: "Success",
-                message: `Token has been sent to your email ${req.body.email}`,
-                token: hashedToken
-            })
-        })
-    })
-    
-
-
-}
-
-exports.resetPassword = async (req, res) => {
-    connection.query(`SELECT *, NOW() as "current_time" FROM users WHERE reset_password_token = "${req.params.token}"`, (err, results, fields) => {
-        if (err) {
-            return res.status(500).json({
-                status: "Failed",
-                message: err
-            })
-        }
-        if (!results[0]) {
-            return res.status(401).json({
-                status: "Failed",
-                message: "Invalid token"
-            })
-        }
-        if (results[0].token_expired_date < results[0].current_time) {
-            return res.status(401).json({
-                status: "Failed",
-                message: "Token expired"
-            })
-        }
-
-        bcrypt.hash(req.body.newPassword, 12, (err, encrypted) => {
-            if (err) {
-                return res.status(500).json({
-                    status: "Failed",
-                    message: err
-                })
-            }
-            connection.query(`UPDATE users SET password = "${encrypted}" WHERE user_id = ${results[0].user_id}`, (err, results, fields) => {
                 if (err) {
                     return res.status(500).json({
                         status: "Failed",
@@ -249,11 +197,81 @@ exports.resetPassword = async (req, res) => {
                 else {
                     return res.status(200).json({
                         status: "Success",
-                        message: "Reset password successfully"
+                        message: `Token has been sent to your email ${req.body.email}`,
+                        otp: otp
                     })
                 }
             })
+
+            // res.status(200).json({
+            //     status: "Success",
+            //     message: `Reset password has been sent to your email ${req.body.email}`,
+            //     token: hashedOTP
+            // })
         })
+
+    })
+
+
+
+}
+
+exports.resetPassword = async (req, res) => {
+
+    connection.query(`SELECT *, NOW() as "current_time" FROM users WHERE email = "${req.body.email}"`, (err, results, fields) => {
+        if (err) {
+            return res.status(500).json({
+                status: "Failed",
+                message: err
+            })
+        }
+        if (!results[0]) {
+            return res.status(401).json({
+                status: "Failed",
+                message: "User not found"
+            })
+        }
+        if (results[0].token_expired_date < results[0].current_time) {
+            return res.status(401).json({
+                status: "Failed",
+                message: "OTP expired"
+            })
+        }
+
+        bcrypt.compare(req.body.otp.toString(), results[0].reset_password_otp, (err, same) => {
+            if (!same) {
+                return res.status(401).json({
+                    status: "Failed",
+                    message: "Wrong OTP"
+                })
+            }
+            else {
+                bcrypt.hash(req.body.newPassword, 12, (err, encrypted) => {
+                    if (err) {
+                        return res.status(500).json({
+                            status: "Failed",
+                            message: err
+                        })
+                    }
+                    connection.query(`UPDATE users SET password = "${encrypted}" WHERE user_id = ${results[0].user_id}`, (err, results, fields) => {
+                        if (err) {
+                            return res.status(500).json({
+                                status: "Failed",
+                                message: err
+                            })
+                        }
+                        else {
+                            return res.status(200).json({
+                                status: "Success",
+                                message: "Reset password successfully"
+                            })
+                        }
+                    })
+                })
+            }
+        })
+
+
 
 
     })
