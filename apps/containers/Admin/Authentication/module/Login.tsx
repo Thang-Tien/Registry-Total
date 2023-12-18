@@ -10,7 +10,7 @@ import classes from "./../styles/Login.module.css";
 import { useState } from "react";
 import { IoLockClosedOutline, IoMailOutline } from "react-icons/io5";
 import { useRouter } from 'next/navigation'
-import jwt from "jsonwebtoken";
+
 
 interface LoginFormProps {
   turnOnForgotMode: () => void;
@@ -46,6 +46,7 @@ const LoginForm = (props: LoginFormProps) => {
       );
 
       if (!response.ok) {
+        console.log
         openNotification();
         setIsSubmitting(false);
         throw new Error("Can not authenticate.");
@@ -54,7 +55,7 @@ const LoginForm = (props: LoginFormProps) => {
       const res = await response.json();
       console.log(res);
       localStorage.setItem("accessToken", res.token);
-    
+      
     if ( res.token) {
       router.push("/HomePage"); 
       

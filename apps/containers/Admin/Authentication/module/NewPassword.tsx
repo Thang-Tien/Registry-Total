@@ -1,6 +1,7 @@
 import { Form, Input, Button, ConfigProvider, notification } from "antd";
 import { useState } from "react";
 import { IoLockClosedOutline } from "react-icons/io5";
+import { useRouter } from 'next/navigation'
 
 interface NewPasswordProps {
   tokenReset: string;
@@ -10,6 +11,7 @@ interface NewPasswordProps {
 const NewPassword = (props: NewPasswordProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { error } = notification;
+  const router = useRouter();
 
   const onFinish = async (values: { password: string; passwordConfirm: string }) => {
     setIsSubmitting(true);
@@ -33,18 +35,10 @@ const NewPassword = (props: NewPasswordProps) => {
 
       const res = await response.json();
 
-      // if (
-      //   signIn({
-      //     token: res.token,
-      //     expiresIn: 480,
-      //     tokenType: "Bearer",
-      //     authState: {
-      //       data: res.data.user,
-      //     },
-      //   })
-      // ) {
-      //   navigate("/");
-      // }
+      localStorage.setItem("accessToken", res.token);
+      
+      if ( res.token) 
+        router.push("/HomePage"); 
     } catch (err) {
       setIsSubmitting(false);
       console.error(err);
