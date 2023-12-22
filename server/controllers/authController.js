@@ -26,7 +26,7 @@ exports.login = async (req, res) => {
                 status: "Failed",
                 message: err
             })
-        } else if (!results[0].length) {
+        } else if (!results[0]) {
             return res.status(401).json({
                 status: "Failed",
                 message: `Incorrect email or password`
