@@ -16,7 +16,7 @@ app.use(bodyParser());
 app.use("/api/v1/inspections", inspectionRoute);
 // app.use('/api/v1/centres', centreRoute)
 // app.use('/api/v1/users', userRoute)
-// app.use("/api/v1/search", searchRoute);
+app.use("/api/v1/search", searchRoute);
 app.use(express.json());
 
 module.exports = app;
