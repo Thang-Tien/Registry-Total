@@ -84,7 +84,7 @@ const columns = [
     },
 ];
 
-const RecentRegistrations: React.FC = () => (
+const RecentInspection: React.FC = () => (
     <Table
         title={() => (
             <div
@@ -107,7 +107,7 @@ const RecentRegistrations: React.FC = () => (
                     // padding: "0 10px",
                 }}
             >
-                <a href="/centers" style={{ alignItems: "center" }}>
+                <a href="/inspection/all" style={{ alignItems: "center" }}>
                     Xem thêm
                     <ForwardFilled style={{ paddingLeft: 5 }} />
                 </a>
@@ -120,4 +120,4 @@ const RecentRegistrations: React.FC = () => (
     />
 );
 
-export default RecentRegistrations;
+export default RecentInspection;
