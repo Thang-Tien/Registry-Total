@@ -1,6 +1,6 @@
 import React from "react";
 import MyInspectionPage from "../../../containers/Staff/MyInspectionPage";
 
-export default function RouteToInspectionAllPage() {
+export default function RouteToMyInspectionPage() {
     return <MyInspectionPage />;
 }

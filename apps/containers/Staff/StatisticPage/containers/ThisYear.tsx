@@ -1,11 +1,11 @@
 import React from "react";
 import { Card, Statistic } from "antd";
-import imge from "../../../../public/image/check-2.svg";
+import imge from "../../../../public/image/grow-2.svg";
 import Image from "next/image";
 
-const Registrations: React.FC = () => (
-    <Card style={{ width: "calc((100vw - 256px - 64px - 60px) / 4)" }}>
-        <Statistic title={"Số lượng đăng kiểm của tôi"} value={88} />
+const ThisYear: React.FC = () => (
+    <Card style={{ width: "calc((100vw - 256px - 64px - 60px) / 3)" }}>
+        <Statistic title={"Đăng kiểm trong năm nay"} value={33} />
         <div
             style={{
                 display: "flex",
@@ -18,4 +18,4 @@ const Registrations: React.FC = () => (
     </Card>
 );
 
-export default Registrations;
+export default ThisYear;
