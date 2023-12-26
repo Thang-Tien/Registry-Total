@@ -62,8 +62,6 @@ const ChartColumn: React.FC = () => {
                 style={{
                     width: "calc((100vw - 256px - 64px - 20px) /3 *2)",
                     height: "100%",
-                    display: "flex",
-                    flexDirection: "column",
                 }}
                 bodyStyle={{ flex: "1" }}
             >
@@ -71,7 +69,7 @@ const ChartColumn: React.FC = () => {
                     data={data}
                     xField="monthYear"
                     yField="count"
-                    height={250}
+                    height={350}
                     label={{
                         position: "middle",
                         style: {
