@@ -60,6 +60,7 @@ const ChartLine: React.FC = () => {
                     data={data}
                     xField="month"
                     yField="value"
+                    height={250}
                     xAxis={{ tickCount: 5 }}
                     smooth={true}
                     meta={{
@@ -70,8 +71,6 @@ const ChartLine: React.FC = () => {
                             alias: "Tháng",
                         },
                     }}
-                    // slider={{ start: 0, end: 1 }}
-                    style={{ height: "250px" }}
                 />
             </Card>
         </div>
