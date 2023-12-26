@@ -70,8 +70,8 @@ const ChartLine: React.FC = () => {
                             alias: "Tháng",
                         },
                     }}
-                    slider={{ start: 0, end: 1 }}
-                    style={{ height: "calc(100% - 8px)" }}
+                    // slider={{ start: 0, end: 1 }}
+                    style={{ height: "250px" }}
                 />
             </Card>
         </div>
