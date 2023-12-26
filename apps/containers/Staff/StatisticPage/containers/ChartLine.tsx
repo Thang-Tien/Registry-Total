@@ -71,6 +71,7 @@ const ChartLine: React.FC = () => {
                             alias: "Tháng",
                         },
                     }}
+                    slider={{ start: 0.2, end: 1 }}
                 />
             </Card>
         </div>
