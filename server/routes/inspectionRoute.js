@@ -43,10 +43,13 @@ router.get(
 	"/stat/all_centre/prediction/about_to_inspect_of_each_centre/:centreId",
 	inspectionController.predictAboutToInspectOfEachCentre
 );
+router.get("/x/", inspectionController.getInspectionX);
 router.get("/:centreId", inspectionController.getInspection);
+
 router.get(
 	"/get_inspection_owner/:centreId",
 	inspectionController.getInspectionAndOwner
 );
 router.post("/createInspection/", inspectionController.createInspection);
+
 module.exports = router;
