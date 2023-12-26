@@ -2,6 +2,8 @@ const connection = require("../config/DBConnection");
 const utils = require("../utils/utils");
 const PDFDocument = require("pdfkit");
 const fs = require("fs");
+const { user_id, centre_id, login } = require("./authController");
+
 // DONE
 // đếm tổng số lượng đăng kiểm của centre mà staff đang làm việc
 exports.countInspectionsOfEachCentre = async (req, res) => {
@@ -380,4 +382,34 @@ exports.createInspection = (req, res) => {
 			}
 		}
 	);
+};
+exports.getInspectionX = (req, res) => {
+	login(req, res, () => {
+		console.log(centre_id);
+		connection.query(
+			`SELECT * FROM users WHERE centre_id=?`,
+			[centre_id],
+
+			(err, result, fields) => {
+				if (err) {
+					return res.status(500).json({
+						status: "Failed",
+						message: err,
+					});
+				} else if (result.length == 0) {
+					return res.status(404).json({
+						status: "Failed",
+						message: `Can't find inspection with ${utils.generateErrorQueryValue(
+							req.query
+						)}`,
+					});
+				} else {
+					return res.status(200).json({
+						status: "Success",
+						data: result,
+					});
+				}
+			}
+		);
+	});
 };
