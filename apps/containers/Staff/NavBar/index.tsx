@@ -57,7 +57,7 @@ export default function NavBar({ active }: Props) {
         getItem("Tra cứu phương tiện", "cars/search", <SearchOutlined />),
         getItem("Thống kê", "statistics", <LineChartOutlined />),
         getItem("Tài khoản", "account", <UserOutlined />, [
-            getItem("Cài đặt", "settings"),
+            getItem("Cài đặt", "account/profile"),
             getItem("Đăng xuất", "logout"),
         ]),
     ];
