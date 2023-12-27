@@ -4,17 +4,6 @@ const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const sendEmail = require("../utils/email");
 
-let user_id = -1;
-let centre_id = -1;
-
-// const setUserIdAndCenterId = (userId, centerId) => {
-// 	user_id = userId;
-// 	centerID = centerId;
-// };
-
-// const getUserId = () => user_id;
-// const getCenterId = () => centerID;
-
 const generateAccessToken = (user, res) => {
 	const accessToken = jwt.sign(
 		{ id: user.user_id, role: user.role },
@@ -35,7 +24,7 @@ const generateAccessToken = (user, res) => {
 	return accessToken;
 };
 
-const login = async (req, res) => {
+exports.login = async (req, res) => {
 	connection.query(
 		"SELECT * FROM users WHERE email = ?",
 		req.body.email,
@@ -51,11 +40,6 @@ const login = async (req, res) => {
 					message: `Incorrect email or password`,
 				});
 			} else {
-				user_id = results[0].user_id;
-				centre_id = results[0].centre_id;
-				console.log("user_id after login:", user_id);
-				console.log("centreID after login", centre_id);
-
 				bcrypt.compare(
 					req.body.password,
 					results[0].password,
@@ -66,7 +50,6 @@ const login = async (req, res) => {
 								message: `Incorrect email or password`,
 							});
 						}
-
 						token = generateAccessToken(results[0], res);
 						console.log(req.headers);
 						return res.status(200).json({
@@ -81,7 +64,7 @@ const login = async (req, res) => {
 	);
 };
 
-const authenticateToken = async (req, res, next) => {
+exports.authenticateToken = async (req, res, next) => {
 	try {
 		let token;
 		if (
@@ -123,7 +106,7 @@ const authenticateToken = async (req, res, next) => {
 	}
 };
 
-const restrictAccessTo = (...roles) => {
+exports.restrictAccessTo = (...roles) => {
 	return (req, res, next) => {
 		if (!roles.includes(req.user.role)) {
 			return res.status(401).json({
@@ -135,7 +118,7 @@ const restrictAccessTo = (...roles) => {
 	};
 };
 
-const changePassword = async (req, res) => {
+exports.changePassword = async (req, res) => {
 	console.log(req.body);
 	connection.query(
 		`SELECT password FROM users WHERE user_id = ${req.user.user_id}`,
@@ -206,7 +189,7 @@ const changePassword = async (req, res) => {
 	);
 };
 
-const handleForgotPassword = async (req, res) => {
+exports.handleForgotPassword = async (req, res) => {
 	connection.query(
 		`SELECT * FROM users WHERE email = "${req.body.email}"`,
 		(err, results, fields) => {
@@ -269,7 +252,7 @@ const handleForgotPassword = async (req, res) => {
 	);
 };
 
-const resetPassword = async (req, res) => {
+exports.resetPassword = async (req, res) => {
 	connection.query(
 		`SELECT *, NOW() as "current_time" FROM users WHERE reset_password_token = "${req.params.token}"`,
 		(err, results, fields) => {
@@ -318,15 +301,4 @@ const resetPassword = async (req, res) => {
 			});
 		}
 	);
-};
-
-module.exports = {
-	login,
-	authenticateToken,
-	restrictAccessTo,
-	changePassword,
-	handleForgotPassword,
-	resetPassword,
-	user_id,
-	centre_id,
 };
