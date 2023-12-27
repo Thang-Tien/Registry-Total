@@ -315,7 +315,7 @@ exports.getInspectionAndOwner = (req, res) => {
 // NOT DONE
 // Tạo đăng kiểm cho trung tâm mà staff đang làm việc
 // đang để tạm  specify = "carry_people$lte:9-personal+manufacture$lte:7~36~24"
-// vì chưa có chức năng đăng nhập
+// đang thiếu thuộc tính kinh doanh vận tải / cải tạo
 exports.createInspection = (req, res) => {
 	const number_plate = req.body.number_plate;
 	const wheel_formula = req.body.wheel_formula; // công thức bánh xe
