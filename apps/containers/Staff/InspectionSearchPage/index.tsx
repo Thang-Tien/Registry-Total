@@ -2,7 +2,7 @@ import cx from "classnames";
 import styles from "./index.module.scss";
 import Flex from "@/modules/ui/components/Flex";
 import NavBar from "../NavBar";
-import SearchInput from "./containers/SearchInput";
+import SearchForm from "./containers/SearchForm";
 
 export type Props = {
     className?: string;
@@ -24,7 +24,7 @@ export default function InspectionSearchPage({ className, style }: Props) {
                     }}
                 >
                     <div style={{ width: "80%", margin: 50 }}>
-                        <SearchInput />
+                        <SearchForm />
                     </div>
                 </div>
             </Flex.Row>
