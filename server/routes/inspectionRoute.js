@@ -20,6 +20,12 @@ router.get(
 	authController.authenticateToken,
 	inspectionController.countInspectionsOfEachCentreThisYear
 );
+// Lấy ra tổng số lượng đăng kiểm của 12 tháng gần nhất CÓ ĐĂNG KIỂM của centre mà staff đang làm việc
+router.get(
+	"/stat/each_centre/count/last_twelve_months/",
+	authController.authenticateToken,
+	inspectionController.countInspectionEachCenterLastTwelveMonths
+);
 // DONE nhưng không liên quan
 // đếm tổng số lượng đăng kiểm đã hết hạn của trung tâm mà staff đang làm việc
 router.get(

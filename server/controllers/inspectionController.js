@@ -356,7 +356,6 @@ exports.createInspection = (req, res) => {
 
 			const first_time = countResult[0].count === 0 ? 1 : 0;
 
-			// Câu lệnh INSERT sử dụng giá trị của first_time được xác định ở trên
 			connection.query(
 				`INSERT INTO inspections (inspection_id, inspection_number, inspection_date, car_id, user_id, centre_id, specify, first_time, expired_date)
           SELECT
@@ -436,6 +435,39 @@ exports.createInspection = (req, res) => {
 					);
 				}
 			);
+		}
+	);
+};
+
+// Lấy ra tổng số lượng đăng kiểm của 12 tháng gần nhất CÓ ĐĂNG KIỂM của centre mà staff đang làm việc
+exports.countInspectionEachCenterLastTwelveMonths = async (req, res) => {
+	let queryString = utils.generateQueryStringWithDate(
+		req.query,
+		"inspection_date"
+	);
+	connection.query(
+		`SELECT
+ 			CONCAT( EXTRACT(MONTH FROM inspection_date),"/",EXTRACT(YEAR FROM inspection_date) ) as MonthAndYear,
+  			COUNT(*) AS record_count
+		FROM inspections
+  		Where centre_id = ?
+		GROUP BY EXTRACT(MONTH FROM inspection_date),EXTRACT(YEAR FROM inspection_date)
+		ORDER BY
+  			EXTRACT(YEAR FROM inspection_date) DESC, EXTRACT(MONTH FROM inspection_date) DESC
+  		Limit 12;`,
+		[req.user.centre_id],
+		(err, result, fields) => {
+			if (err) {
+				return res.status(500).json({
+					status: "Failed",
+					error: err,
+				});
+			} else {
+				return res.status(200).json({
+					status: "Success",
+					data: result,
+				});
+			}
 		}
 	);
 };
