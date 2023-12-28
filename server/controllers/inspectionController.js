@@ -105,6 +105,39 @@ exports.countInspectionsOfEachCentreThisYear = async (req, res) => {
 		}
 	);
 };
+
+// Lấy ra tổng số lượng đăng kiểm của 12 tháng gần nhất CÓ ĐĂNG KIỂM của centre mà staff đang làm việc
+exports.countInspectionEachCenterLastTwelveMonths = async (req, res) => {
+	let queryString = utils.generateQueryStringWithDate(
+		req.query,
+		"inspection_date"
+	);
+	connection.query(
+		`SELECT
+ 			CONCAT( EXTRACT(MONTH FROM inspection_date),"/",EXTRACT(YEAR FROM inspection_date) ) as MonthAndYear,
+  			COUNT(*) AS record_count
+		FROM inspections
+  		Where centre_id = ?
+		GROUP BY EXTRACT(MONTH FROM inspection_date),EXTRACT(YEAR FROM inspection_date)
+		ORDER BY
+  			EXTRACT(YEAR FROM inspection_date) DESC, EXTRACT(MONTH FROM inspection_date) DESC
+  		Limit 12;`,
+		[req.user.centre_id],
+		(err, result, fields) => {
+			if (err) {
+				return res.status(500).json({
+					status: "Failed",
+					error: err,
+				});
+			} else {
+				return res.status(200).json({
+					status: "Success",
+					data: result,
+				});
+			}
+		}
+	);
+};
 // DONE nhưng không liên quan
 // đếm tổng số lượng đăng kiểm đã hết hạn của trung tâm mà staff đang làm việc
 exports.countTotalExpiredInspectionsOfEachCentre = async (req, res) => {
@@ -435,39 +468,6 @@ exports.createInspection = (req, res) => {
 					);
 				}
 			);
-		}
-	);
-};
-
-// Lấy ra tổng số lượng đăng kiểm của 12 tháng gần nhất CÓ ĐĂNG KIỂM của centre mà staff đang làm việc
-exports.countInspectionEachCenterLastTwelveMonths = async (req, res) => {
-	let queryString = utils.generateQueryStringWithDate(
-		req.query,
-		"inspection_date"
-	);
-	connection.query(
-		`SELECT
- 			CONCAT( EXTRACT(MONTH FROM inspection_date),"/",EXTRACT(YEAR FROM inspection_date) ) as MonthAndYear,
-  			COUNT(*) AS record_count
-		FROM inspections
-  		Where centre_id = ?
-		GROUP BY EXTRACT(MONTH FROM inspection_date),EXTRACT(YEAR FROM inspection_date)
-		ORDER BY
-  			EXTRACT(YEAR FROM inspection_date) DESC, EXTRACT(MONTH FROM inspection_date) DESC
-  		Limit 12;`,
-		[req.user.centre_id],
-		(err, result, fields) => {
-			if (err) {
-				return res.status(500).json({
-					status: "Failed",
-					error: err,
-				});
-			} else {
-				return res.status(200).json({
-					status: "Success",
-					data: result,
-				});
-			}
 		}
 	);
 };
