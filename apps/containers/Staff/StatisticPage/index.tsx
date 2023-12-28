@@ -7,6 +7,7 @@ import ThisYear from "./containers/ThisYear";
 import ChartPie from "./containers/ChartPie";
 import ChartColumn from "./containers/ChartColumn";
 import ChartLine from "./containers/ChartLine";
+import { Breadcrumb } from "antd";
 
 export type Props = {
     className?: string;
@@ -26,6 +27,18 @@ export default function StatisticPage({ className, style }: Props) {
                         background: "#e4e4e7",
                     }}
                 >
+                    <Breadcrumb
+                        separator=">"
+                        items={[
+                            {
+                                title: "Nhà của tôi",
+                            },
+                            {
+                                title: "Thống kê",
+                            },
+                        ]}
+                        style={{ marginLeft: 30, marginTop: 30 }}
+                    />
                     <Flex.Col gap={"20px"} style={{ padding: "24px 32px" }}>
                         <Flex.Row gap={"20px"}>
                             <Flex.Col gap={"20px"}>

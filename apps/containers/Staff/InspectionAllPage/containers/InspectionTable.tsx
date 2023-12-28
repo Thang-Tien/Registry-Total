@@ -292,7 +292,7 @@ const InspectionTable: React.FC = () => {
             columns={columns}
             pagination={{ position: ["bottomCenter"] }}
             scroll={{ x: "calc(100vw - 256px - 128px)" }} // Adjust the value as needed
-            style={{ margin: 54 }}
+            style={{ margin: 50 }}
         />
     );
 };

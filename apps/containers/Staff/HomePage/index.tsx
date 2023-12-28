@@ -9,7 +9,7 @@ import ChartLine from "./containers/ChartLine";
 import ChartPie from "./containers/ChartPie";
 import MyRegistrations from "./containers/MyRegistrations";
 import RecentInspection from "./containers/RecentInspection";
-
+import { Breadcrumb } from "antd";
 export type Props = {
     className?: string;
     style?: React.CSSProperties;
@@ -26,6 +26,18 @@ export default function HomePage({ className, style }: Props) {
                         width: "calc(100vw - 256px - 8px)",
                     }}
                 >
+                    <Breadcrumb
+                        separator=">"
+                        items={[
+                            {
+                                title: "Nhà của tôi",
+                            },
+                            {
+                                title: "Bảng điều khiển",
+                            },
+                        ]}
+                        style={{ marginLeft: 30, marginTop: 30 }}
+                    />
                     <Flex.Col gap={"20px"} style={{ padding: "24px 32px" }}>
                         {/* top, down: 24px, left, right: 32px */}
                         <Flex.Row gap={"20px"}>
