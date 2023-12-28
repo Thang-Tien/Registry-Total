@@ -20,6 +20,11 @@ router.get(
 	authController.authenticateToken,
 	inspectionController.countInspectionsOfEachCentreThisYear
 );
+router.get(
+	"/stat/each_centre/count/mine/",
+	authController.authenticateToken,
+	inspectionController.countInspectionsOfMine
+);
 // Lấy ra tổng số lượng đăng kiểm của 12 tháng gần nhất CÓ ĐĂNG KIỂM của centre mà staff đang làm việc
 router.get(
 	"/stat/each_centre/count/last_twelve_months/",
