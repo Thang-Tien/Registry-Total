@@ -12,8 +12,6 @@ exports.countInspectionsOfEachCentre = async (req, res) => {
 	connection.query(
 		`SELECT COUNT(*) as total 
                      FROM inspections i 
-                     INNER JOIN registration_centres r 
-                     ON i.centre_id = r.centre_id 
                      WHERE ${
 							queryString ? queryString : 1
 						} AND i.centre_id = ?`,
@@ -47,9 +45,7 @@ exports.countInspectionsOfEachCentreThisMonth = async (req, res) => {
 	);
 	connection.query(
 		`SELECT COUNT(*) as total 
-                     FROM inspections i 
-                     INNER JOIN registration_centres r 
-                     ON i.centre_id = r.centre_id 
+                     FROM inspections i  
                      WHERE ${
 							queryString ? queryString : 1
 						} AND i.inspection_date <= LAST_DAY(NOW()) AND i.centre_id = ? AND i.inspection_date >= ?`,
@@ -84,8 +80,6 @@ exports.countInspectionsOfEachCentreThisYear = async (req, res) => {
 	connection.query(
 		`SELECT COUNT(*) as total 
                      FROM inspections i 
-                     INNER JOIN registration_centres r 
-                     ON i.centre_id = r.centre_id 
                      WHERE ${
 							queryString ? queryString : 1
 						} AND YEAR(i.inspection_date) = YEAR(NOW()) AND i.centre_id = ? `,
@@ -105,7 +99,32 @@ exports.countInspectionsOfEachCentreThisYear = async (req, res) => {
 		}
 	);
 };
-
+// số lượng đăng kiểm của tôi (staff)
+exports.countInspectionsOfMine = async (req, res) => {
+	let queryString = utils.generateQueryStringWithDate(
+		req.query,
+		"inspection_date"
+	);
+	connection.query(
+		`SELECT COUNT(*) as total 
+                     FROM inspections i 
+                     WHERE ${queryString ? queryString : 1} AND i.user_id = ?`,
+		[req.user.user_id],
+		(err, result, fields) => {
+			if (err) {
+				return res.status(500).json({
+					status: "Failed",
+					error: err,
+				});
+			} else {
+				return res.status(200).json({
+					status: "Success",
+					data: result,
+				});
+			}
+		}
+	);
+};
 // Lấy ra tổng số lượng đăng kiểm của 12 tháng gần nhất CÓ ĐĂNG KIỂM của centre mà staff đang làm việc
 exports.countInspectionEachCenterLastTwelveMonths = async (req, res) => {
 	let queryString = utils.generateQueryStringWithDate(
@@ -117,7 +136,7 @@ exports.countInspectionEachCenterLastTwelveMonths = async (req, res) => {
  			CONCAT( EXTRACT(MONTH FROM inspection_date),"/",EXTRACT(YEAR FROM inspection_date) ) as monthYear,
   			COUNT(*) AS count
 		FROM inspections
-  		Where centre_id = ?
+  		Where ${queryString ? queryString : 1} AND centre_id = ?
 		GROUP BY EXTRACT(MONTH FROM inspection_date),EXTRACT(YEAR FROM inspection_date)
 		ORDER BY
   			EXTRACT(YEAR FROM inspection_date) DESC, EXTRACT(MONTH FROM inspection_date) DESC
