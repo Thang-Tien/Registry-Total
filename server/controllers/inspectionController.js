@@ -114,8 +114,8 @@ exports.countInspectionEachCenterLastTwelveMonths = async (req, res) => {
 	);
 	connection.query(
 		`SELECT
- 			CONCAT( EXTRACT(MONTH FROM inspection_date),"/",EXTRACT(YEAR FROM inspection_date) ) as MonthAndYear,
-  			COUNT(*) AS record_count
+ 			CONCAT( EXTRACT(MONTH FROM inspection_date),"/",EXTRACT(YEAR FROM inspection_date) ) as monthYear,
+  			COUNT(*) AS count
 		FROM inspections
   		Where centre_id = ?
 		GROUP BY EXTRACT(MONTH FROM inspection_date),EXTRACT(YEAR FROM inspection_date)
