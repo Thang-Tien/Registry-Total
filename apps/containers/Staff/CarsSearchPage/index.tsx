@@ -9,11 +9,11 @@ export type Props = {
     style?: React.CSSProperties;
 };
 
-export default function InspectionSearchPage({ className, style }: Props) {
+export default function CarsSearchPage({ className, style }: Props) {
     return (
         <div className={cx(className, styles.container)} style={style}>
             <Flex.Row style={{ width: "100%", minHeight: "100vh" }}>
-                <NavBar active="inspection" />
+                <NavBar active="cars/search" />
                 <div
                     style={{
                         flex: "1",
