@@ -10,7 +10,7 @@ const Verify = (props) => {
     setIsSubmitting(true);
     try {
       const response = await fetch(
-        `http://localhost:8000/api/v1/users/checkResetToken`,
+        `http://localhost:8000/api/v1/users/check-otp`,
         {
           method: "POST",
           headers: {

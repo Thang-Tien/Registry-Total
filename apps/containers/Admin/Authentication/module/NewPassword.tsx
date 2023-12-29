@@ -5,7 +5,8 @@ import { useRouter } from 'next/navigation'
 
 interface NewPasswordProps {
   tokenReset: string;
-  turnOffForgotMode: () => void;
+  turnOffForgotMode: () => void;  
+  
 }
 
 const NewPassword = (props: NewPasswordProps) => {
@@ -18,13 +19,13 @@ const NewPassword = (props: NewPasswordProps) => {
 
     try {
       const response = await fetch(
-        `http://localhost:8000/api/v1/users/resetPassword/${props.tokenReset}`,
+        `http://localhost:8000/api/v1/users/reset-password`,
         {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(values),
+          body: JSON.stringify({ newPassword: values.password}),
         }
       );
 

@@ -28,6 +28,7 @@ const FindEmail = (props: FindEmailProps) => {
           body: JSON.stringify(values),
         }
       );
+      console.log(values.email);
       if (!response.ok) {
         props.openNotification("Lỗi", "Không tìm thấy email này.");
         props.setStatus("error");
