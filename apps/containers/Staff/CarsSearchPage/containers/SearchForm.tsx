@@ -6,6 +6,7 @@ import Image from "next/image";
 import searchImage from "./../../../../public/image/search-1.svg";
 import notFoundImage from "./../../../../public/image/void.svg";
 import inspectionImage from "./../../../../public/image/checked.png";
+import Link from "next/link";
 
 const { Text } = Typography;
 
@@ -106,7 +107,7 @@ const SearchForm: React.FC = () => {
                     renderItem={(item) => (
                         <List.Item
                             actions={[
-                                <a href={`/cars/search/`}>Xem chi tiết</a>,
+                                <Link href="/cars/id">Xem chi tiết</Link>,
                             ]}
                         >
                             <List.Item.Meta
