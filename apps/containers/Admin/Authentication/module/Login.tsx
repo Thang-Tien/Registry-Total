@@ -22,7 +22,7 @@ const LoginForm = (props: LoginFormProps) => {
   const [api, contextHolder] = notification.useNotification();
 
   const router = useRouter();
-
+  const [user, setUser] = useState({});
   const openNotification = () => {
     api.error({
       message: "Lỗi",
@@ -51,14 +51,15 @@ const LoginForm = (props: LoginFormProps) => {
         setIsSubmitting(false);
         throw new Error("Can not authenticate.");
       }
-
+      
       const res = await response.json();
-      console.log(res.data.user);
+      setUser(res.user);
+      
       localStorage.setItem("accessToken", res.token);
       
     if ( res.token) {
       // router.push("/HomePage"); 
-      
+      console.log(user);
     } else {
       setIsSubmitting(false);
       throw new Error("Failed to authenticate.");

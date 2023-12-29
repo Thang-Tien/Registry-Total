@@ -7,7 +7,7 @@
 
   export default function RouteToHomePage() {
     return <div>
-      {/* <SettingsPage mode = "password"/> */}
-      <AuthenticationPage/>
+      <SettingsPage mode = "password"/>
+      {/* <AuthenticationPage/> */}
       </div>
   }
