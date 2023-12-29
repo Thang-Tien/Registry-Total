@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 interface NewPasswordProps {
   tokenReset: string;
   turnOffForgotMode: () => void;  
-  
+  email: string; 
 }
 
 const NewPassword = (props: NewPasswordProps) => {
@@ -25,7 +25,7 @@ const NewPassword = (props: NewPasswordProps) => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ newPassword: values.password}),
+          body: JSON.stringify({email: props.email, newPassword: values.password}),
         }
       );
 
