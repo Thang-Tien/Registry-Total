@@ -25,7 +25,7 @@ const NewPassword = (props: NewPasswordProps) => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({email: props.email, newPassword: values.password}),
+          body: JSON.stringify({otp : props.tokenReset, email: props.email, newPassword: values.password}),
         }
       );
 
