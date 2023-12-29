@@ -34,7 +34,8 @@
     "react-dropzone": "^14.2.3",
     "react-icons": "^4.12.0",
     "react-tooltip": "^5.21.1",
-    "swr": "^2.2.4"
+    "swr": "^2.2.4",
+    "validate-date": "^2.1.0"
   },
   "devDependencies": {
     "@types/node": "20.4.4",

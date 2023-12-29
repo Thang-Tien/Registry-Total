@@ -53,11 +53,11 @@ const LoginForm = (props: LoginFormProps) => {
       }
 
       const res = await response.json();
-      console.log(res);
+      console.log(res.data.user);
       localStorage.setItem("accessToken", res.token);
       
     if ( res.token) {
-      router.push("/HomePage"); 
+      // router.push("/HomePage"); 
       
     } else {
       setIsSubmitting(false);
