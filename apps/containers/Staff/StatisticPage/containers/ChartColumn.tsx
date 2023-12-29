@@ -87,7 +87,7 @@ const ChartColumn: React.FC = () => {
                         count: {
                             alias: "Số lượng",
                         },
-                        month: {
+                        monthYear: {
                             alias: "Tháng",
                         },
                     }}
