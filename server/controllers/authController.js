@@ -88,7 +88,7 @@ exports.authenticateToken = async (req, res, next) => {
                 })
             }
 
-            const currentTime = new Date(new Date().setTime(new Date().getTime() + 7*60*60*1000))
+            const currentTime = new Date(new Date().setTime(new Date().getTime() + 7 * 60 * 60 * 1000))
             // check if token's expired date > current date
             if (decode.exp < parseInt(currentTime / 1000, 10)) {
                 return res.status(400).json({
@@ -231,9 +231,44 @@ exports.handleForgotPassword = async (req, res) => {
         })
 
     })
+}
 
+exports.checkOTP = (req, res) => {
+    connection.query(`SELECT *, NOW() as "current_time" FROM users WHERE email = "${req.body.email}"`, (err, result, fields) => {
+        if (err) {
+            return res.status(500).json({
+                status: "Failed",
+                error: err
+            })
+        }
+        console.log("heere")
+        if (result.length == 0) {
+            return res.status(401).json({
+                status: "Failed",
+                error: "User not found"
+            })
+        }
 
-
+        if (result[0].token_expired_date < result[0].current_time) {
+            return res.status(401).json({
+                status: "Failed",
+                error: "OTP expired"
+            })
+        }
+        bcrypt.compare(req.body.otp.toString(), result[0].reset_password_otp, (err, same) => {
+            if (!same) {
+                return res.status(401).json({
+                    status: "Failed",
+                    error: "Wrong OTP"
+                })
+            } else {
+                return res.status(200).json({
+                    status: "Success",
+                    message: "OTP accepted"
+                })
+            }
+        })
+    })
 }
 
 exports.resetPassword = async (req, res) => {
@@ -245,7 +280,7 @@ exports.resetPassword = async (req, res) => {
                 error: err
             })
         }
-        if (!result[0]) {
+        if (result.length == 0) {
             return res.status(401).json({
                 status: "Failed",
                 error: "User not found"
