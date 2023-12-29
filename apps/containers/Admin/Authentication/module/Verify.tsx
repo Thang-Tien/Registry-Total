@@ -3,9 +3,10 @@ import { useState } from "react";
 
 import classes from "./../styles/Reset.module.css";
 
+
 const Verify = (props) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
-
+  
   const onFinish = async (values) => {
     setIsSubmitting(true);
     try {
@@ -16,7 +17,10 @@ const Verify = (props) => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(values),
+          body: JSON.stringify(JSON.stringify({
+            otp: values.otp,
+            email: props.email
+          })),
         }
       );
 
@@ -28,7 +32,7 @@ const Verify = (props) => {
       }
 
       props.setStatus("finish");
-      props.setTokenReset(values.token);
+      props.setTokenReset(values.otp);
       props.setVerifying(false);
       props.setResetting(true);
       props.next();
@@ -41,7 +45,7 @@ const Verify = (props) => {
   return (
     <Form name="verify-token" onFinish={onFinish}>
       <Form.Item
-        name="token"
+        name="otp"
         rules={[
           {
             required: true,

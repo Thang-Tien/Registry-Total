@@ -34,7 +34,7 @@ const ResetForm = (props: ResetFormProps) => {
   const [verifying, setVerifying] = useState(false);
   const [resetting, setResetting] = useState(false);
   const [tokenReset, setTokenReset] = useState("");
-
+  const [email, setEmail] = useState("");
   const [current, setCurrent] = useState(0);
   const [status, setStatus] = useState("process");
 
@@ -97,6 +97,7 @@ const ResetForm = (props: ResetFormProps) => {
               next={next}
               openNotification={openNotification}
               setStatus={setStatus}
+              setEmail={setEmail}
             />
           )}
 
@@ -109,6 +110,7 @@ const ResetForm = (props: ResetFormProps) => {
               openNotification={openNotification}
               setTokenReset={setTokenReset}
               setStatus={setStatus}
+              email={email}
             />
           )}
 
@@ -116,6 +118,7 @@ const ResetForm = (props: ResetFormProps) => {
             <NewPassword
               turnOffForgotMode={turnOffForgotMode}
               tokenReset={tokenReset}
+              email={email}
             />
           )}
         </div>
