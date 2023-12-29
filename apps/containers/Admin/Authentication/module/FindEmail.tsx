@@ -28,7 +28,7 @@ const FindEmail = (props: FindEmailProps) => {
           body: JSON.stringify(values),
         }
       );
-      console.log(values.email);
+      console.log(values);
       if (!response.ok) {
         props.openNotification("Lỗi", "Không tìm thấy email này.");
         props.setStatus("error");
@@ -66,6 +66,7 @@ const FindEmail = (props: FindEmailProps) => {
           size="large"
           className={classes.input}
           style={{ paddingLeft: ".4rem" }}
+          
         />
       </Form.Item>
 
