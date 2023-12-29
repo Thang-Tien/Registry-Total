@@ -364,10 +364,9 @@ exports.getInspectionAndOwner = (req, res) => {
 		}
 	);
 };
-// NOT DONE
+// DONE
 // Tạo đăng kiểm cho trung tâm mà staff đang làm việc
-// đang để tạm  specify = "carry_people$lte:9-personal+manufacture$lte:7~36~24"
-// đang thiếu thuộc tính kinh doanh vận tải / cải tạo
+//  specify = "carry_people$lte:9-personal+manufacture$lte:7~36~24"
 exports.createInspection = (req, res) => {
 	const number_plate = req.body.number_plate;
 	const wheel_formula = req.body.wheel_formula; // công thức bánh xe
