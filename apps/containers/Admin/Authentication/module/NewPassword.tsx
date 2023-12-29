@@ -5,8 +5,8 @@ import { useRouter } from 'next/navigation'
 
 interface NewPasswordProps {
   tokenReset: string;
-  turnOffForgotMode: () => void;  
-  email: string; 
+  turnOffForgotMode: () => void;
+  email: string;
 }
 
 const NewPassword = (props: NewPasswordProps) => {
@@ -25,7 +25,7 @@ const NewPassword = (props: NewPasswordProps) => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({otp : props.tokenReset, email: props.email, newPassword: values.password}),
+          body: JSON.stringify({ otp: props.tokenReset, email: props.email, newPassword: values.password }),
         }
       );
 
@@ -37,9 +37,9 @@ const NewPassword = (props: NewPasswordProps) => {
       const res = await response.json();
 
       localStorage.setItem("accessToken", res.token);
-      
-      if ( res.token) 
-        router.push("/HomePage"); 
+
+      if (res.status == "Success")
+        router.push("/Login");
     } catch (err) {
       setIsSubmitting(false);
       console.error(err);
