@@ -17,13 +17,15 @@ const Verify = (props) => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(JSON.stringify({
+          body: JSON.stringify({
             otp: values.otp,
             email: props.email
-          })),
+          }),
         }
       );
 
+      const res = await response.json()
+      console.log(res)
       if (!response.ok) {
         props.openNotification("Lỗi", "Mã xác thực không chính xác.");
         props.setStatus("error");
