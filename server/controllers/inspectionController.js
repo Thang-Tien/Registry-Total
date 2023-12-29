@@ -388,6 +388,8 @@ exports.createInspection = (req, res) => {
 	const fuel = req.body.fuel; // Loại nhiên liệu
 	const number_of_tires = req.body.number_of_tires; // Số lượng lốp
 	const tire_size = req.body.tire_size; // Cỡ lốp/trục
+	const recovered = req.body.recovered; // Cải tạo
+	const purpose = req.body.purpose; // Kinh doanh vận tải
 	let queryString = utils.generateQueryString(req.query);
 
 	const inspection_date = new Date();
@@ -451,7 +453,9 @@ exports.createInspection = (req, res) => {
 						engine_displacement = ?,
 						maximum_output_to_rpm_ratio = ?,
 						fuel = ?,
-						number_of_tires_and_tire_size=?
+						number_of_tires_and_tire_size=?,
+						recovered = ?,
+						purpose = ?
 							WHERE number_plate = ?`,
 						[
 							wheel_formula,
@@ -468,6 +472,8 @@ exports.createInspection = (req, res) => {
 							maximum_output_to_rpm_ratio,
 							fuel,
 							number_of_tires + " tires, " + tire_size,
+							recovered,
+							purpose,
 							number_plate,
 						],
 						(updateErr, updateResult, updateFields) => {

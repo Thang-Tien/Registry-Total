@@ -4,7 +4,7 @@ const PDFDocument = require("pdfkit");
 const fs = require("fs");
 //search số đăng kiểm
 exports.getInspectionByInspectionNumber = async (req, res) => {
-	const inspection_number = req.params.inspection_number; // Extract inspection_number from the URL
+	const inspection_number = req.body.inspection_number; // Extract inspection_number from the URL
 
 	connection.query(
 		`SELECT * FROM inspections
@@ -29,7 +29,7 @@ exports.getInspectionByInspectionNumber = async (req, res) => {
 };
 //search biển số xe
 exports.getInspectionByNumberPlate = async (req, res) => {
-	const number_plate = req.params.number_plate; // Extract number_plate from the URL
+	const number_plate = req.body.number_plate; // Extract number_plate from the URL
 
 	connection.query(
 		`SELECT * FROM cars

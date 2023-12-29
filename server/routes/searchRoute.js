@@ -1,12 +1,22 @@
 const express = require("express");
-const router = express.Router({ mergeParams: true });
-const searchController = require("../controllers/searchController");
-router.get(
-	"/inspection_number/:inspection_number",
-	searchController.getInspectionByInspectionNumber
+const authController = require("../controllers/authController");
+const userController = require("../controllers/userController");
+
+const router = express.Router();
+
+router.post("/login", authController.login);
+router.post(
+	"/change-password",
+	authController.authenticateToken,
+	authController.changePassword
 );
-router.get(
-	"/number_plate/:number_plate",
-	searchController.getInspectionByNumberPlate
+router.post("/forgot-password", authController.handleForgotPassword);
+router.post("/reset-password", authController.resetPassword);
+router.post(
+	"/update_info",
+	authController.authenticateToken,
+	authController.restrictAccessTo(["admin", "staff"]),
+	userController.changeUserInfo
 );
+
 module.exports = router;
