@@ -70,6 +70,12 @@ exports.createUser = (req, res) => {
                                     error: err
                                 })
                             } else {
+                                
+                                return res.status(200).json({
+                                    status: "Success",
+                                    message: `Successfully created new account with ${utils.generateErrorQueryValue(req.body)}`,
+                                })
+
                                 sendEmail({
                                     email: req.body.email,
                                     subject: 'Your account has been created',

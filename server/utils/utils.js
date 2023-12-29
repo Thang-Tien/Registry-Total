@@ -10,8 +10,8 @@ exports.generateQueryString = (query) => {
             queryString = queryString.substring(0, queryString.length - 4)
             queryString += `LIMIT ${query[key]}`
             return queryString;
-        } 
-        
+        }
+
     }
     queryString = queryString.substring(0, queryString.length - 4)
     return queryString;
@@ -29,7 +29,7 @@ exports.generateQueryStringWithDate = (query, date) => {
         } else if (key == 'each_month' && query[key] == 'true') {
             queryString += `GROUP BY MONTH(${date})`
             return queryString;
-        } 
+        }
     }
     queryString = queryString.substring(0, queryString.length - 4)
     return queryString;
@@ -47,18 +47,33 @@ exports.generateErrorQueryValue = (query) => {
     let errorValueString = ''
     for (let key in query) {
         if (key != 'limit') errorValueString += `${key} = ${query[key]}, `
-        
+
     }
     errorValueString = errorValueString.substring(0, errorValueString.length - 2)
     return errorValueString
 }
 
-exports.changesPasswordAfter = function (JWTTimestamp) {
-    if (this.passwordChangedAt) {
-        const changedTimestamp = parseInt(this.passwordChangedAt.getTime() / 1000, 10)
-        //console.log(this.passwordChangedAt);
-        //console.log(changedTimestamp, JWTTimestamp);
-        return JWTTimestamp < changedTimestamp
+exports.getFieldsFromXlsx = (records) => {
+    let fields = "("
+    for (key in records) {
+        if (key != "car_id")
+        fields += `${key},`
     }
-    return false
+    fields = fields.substring(0, fields.length - 1)
+    fields += ")"
+    return fields
+}
+
+exports.generateQueryFromXlsx = (json) => {
+    let query = ""
+    for (let i = 0; i < json.length; i++) {
+        let row = ""
+        for (key in json[i]) {
+            if (key != "car_id") row += `"${json[i][key]}",`
+        }
+        row = row.substring(0, row.length - 1)
+        query += `(${row}),`
+    }
+    query = query.substring(0, query.length - 1)
+    return query
 }

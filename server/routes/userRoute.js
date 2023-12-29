@@ -9,7 +9,7 @@ router.post('/change-password', authController.authenticateToken, authController
 router.post('/forgot-password', authController.handleForgotPassword)
 
 router.post('/check-otp', authController.checkOTP)
-router.post('/reset-password', authController.resetPassword)
+router.patch('/reset-password', authController.resetPassword)
 
 router.post('/create_account', authController.authenticateToken, authController.restrictAccessTo("admin"), userController.createUser)
 router.delete('/delete_account', authController.authenticateToken, authController.restrictAccessTo("admin"),  userController.deleteUser)
