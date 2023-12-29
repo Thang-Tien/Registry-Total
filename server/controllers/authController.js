@@ -20,31 +20,32 @@ const generateAccessToken = (user, res) => {
 
 exports.login = async (req, res) => {
     console.log(req.body);
-    connection.query('SELECT * FROM users WHERE email = ?', req.body.email, (err, results, fields) => {
+    connection.query('SELECT * FROM users WHERE email = ?', req.body.email, (err, result, fields) => {
         if (err) {
             return res.status(500).json({
                 status: "Failed",
-                message: err
+                error: err
             })
-        } else if (!results[0]) {
+        } else if (!result[0]) {
             return res.status(401).json({
                 status: "Failed",
-                message: `Incorrect email or password`
+                error: `Incorrect email or password`
             })
         } else {
-            bcrypt.compare(req.body.password, results[0].password, (err, result) => {
-                if (!result) {
+            console.log(result[0])
+            bcrypt.compare(req.body.password, result[0].password, (err, same) => {
+                if (!same) {
                     return res.status(401).json({
                         status: "Failed",
-                        message: `Incorrect email or password`
+                        error: `Incorrect email or password`
                     })
                 }
-                token = generateAccessToken(results[0], res);
+                token = generateAccessToken(result[0], res);
                 console.log(req.headers)
                 return res.status(200).json({
                     status: "Success",
                     token,
-                    user: results,
+                    user: result,
                 })
             })
 
@@ -55,7 +56,6 @@ exports.login = async (req, res) => {
 
 exports.authenticateToken = async (req, res, next) => {
     try {
-
         let token
         if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
             token = req.headers.authorization.split(' ')[1]
@@ -64,7 +64,7 @@ exports.authenticateToken = async (req, res, next) => {
         if (!token) {
             return res.status(401).json({
                 status: "Failed",
-                message: "No token provided. Dang nhap di thg l"
+                error: "No token provided. Please login"
             })
         }
         const decode = jwt.verify(token, process.env.JWT_SECRET)
@@ -72,10 +72,28 @@ exports.authenticateToken = async (req, res, next) => {
 
         connection.query(`SELECT * FROM users WHERE user_id = ${decode.id}`, (err, currentUser, fields) => {
 
-            if (!currentUser) {
+            if (currentUser.length == 0) {
                 return res.status(401).json({
                     status: "Failed",
-                    message: "User not found"
+                    error: "User not found"
+                })
+            }
+
+            console.log(decode.iat, parseInt(currentUser[0].last_change_password_date.getTime() / 1000, 10))
+            // check if user is using old token which was generated before changing password
+            if (decode.iat < parseInt(currentUser[0].last_change_password_date.getTime() / 1000, 10)) {
+                return res.status(400).json({
+                    status: "Failed",
+                    error: "Your password has changed, please login again!"
+                })
+            }
+
+            const currentTime = new Date(new Date().setTime(new Date().getTime() + 7*60*60*1000))
+            // check if token's expired date > current date
+            if (decode.exp < parseInt(currentTime / 1000, 10)) {
+                return res.status(400).json({
+                    status: "Failed",
+                    error: "Your token is expired!"
                 })
             }
 
@@ -86,7 +104,7 @@ exports.authenticateToken = async (req, res, next) => {
         statusCode = 500 || e.statusCode
         return res.status(statusCode).json({
             status: "Failed",
-            message: e
+            error: e
         })
     }
 
@@ -97,7 +115,7 @@ exports.restrictAccessTo = (...roles) => {
         if (!roles.includes(req.user.role)) {
             return res.status(401).json({
                 status: "Failed",
-                message: "You don't have permission to access this feature"
+                error: "You don't have permission to access this feature"
             })
         }
         next()
@@ -106,35 +124,35 @@ exports.restrictAccessTo = (...roles) => {
 
 exports.changePassword = async (req, res) => {
     console.log(req.body)
-    connection.query(`SELECT password FROM users WHERE user_id = ${req.user.user_id}`, (err, results, fields) => {
+    connection.query(`SELECT password FROM users WHERE user_id = ${req.user.user_id}`, (err, result, fields) => {
         if (err) {
             return res.status(500).json({
                 status: "Failed",
-                message: err
+                error: err
             })
         }
         else {
-            bcrypt.compare(req.body.currentPassword, results[0].password, (err, result) => {
-                if (!result) {
+            bcrypt.compare(req.body.currentPassword, result[0].password, (err, same) => {
+                if (!same) {
                     return res.status(401).json({
                         status: "Failed",
-                        message: "Wrong current password"
+                        error: "Wrong current password"
                     })
                 } else {
-                    bcrypt.compare(req.body.newPassword, results[0].password, (err, result) => {
-                        if (result) {
+                    bcrypt.compare(req.body.newPassword, result[0].password, (err, same) => {
+                        if (same) {
                             return res.status(400).json({
                                 status: "Failed",
-                                message: "New password is the same as current password"
+                                error: "New password is the same as current password"
                             })
                         } else {
                             bcrypt.hash(req.body.newPassword, 12, (err, hash) => {
-                                connection.query(`UPDATE users SET password = "${hash}" WHERE user_id = ${req.user.user_id}`,
-                                    (err, results, field) => {
+                                connection.query(`UPDATE users SET password = "${hash}", last_change_password_date = NOW() WHERE user_id = ${req.user.user_id}`,
+                                    (err, result, field) => {
                                         if (err) {
                                             return res.status(500).json({
                                                 status: "Failed",
-                                                message: err
+                                                error: err
                                             })
                                         } else {
                                             return res.status(200).json({
@@ -155,18 +173,18 @@ exports.changePassword = async (req, res) => {
 }
 
 exports.handleForgotPassword = async (req, res) => {
-    connection.query(`SELECT * FROM users WHERE email = "${req.body.email}"`, (err, results, fields) => {
+    connection.query(`SELECT * FROM users WHERE email = "${req.body.email}"`, (err, result, fields) => {
         if (err) {
             return res.status(500).json({
                 status: "Failed",
-                message: err
+                error: err
             })
         }
-        if (!results[0]) {
+        if (!result[0]) {
             console.log("invalid")
             return res.status(401).json({
                 status: "Failed",
-                message: "Invalid email"
+                error: "Invalid email"
             })
         }
         const otp = Math.floor(100000 + Math.random() * 900000)
@@ -175,33 +193,35 @@ exports.handleForgotPassword = async (req, res) => {
                 console.log(err)
             }
             console.log(hashedOTP)
-            connection.query(`UPDATE users SET reset_password_otp = "${hashedOTP}", token_expired_date = NOW() + INTERVAL 3 HOUR WHERE email = "${req.body.email}"`, (err, results, fields) => {
+            connection.query(`UPDATE users SET reset_password_otp = "${hashedOTP}", otp_expired_date = NOW() + INTERVAL 3 HOUR WHERE email = "${req.body.email}"`, (err, result, fields) => {
                 if (err) {
                     return res.status(500).json({
                         status: "Failed",
-                        message: err
+                        error: err
+                    })
+                } else {
+                    sendEmail({
+                        email: req.body.email,
+                        subject: 'Password reset otp (only valid for 3 hours)',
+                        text: otp.toString()
+                    }, (err, info) => {
+                        if (err) {
+                            return res.status(500).json({
+                                status: "Failed",
+                                error: err
+                            })
+                        }
+                        else {
+                            return res.status(200).json({
+                                status: "Success",
+                                message: `Token has been sent to your email ${req.body.email}`,
+                                otp: otp
+                            })
+                        }
                     })
                 }
             })
-            sendEmail({
-                email: req.body.email,
-                subject: 'Password reset otp (only valid for 3 hours)',
-                text: otp
-            }, (err, info) => {
-                if (err) {
-                    return res.status(500).json({
-                        status: "Failed",
-                        message: err
-                    })
-                }
-                else {
-                    return res.status(200).json({
-                        status: "Success",
-                        message: `Token has been sent to your email ${req.body.email}`,
-                        otp: otp
-                    })
-                }
-            })
+
 
             // res.status(200).json({
             //     status: "Success",
@@ -218,31 +238,31 @@ exports.handleForgotPassword = async (req, res) => {
 
 exports.resetPassword = async (req, res) => {
 
-    connection.query(`SELECT *, NOW() as "current_time" FROM users WHERE email = "${req.body.email}"`, (err, results, fields) => {
+    connection.query(`SELECT *, NOW() as "current_time" FROM users WHERE email = "${req.body.email}"`, (err, result, fields) => {
         if (err) {
             return res.status(500).json({
                 status: "Failed",
-                message: err
+                error: err
             })
         }
-        if (!results[0]) {
+        if (!result[0]) {
             return res.status(401).json({
                 status: "Failed",
-                message: "User not found"
+                error: "User not found"
             })
         }
-        if (results[0].token_expired_date < results[0].current_time) {
+        if (result[0].token_expired_date < result[0].current_time) {
             return res.status(401).json({
                 status: "Failed",
-                message: "OTP expired"
+                error: "OTP expired"
             })
         }
 
-        bcrypt.compare(req.body.otp.toString(), results[0].reset_password_otp, (err, same) => {
+        bcrypt.compare(req.body.otp.toString(), result[0].reset_password_otp, (err, same) => {
             if (!same) {
                 return res.status(401).json({
                     status: "Failed",
-                    message: "Wrong OTP"
+                    error: "Wrong OTP"
                 })
             }
             else {
@@ -250,14 +270,14 @@ exports.resetPassword = async (req, res) => {
                     if (err) {
                         return res.status(500).json({
                             status: "Failed",
-                            message: err
+                            error: err
                         })
                     }
-                    connection.query(`UPDATE users SET password = "${encrypted}" WHERE user_id = ${results[0].user_id}`, (err, results, fields) => {
+                    connection.query(`UPDATE users SET password = "${encrypted}" WHERE user_id = ${result[0].user_id}`, (err, result, fields) => {
                         if (err) {
                             return res.status(500).json({
                                 status: "Failed",
-                                message: err
+                                error: err
                             })
                         }
                         else {

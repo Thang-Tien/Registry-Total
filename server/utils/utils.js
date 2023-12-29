@@ -53,3 +53,12 @@ exports.generateErrorQueryValue = (query) => {
     return errorValueString
 }
 
+exports.changesPasswordAfter = function (JWTTimestamp) {
+    if (this.passwordChangedAt) {
+        const changedTimestamp = parseInt(this.passwordChangedAt.getTime() / 1000, 10)
+        //console.log(this.passwordChangedAt);
+        //console.log(changedTimestamp, JWTTimestamp);
+        return JWTTimestamp < changedTimestamp
+    }
+    return false
+}

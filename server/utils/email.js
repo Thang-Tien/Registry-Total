@@ -18,7 +18,6 @@ const sendEmail = (options, callback) => {
         text: options.text // plain text body
         //html:
     };
-    console.log("here ok 3")
     // 3) Actually send the email
     transporter.sendMail(mailOptions, (err, info) => {
         console.log(err, info)

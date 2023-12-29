@@ -8,14 +8,12 @@ exports.countInspectionsOfAllCentre = async (req, res) => {
         if (err) {
             return res.status(500).json({
                 status: 'Failed',
-                error: {
-                    err
-                }
+                 error: err
             })
         } else {
             return res.status(200).json({
                 status: "Success",
-                data: result
+                data: result[0]
             })
         }
     })
@@ -26,14 +24,12 @@ exports.countTotalExpiredInspectionsOfAllCentre = async (req, res) => {
         if (err) {
             return res.status(500).json({
                 status: 'Failed',
-                error: {
-                    err
-                }
+                error: err
             })
         } else {
             return res.status(200).json({
                 status: "Success",
-                data: result
+                data: result[0]
             })
         }
     })
@@ -45,14 +41,12 @@ exports.countTotalAboutToExpiredInspectionsOfAllCentre = async (req, res) => {
         if (err) {
             return res.status(500).json({
                 status: 'Failed',
-                error: {
-                    err
-                }
+                error: err
             })
         } else {
             return res.status(200).json({
                 status: "Success",
-                data: result
+                data: result[0]
             })
         }
     })
@@ -63,12 +57,12 @@ exports.predictAboutToInspect = async (req, res) => {
         if (err) {
             return res.status(500).json({
                 status: "Failed",
-                message: err
+                error: err
             })
         } else {
             return res.status(202).json({
                 status: "Success",
-                data: result
+                data: result[0]
             })
         }
     })
@@ -81,7 +75,7 @@ exports.getInspection = (req, res) => {
         if (err) {
             return res.status(500).json({
                 status: "Failed",
-                message: err
+                error: err
             })
         } else if (result.length == 0) {
             return res.status(404).json({
@@ -91,7 +85,7 @@ exports.getInspection = (req, res) => {
         } else {
             return res.status(200).json({
                 status: "Success",
-                data: result
+                data: result[0]
             })
         }
     })
