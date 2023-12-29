@@ -106,9 +106,7 @@ const SearchForm: React.FC = () => {
                     renderItem={(item) => (
                         <List.Item
                             actions={[
-                                <a href={`/inspection/search/`}>
-                                    Xem chi tiết
-                                </a>,
+                                <a href={`/inspection/id/`}>Xem chi tiết</a>,
                             ]}
                         >
                             <List.Item.Meta

@@ -16,7 +16,7 @@ import {
     Result,
 } from "antd";
 import React, { useState } from "react";
-import Link from "next/link";
+import { useNavigate } from "react-router-dom";
 import img from "./../../../../public/image/search-2.svg";
 import Image from "next/image";
 import {
@@ -25,6 +25,7 @@ import {
     CheckCircleOutlined,
     CloseOutlined,
 } from "@ant-design/icons";
+import Link from "next/link";
 
 const CreateForm: React.FC = () => {
     const [current, setCurrent] = useState(0); // current step
@@ -349,15 +350,11 @@ const CreateForm: React.FC = () => {
                             <Button size="large" onClick={() => setCurrent(0)}>
                                 Quay về
                             </Button>
-                            <Button
-                                type="primary"
-                                size="large"
-                                onClick={() => {
-                                    console.log("Xem đăng kiểm");
-                                }}
-                            >
-                                Xem đăng kiểm
-                            </Button>
+                            <Link href="/inspection/id">
+                                <Button type="primary" size="large">
+                                    Xem đăng kiểm
+                                </Button>
+                            </Link>
                         </Space>
                     }
                 />
