@@ -3,23 +3,29 @@ import { useState } from "react";
 
 import classes from "./../styles/Reset.module.css";
 
+
 const Verify = (props) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
-
+  
   const onFinish = async (values) => {
     setIsSubmitting(true);
     try {
       const response = await fetch(
-        `http://localhost:8000/api/v1/users/checkResetToken`,
+        `http://localhost:8000/api/v1/users/check-otp`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(values),
+          body: JSON.stringify({
+            otp: values.otp,
+            email: props.email
+          }),
         }
       );
 
+      const res = await response.json()
+      console.log(res)
       if (!response.ok) {
         props.openNotification("Lỗi", "Mã xác thực không chính xác.");
         props.setStatus("error");
@@ -28,7 +34,7 @@ const Verify = (props) => {
       }
 
       props.setStatus("finish");
-      props.setTokenReset(values.token);
+      props.setTokenReset(values.otp);
       props.setVerifying(false);
       props.setResetting(true);
       props.next();
@@ -41,7 +47,7 @@ const Verify = (props) => {
   return (
     <Form name="verify-token" onFinish={onFinish}>
       <Form.Item
-        name="token"
+        name="otp"
         rules={[
           {
             required: true,

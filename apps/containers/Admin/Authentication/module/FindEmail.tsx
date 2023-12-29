@@ -10,6 +10,7 @@ interface FindEmailProps {
   setVerifying: (verifying: boolean) => void;
   next: () => void;
   turnOffForgotMode: () => void;
+  setEmail : (email: string) => void;
 }
 
 const FindEmail = (props: FindEmailProps) => {
@@ -28,6 +29,7 @@ const FindEmail = (props: FindEmailProps) => {
           body: JSON.stringify(values),
         }
       );
+      
       if (!response.ok) {
         props.openNotification("Lỗi", "Không tìm thấy email này.");
         props.setStatus("error");
@@ -39,6 +41,7 @@ const FindEmail = (props: FindEmailProps) => {
       props.setStatus("finish");
       props.setFindingEmail(false);
       props.setVerifying(true);
+      props.setEmail(values.email);
       props.next();
     } catch (err) {
       console.error(err);
@@ -65,6 +68,7 @@ const FindEmail = (props: FindEmailProps) => {
           size="large"
           className={classes.input}
           style={{ paddingLeft: ".4rem" }}
+          
         />
       </Form.Item>
 

@@ -15,6 +15,7 @@ import Flex from "@/modules/ui/components/Flex";
 import AppIcon from "./icons/AppIcon";
 import styles from "./index.module.scss";
 import { useRouter } from "next/navigation";
+import AuthenticationPage from "../Authentication";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
