@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef } from "react";
+import Link from "next/link";
 import { Card, Statistic, Table, Input, Space, Button } from "antd";
 import { DoubleRightOutlined, SearchOutlined } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
@@ -270,7 +271,13 @@ const InspectionTable: React.FC = () => {
             dataIndex: "action",
             key: "action",
             align: "center",
-            render: () => <DoubleRightOutlined />,
+            render: () => {
+                return (
+                    <Link href="/inspection/id">
+                        <DoubleRightOutlined style={{ color: "black" }} />
+                    </Link>
+                );
+            },
         },
     ];
 
