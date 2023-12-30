@@ -137,15 +137,17 @@ exports.deleteUser = (req, res) => {
 }
 
 exports.changeUserInfo = (req, res) => {
+    const splited = req.body.date_of_birth.split('/')
+    const formatedDOB = `${splited[2]}/${splited[1]}/${splited[0]}`
     connection.query(`UPDATE users SET name = ?, date_of_birth = ?, phone = ? WHERE user_id = ${req.user.user_id}`, 
-    [req.body.name, req.body.date_of_birth, req.body.phone], (err, result, fields) => {
+    [req.body.name, formatedDOB, req.body.phone], (err, result, fields) => {
         if (err) {
             return res.status(500).json({
                 status: "Failed",
                 error: err
             })
         } else {
-            return res.status(500).json({
+            return res.status(200).json({
                 status: "Success",
                 message: `Successfully update user with user_id = ${req.user.user_id} ${utils.generateErrorQueryValue(req.body)}`
             })

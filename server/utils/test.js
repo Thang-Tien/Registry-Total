@@ -1,7 +1,13 @@
-const jwt = require('jsonwebtoken')
+// modify database
 
-console.log(new Date().toLocaleString('en-US', {timeZone: 'Asia/Ho_Chi_Minh'}))
-console.log(new Date(Date.now() + 86400 * 1000).toLocaleString('en-US', {timeZone: 'Asia/Ho_Chi_Minh'}))
+const connection = require('../config/DBConnection')
 
-token = jwt.sign({id: 1, role: "Admin"}, 'memaybeo', {expiresIn: '1h'})
-console.log(token)
+connection.query(`SELECT * FROM cars WHERE inspected = false`, (err, result, fields) => {
+  if (err) {
+    console.log(err)
+    
+  } else {
+    console.log(result)
+  }
+  
+})

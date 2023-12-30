@@ -60,7 +60,7 @@ exports.authenticateToken = async (req, res, next) => {
         if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
             token = req.headers.authorization.split(' ')[1]
         }
-
+        console.log(req.headers)
         if (!token) {
             return res.status(401).json({
                 status: "Failed",
@@ -111,7 +111,10 @@ exports.authenticateToken = async (req, res, next) => {
 }
 
 exports.restrictAccessTo = (...roles) => {
+    
     return (req, res, next) => {
+        console.log(roles.includes(req.user.role))
+        console.log("role", roles)
         if (!roles.includes(req.user.role)) {
             return res.status(401).json({
                 status: "Failed",
