@@ -100,7 +100,7 @@ const Profile = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `/api/v1/users/getMe`,
+          `http://localhost:8000/api/v1/users/getMe`,
           {
             headers: {
               "Content-Type": "application/json",

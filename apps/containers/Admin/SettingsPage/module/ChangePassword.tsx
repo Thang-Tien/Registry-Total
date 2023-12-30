@@ -49,7 +49,7 @@ const ChangePassword = () => {
       setIsChanging(true);
 
       const response = await fetch(
-        `/api/v1/users/updatePassword`,
+        `http://localhost:8000/api/v1/users/updatePassword`,
         {
           method: "PATCH",
           headers: {
