@@ -7,7 +7,7 @@ import {
   notification,
 } from "antd";
 import classes from "./../styles/Login.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoLockClosedOutline, IoMailOutline } from "react-icons/io5";
 import { useRouter } from 'next/navigation'
 
@@ -22,7 +22,9 @@ const LoginForm = (props: LoginFormProps) => {
   const [api, contextHolder] = notification.useNotification();
 
   const router = useRouter();
-
+  
+  const [user,setUser] = useState();
+  
   const openNotification = () => {
     api.error({
       message: "Lỗi",
@@ -53,8 +55,13 @@ const LoginForm = (props: LoginFormProps) => {
       }
 
       const res = await response.json();
-      console.log(res);
+      // const user = Object.assign({}, res.user[0])
+      
+      
       localStorage.setItem("accessToken", res.token);
+      localStorage.setItem("data", JSON.stringify(res.user[0]));
+      console.log(res.user[0]);
+      setUser(res.user[0]);
       
     if ( res.token) {
       router.push("/HomePage"); 
