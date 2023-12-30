@@ -64,8 +64,13 @@ router.get(
     inspectionController.predictAboutToInspectOfEachCentre
 );
 
+// đưa ra tất cả inspection number và tên trung tâm đăng kiểm để search
+router.get(
+    "/inspection_number",
+    inspectionController.getAllINspectionNumberAndCentreName
+);
 // đưa ra thông tin đăng kiểm của trung tâm mà staff đang làm việc
-router.get("/:centre_id", inspectionController.getInspection);
+router.get("/:centre_id", inspectionController.getInspectionPerCentreID);
 
 // đưa ra 5 đăng kiểm gần nhất của trung tâm mà staff đang làm việc
 router.get("/recently/:centre_id", inspectionController.getRecentlyInspection);

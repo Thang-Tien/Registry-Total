@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AutoComplete, Input, List, Typography, Skeleton, Avatar } from "antd";
 import Image from "next/image";
 import searchImage from "./../../../../public/image/search-3.svg";
@@ -10,22 +10,35 @@ import inspectionImage from "./../../../../public/image/checked.png";
 const { Text } = Typography;
 
 const SearchForm: React.FC = () => {
-    const options = [
-        { value: "2023-002077" },
-        { value: "2023-001807" },
-        { value: "2023-002650" },
-        { value: "2023-002651" },
-        { value: "2023-002652" },
-        { value: "2023-002653" },
-        { value: "2023-002654" },
-        { value: "2023-002655" },
-        { value: "2023-002656" },
-        { value: "2023-002657" },
-        { value: "2023-002658" },
-        { value: "2023-002659" },
-        { value: "2023-002660" },
-        { value: "2023-002661" },
-    ];
+    const [options, setOptions] = useState([]);
+
+    useEffect(() => {
+        // Fetch data from the API
+        const fetchData = async () => {
+            try {
+                const response = await fetch(
+                    `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/inspection_number`
+                );
+                const data = await response.json();
+
+                // Extracting relevant information and updating the options state
+                const updatedOptions = data.data.map((item) => ({
+                    value: item.inspection_number,
+                    name: item.name,
+                }));
+
+                setOptions(updatedOptions);
+
+                console.log(updatedOptions);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+
+        // Call the fetchData function
+        fetchData();
+    }, []);
+
     const [selectedValues, setSelectedValues] = useState<string[]>([]);
     const [searchStatus, setSearchStatus] = useState<string>("Start");
 
@@ -46,20 +59,22 @@ const SearchForm: React.FC = () => {
         setSearchStatus(matchingOptions.length > 0 ? "List" : "Not Found");
 
         // Do something with the selected values, for example, store them in state
-        setSelectedValues(matchingOptions.map((option) => option.value));
-        // You can also perform any other actions here based on the selected values
+        setSelectedValues(matchingOptions);
+
+        // // Log the selected values
+        // console.log("Selected Values:", matchingOptions);
     };
 
     return (
         <div>
             <AutoComplete
                 style={{ width: "100%" }}
-                options={options}
-                filterOption={(inputValue, option) =>
-                    option?.value
-                        .toUpperCase()
-                        .indexOf(inputValue.trim().toUpperCase()) !== -1
-                }
+                // options={options}
+                // filterOption={(inputValue, option) =>
+                //     option?.value
+                //         .toUpperCase()
+                //         .indexOf(inputValue.trim().toUpperCase()) !== -1
+                // }
             >
                 <Input.Search
                     size="large"
@@ -117,12 +132,23 @@ const SearchForm: React.FC = () => {
                                         width={30}
                                     />
                                 }
-                                title={item}
-                                description={"Trung tâm đăng kiểm ABCXYZ"}
+                                title={item.value}
+                                description={item.name}
                             />
                         </List.Item>
                     )}
                 />
+
+                // <div>
+                //     {/* Other components or elements */}
+                //     <ul>
+                //         {selectedValues.map((option) => (
+                //             <li key={option.value}>
+                //                 {`Value: ${option.value}, Name: ${option.name}`}
+                //             </li>
+                //         ))}
+                //     </ul>
+                // </div>
             )}
             {searchStatus === "Not Found" && (
                 <div

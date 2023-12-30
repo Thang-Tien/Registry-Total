@@ -347,7 +347,7 @@ exports.predictAboutToInspectOfEachCentre = async (req, res) => {
 
 // DONE
 // đưa ra thông tin đăng kiểm của trung tâm mà staff đang làm việc
-exports.getInspection = (req, res) => {
+exports.getInspectionPerCentreID = (req, res) => {
     const centreID = req.params.centre_id;
     let queryString = utils.generateQueryString(req.query);
     connection.query(
@@ -388,6 +388,35 @@ exports.getInspection = (req, res) => {
     );
 };
 
+exports.getAllINspectionNumberAndCentreName = (req, res) => {
+    let queryString = utils.generateQueryString(req.query);
+    connection.query(
+        `SELECT i.inspection_number, r.name
+			FROM inspections AS i 
+            INNER JOIN registration_centres AS r 
+            ON r.centre_id = i.centre_id`,
+        (err, result, fields) => {
+            if (err) {
+                return res.status(500).json({
+                    status: "Failed",
+                    message: err,
+                });
+            } else if (result.length == 0) {
+                return res.status(404).json({
+                    status: "Failed",
+                    message: `Can't find inspection with ${utils.generateErrorQueryValue(
+                        req.query
+                    )}`,
+                });
+            } else {
+                return res.status(200).json({
+                    status: "Success",
+                    data: result,
+                });
+            }
+        }
+    );
+};
 // Get recently inspections per centre_id
 exports.getRecentlyInspection = (req, res) => {
     const centreID = req.params.centre_id;
