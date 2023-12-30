@@ -508,19 +508,14 @@ exports.createInspection = (req, res) => {
 						`INSERT INTO inspections (inspection_id, inspection_number, inspection_date, car_id, user_id, centre_id, specify, first_time, expired_date)
     SELECT
         COALESCE(MAX(inspection_id), 0) + 1,
-        CASE 
-            WHEN (
-                SELECT COUNT(*) 
-                FROM inspections 
-                WHERE YEAR(inspection_date) = YEAR(CURDATE())
-            ) = 0 THEN CONCAT(YEAR(CURDATE()), '-000000')
-            ELSE CONCAT(
+        
+            CONCAT(
                 YEAR(CURDATE()),"-", 
                 LPAD(
                     (SELECT COUNT(*)  FROM inspections WHERE YEAR(inspection_date) = YEAR(CURDATE())), 6, '0'
                 )
-            )
-        END,
+            ),
+       
         ?,
         (SELECT car_id FROM cars WHERE number_plate = ?),
         ?, ?, ?, ?,
