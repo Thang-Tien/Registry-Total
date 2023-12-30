@@ -7,7 +7,7 @@ import {
   notification,
 } from "antd";
 import classes from "./../styles/Login.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoLockClosedOutline, IoMailOutline } from "react-icons/io5";
 import { useRouter } from 'next/navigation'
 
@@ -22,7 +22,9 @@ const LoginForm = (props: LoginFormProps) => {
   const [api, contextHolder] = notification.useNotification();
 
   const router = useRouter();
-  const [user, setUser] = useState({});
+  
+  const [user,setUser] = useState();
+  
   const openNotification = () => {
     api.error({
       message: "Lỗi",
@@ -51,15 +53,22 @@ const LoginForm = (props: LoginFormProps) => {
         setIsSubmitting(false);
         throw new Error("Can not authenticate.");
       }
-      
+
       const res = await response.json();
-      setUser(res.user);
+      // const user = Object.assign({}, res.user[0])
+      
       
       localStorage.setItem("accessToken", res.token);
+      localStorage.setItem("user", JSON.stringify(res.user[0]));
+      console.log(res.user[0]);
+      setUser(res.user[0]);
+      console.log(res.user);
+      const usertest = localStorage.getItem("user");
+      
       
     if ( res.token) {
-      // router.push("/HomePage"); 
-      console.log(user);
+      router.push("/HomePage"); 
+      
     } else {
       setIsSubmitting(false);
       throw new Error("Failed to authenticate.");

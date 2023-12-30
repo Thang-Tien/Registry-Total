@@ -203,12 +203,12 @@ const Profile = () => {
             >
               <Avatar src={avatar} size={100} />
               <Space direction="vertical" size="small">
-                <span className={classes.name}>{user.name}</span>
+                <span className={classes.name}>{JSON.parse(localStorage.getItem("user")).name}</span>
                 <span className={classes.role}>
-                  {user.role === "staff" ? "Nhân viên" : "Quản trị viên"}
+                  {JSON.parse(localStorage.getItem("user")).role === "staff" ? "Nhân viên" : "Quản trị viên"}
                 </span>
                 <span className={classes.address}>
-                  {user.workFor.address}, Việt Nam
+                  {"user.workFor.address"}, Việt Nam
                 </span>
               </Space>
             </Space>
@@ -242,7 +242,7 @@ const Profile = () => {
                 label={<TextWithIcon Icon={IoPersonOutline} text="Họ và tên" />}
                 style={marginSmall}
               >
-                {user.name}
+                {JSON.parse(localStorage.getItem("user")).name}
               </Descriptions.Item>
               <Descriptions.Item
                 label={
@@ -250,7 +250,7 @@ const Profile = () => {
                 }
                 style={marginSmall}
               >
-                {processBirthDate(user.dateOfBirth)}
+                {processBirthDate(JSON.parse(localStorage.getItem("user")).dateOfBirth)}
               </Descriptions.Item>
               <Descriptions.Item
                 label={
@@ -258,7 +258,7 @@ const Profile = () => {
                 }
                 style={marginSmall}
               >
-                +84 {user.phone}
+                +84 {JSON.parse(localStorage.getItem("user")).phone}
               </Descriptions.Item>
               <Descriptions.Item
                 label={
@@ -269,13 +269,13 @@ const Profile = () => {
                 }
                 style={marginSmall}
               >
-                {user.ssn}
+                {JSON.parse(localStorage.getItem("user")).ssn}
               </Descriptions.Item>
               <Descriptions.Item
                 label={<TextWithIcon Icon={IoMailOutline} text="Email" />}
                 style={marginSmall}
               >
-                {user.email}
+                {JSON.parse(localStorage.getItem("user")).email}
               </Descriptions.Item>
             </Descriptions>
           </Card>
@@ -307,7 +307,7 @@ const Profile = () => {
                 }
                 style={marginSmall}
               >
-                {user.workFor.address}
+                {"user.workFor.address"}
               </Descriptions.Item>
               <Descriptions.Item
                 label={
@@ -315,20 +315,20 @@ const Profile = () => {
                 }
                 style={marginSmall}
               >
-                +84 {user.workFor.phone}
+                +84 {"user.workFor.phone"}
               </Descriptions.Item>
               <Descriptions.Item
                 label={<TextWithIcon Icon={IoMailOutline} text="Email" />}
                 style={marginSmall}
               >
-                {user.workFor.email}
+                {"user.workFor.email"}
               </Descriptions.Item>
               <Descriptions.Item
                 label={
                   <TextWithIcon
                     Icon={IoConstructOutline}
                     text={
-                      user.role === "staff"
+                      JSON.parse(localStorage.getItem("user")).role === "staff"
                         ? "Tên đơn vị đăng kiểm"
                         : "Cục đăng kiểm"
                     }
@@ -336,7 +336,7 @@ const Profile = () => {
                 }
                 style={marginSmall}
               >
-                {user.workFor.name}
+                {"user.workFor.name"}
               </Descriptions.Item>
             </Descriptions>
           </Card>
@@ -370,7 +370,7 @@ const Profile = () => {
                 method: "PATCH",
                 headers: {
                   "Content-Type": "application/json",
-                  Authorization: authHeader(),
+                  Authorization: "Bearer " + localStorage.getItem("accessToken"),
                 },
                 body: JSON.stringify(datas),
               }
@@ -385,9 +385,9 @@ const Profile = () => {
             }
 
             const newUser = user;
-            newUser.name = datas.name;
-            newUser.dateOfBirth = datas.dateOfBirth;
-            newUser.phone = datas.phone;
+            // newUser.name = datas.name;
+            // newUser.dateOfBirth = datas.dateOfBirth;
+            // newUser.phone = datas.phone;
 
             setUser(newUser);
 
@@ -397,7 +397,7 @@ const Profile = () => {
             form.resetFields();
           } catch (err) {
             setSubmitting(false);
-            if (import.meta.env.VITE_ENV === "development") console.error(err);
+             console.error(err);
           }
         }}
       >
@@ -411,9 +411,9 @@ const Profile = () => {
             span: 16,
           }}
           initialValues={{
-            name: user.name,
-            birthDate: processBirthDate(user.dateOfBirth),
-            phone: user.phone,
+            name: JSON.parse(localStorage.getItem("user")).name,
+            birthDate: processBirthDate(JSON.parse(localStorage.getItem("user")).date),
+            phone: JSON.parse(localStorage.getItem("user")).phone,
           }}
         >
           <Form.Item
