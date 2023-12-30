@@ -10,6 +10,7 @@ module.exports = {
         pathname: "**",
       },
     ],
+    unoptimized: true,
   },
   transpilePackages: ["protocol"],
 };
