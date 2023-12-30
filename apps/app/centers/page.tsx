@@ -1,6 +1,6 @@
-import CenterPage from "../../containers/Admin/Centers";
+import CenterPage from "../../containers/Admin/CentersPage";
 
-export default function RouteToHomePage() {
+export default function RouteToCenterPage() {
   return (
     <div>
         <CenterPage />

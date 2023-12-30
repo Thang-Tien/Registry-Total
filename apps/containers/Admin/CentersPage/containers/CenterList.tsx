@@ -138,7 +138,7 @@ const CenterList = (props) => {
         }}
         renderItem={(item) => (
           <List.Item
-            actions={[<Link href={`/centres/${item.id}`}>Xem chi tiết</Link>]}
+            actions={[<Link href={`/centers/${item.id}`}>Xem chi tiết</Link>]}
           >
             <List.Item.Meta
               avatar={<Avatar src={image.src} />}
