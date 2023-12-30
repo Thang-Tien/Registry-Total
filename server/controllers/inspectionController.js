@@ -167,6 +167,40 @@ exports.countInspectionEachCenterLastTwelveMonths = async (req, res) => {
         }
     );
 };
+
+// đếm số lượng đăng kiểm theo tháng của từng trung tâm
+exports.countInspectionEachCenterPerMonth = async (req, res) => {
+    const centreID = req.params.centre_id;
+    let queryString = utils.generateQueryStringWithDate(
+        req.query,
+        "inspection_date"
+    );
+    connection.query(
+        `SELECT
+					COUNT(*) AS count,
+ 					CONCAT( EXTRACT(MONTH FROM inspection_date),"/",EXTRACT(YEAR FROM inspection_date) ) as monthYear
+
+				FROM inspections
+  			Where ${queryString ? queryString : 1} AND centre_id = ?
+				GROUP BY EXTRACT(MONTH FROM inspection_date),EXTRACT(YEAR FROM inspection_date)
+				ORDER BY
+  					EXTRACT(YEAR FROM inspection_date) DESC, EXTRACT(MONTH FROM inspection_date) DESC;`,
+        [centreID],
+        (err, result, fields) => {
+            if (err) {
+                return res.status(500).json({
+                    status: "Failed",
+                    error: err,
+                });
+            } else {
+                return res.status(200).json({
+                    status: "Success",
+                    data: result,
+                });
+            }
+        }
+    );
+};
 // DONE nhưng không liên quan
 // đếm tổng số lượng đăng kiểm đã hết hạn của trung tâm mà staff đang làm việc
 exports.countTotalExpiredInspectionsOfEachCentre = async (req, res) => {

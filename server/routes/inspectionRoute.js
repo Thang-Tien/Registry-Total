@@ -26,6 +26,11 @@ router.get(
     "/stat/each_centre/count/last_twelve_months/:centre_id",
     inspectionController.countInspectionEachCenterLastTwelveMonths
 );
+
+router.get(
+    "/stat/each_centre/count/every_month/:centre_id",
+    inspectionController.countInspectionEachCenterPerMonth
+);
 // DONE nhưng không liên quan
 // đếm tổng số lượng đăng kiểm đã hết hạn của trung tâm mà staff đang làm việc
 router.get(

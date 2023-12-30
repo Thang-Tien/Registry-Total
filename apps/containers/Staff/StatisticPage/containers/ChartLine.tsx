@@ -11,7 +11,7 @@ const ChartLine: React.FC = () => {
     useEffect(() => {
         // Fetch data from the API
         fetch(
-            `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/stat/each_centre/count/last_twelve_months/${user.centreID}`
+            `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/stat/each_centre/count/every_month/${user.centreID}`
         )
             .then((response) => response.json())
             .then((result) => {
@@ -42,7 +42,7 @@ const ChartLine: React.FC = () => {
                     xField="monthYear"
                     yField="count"
                     height={250}
-                    xAxis={{ tickCount: 4 }}
+                    xAxis={{ tickCount: 5 }}
                     smooth={true}
                     meta={{
                         count: {
