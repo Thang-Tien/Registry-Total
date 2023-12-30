@@ -534,7 +534,6 @@ exports.getInspectionAndOwner = (req, res) => {
 };
 // DONE
 // Tạo đăng kiểm cho trung tâm mà staff đang làm việc
-//  specify = "carry_people$lte:9-personal+manufacture$lte:7~36~24"
 exports.createInspection = (req, res) => {
     const number_plate = req.body.number_plate;
     const wheel_formula = req.body.wheel_formula; // công thức bánh xe
@@ -575,38 +574,139 @@ exports.createInspection = (req, res) => {
                 });
             }
 
-            const first_time = countResult[0].count === 0 ? 1 : 0;
+            const first_time = countResult[0].count === 0 ? "true" : "false";
 
             connection.query(
-                `INSERT INTO inspections (inspection_id, inspection_number, inspection_date, car_id, user_id, centre_id, specify, first_time, expired_date)
-          SELECT
-            COALESCE(MAX(inspection_id), 0) + 1,
-            CONCAT(YEAR(CURDATE()), '-', LPAD(COALESCE(MAX(CAST(SUBSTRING(inspection_number, 6) AS UNSIGNED)), 0) + 1, 6, '0')),
-            ?,
-            (SELECT car_id FROM cars WHERE number_plate = ?),
-            ?, ?, ?, ?,
-            ?
-          FROM inspections`,
-                [
-                    inspection_date,
-                    number_plate,
-                    req.user.user_id,
-                    req.user.centre_id,
-                    "carry_people$lte:9-personal+manufacture$lte:7~36~24",
-                    first_time,
-                    expired_date,
-                ],
-                (insertErr, insertResult, insertFields) => {
-                    if (insertErr) {
+                `SELECT type, manufactured_year FROM cars WHERE  number_plate = ?`,
+                [number_plate],
+                (carInfoErr, carInfoResult, carInfoFields) => {
+                    let year = new Date().getFullYear();
+                    if (carInfoErr) {
                         return res.status(500).json({
                             status: "Failed",
-                            message: insertErr,
+                            message: carInfoErr,
                         });
                     }
+                    if (carInfoResult.length === 0) {
+                        return res.status(404).json({
+                            status: "Failed",
+                            message:
+                                "Car not found for the provided number_plate.",
+                        });
+                    }
+                    const type = carInfoResult[0].type;
+                    const manufactured_year =
+                        carInfoResult[0].manufactured_year;
 
-                    // Câu lệnh UPDATE
+                    //specify
+                    let speType;
+                    if (
+                        type === "Minivan" ||
+                        type === "Pickup truck" ||
+                        type === "Van"
+                    ) {
+                        speType = "truck_specializedCar";
+                    } else {
+                        speType = "carry_people";
+                    }
+                    let speCarry = "";
+                    if (speType === "carry_people") {
+                        speCarry = permissible_carry > 9 ? "$gt:9" : "$lte:9";
+                    }
+                    let spePurpose = "";
+                    if (speCarry === "$lte:9") {
+                        spePurpose = `-${purpose}`;
+                        console.log(spePurpose);
+                    }
+                    let speManufactureAndTimePeriod = "";
+                    if (speType === "carry_people") {
+                        if (speCarry === "$lte:9") {
+                            if (spePurpose === "-personal") {
+                                if (year - manufactured_year <= 7)
+                                    speManufactureAndTimePeriod =
+                                        "+manufacture$lte:7~36~24";
+                                else if (year - manufactured_year <= 20)
+                                    speManufactureAndTimePeriod =
+                                        "+manufacture$gt:7and$lte:20~12~12";
+                                else
+                                    speManufactureAndTimePeriod =
+                                        "+manufacture$gt:20~6~6";
+                            } else {
+                                if (recovered)
+                                    speManufactureAndTimePeriod =
+                                        "+recovered~12~6";
+                                else if (year - manufactured_year <= 5)
+                                    speManufactureAndTimePeriod =
+                                        "+manufacture$lte:5~24~12";
+                                else
+                                    speManufactureAndTimePeriod =
+                                        "+manufacture$gt:5~6~6";
+                            }
+                        } else {
+                            if (recovered)
+                                speManufactureAndTimePeriod = "+recovered~12~6";
+                            else if (year - manufactured_year <= 5)
+                                speManufactureAndTimePeriod =
+                                    "+manufacture$lte:5~24~12";
+                            else if (year - manufactured_year <= 14)
+                                speManufactureAndTimePeriod =
+                                    "+manufacture$gt:5and$lte:14~6~6";
+                            else
+                                speManufactureAndTimePeriod =
+                                    "+manufacture$gt:14~3~3";
+                        }
+                    } else {
+                        if (recovered)
+                            speManufactureAndTimePeriod = "+recovered~12~6";
+                        else if (year - manufactured_year <= 7)
+                            speManufactureAndTimePeriod =
+                                "+manufacture$lte:7~24~12";
+                        else if (year - manufactured_year <= 19)
+                            speManufactureAndTimePeriod =
+                                "+manufacture$gt:7and$lte:19~6~6";
+                        else
+                            speManufactureAndTimePeriod =
+                                "+manufacture$gt:19~3~3";
+                    }
+                    const specify = `${speType}${speCarry}${spePurpose}${speManufactureAndTimePeriod}`;
+                    //kthuc
                     connection.query(
-                        `UPDATE cars SET inspected = 1,
+                        `INSERT INTO inspections (inspection_id, inspection_number, inspection_date, car_id, user_id, centre_id, specify, first_time, expired_date)
+    SELECT
+        COALESCE(MAX(inspection_id), 0) + 1,
+        
+            CONCAT(
+                YEAR(CURDATE()),"-", 
+                LPAD(
+                    (SELECT COUNT(*)  FROM inspections WHERE YEAR(inspection_date) = YEAR(CURDATE())), 6, '0'
+                )
+            ),
+       
+        ?,
+        (SELECT car_id FROM cars WHERE number_plate = ?),
+        ?, ?, ?, ?,
+        ?
+    FROM inspections`,
+                        [
+                            inspection_date,
+                            number_plate,
+                            req.user.user_id,
+                            req.user.centre_id,
+                            specify,
+                            first_time,
+                            expired_date,
+                        ],
+                        (insertErr, insertResult, insertFields) => {
+                            if (insertErr) {
+                                return res.status(500).json({
+                                    status: "Failed",
+                                    message: insertErr,
+                                });
+                            }
+
+                            // Câu lệnh UPDATE
+                            connection.query(
+                                `UPDATE cars SET inspected = 1,
 						wheel_formula = ?,
 						wheel_tread = ?,
 					    overall_dimension = ?,
@@ -624,38 +724,43 @@ exports.createInspection = (req, res) => {
 						recovered = ?,
 						purpose = ?
 							WHERE number_plate = ?`,
-                        [
-                            wheel_formula,
-                            wheel_tread + " (mm)",
-                            overall_dimension + " (mm)",
-                            container_dimension + " (mm)",
-                            length_base + " (mm)",
-                            kerb_mass + " (kg)",
-                            designed_and_authorized_payload + " (kg)",
-                            designed_and_authorized_total_mass + " (kg)",
-                            designed_and_authorized_towed_mass + " (kg)",
-                            permissible_carry,
-                            engine_displacement + " (cm3)",
-                            maximum_output_to_rpm_ratio,
-                            fuel,
-                            number_of_tires + " tires, " + tire_size,
-                            recovered,
-                            purpose,
-                            number_plate,
-                        ],
-                        (updateErr, updateResult, updateFields) => {
-                            if (updateErr) {
-                                return res.status(500).json({
-                                    status: "Failed",
-                                    message: updateErr,
-                                });
-                            }
+                                [
+                                    wheel_formula,
+                                    wheel_tread + " (mm)",
+                                    overall_dimension + " (mm)",
+                                    container_dimension + " (mm)",
+                                    length_base + " (mm)",
+                                    kerb_mass + " (kg)",
+                                    designed_and_authorized_payload + " (kg)",
+                                    designed_and_authorized_total_mass +
+                                        " (kg)",
+                                    designed_and_authorized_towed_mass +
+                                        " (kg)",
+                                    permissible_carry,
+                                    engine_displacement + " (cm3)",
+                                    maximum_output_to_rpm_ratio,
+                                    fuel,
+                                    number_of_tires + " tires, " + tire_size,
+                                    recovered,
+                                    purpose,
+                                    number_plate,
+                                ],
+                                (updateErr, updateResult, updateFields) => {
+                                    if (updateErr) {
+                                        return res.status(500).json({
+                                            status: "Failed",
+                                            message: updateErr,
+                                        });
+                                    }
 
-                            return res.status(201).json({
-                                status: "Success",
-                                message: "Create inspection successfully",
-                                data: insertResult,
-                            });
+                                    return res.status(201).json({
+                                        status: "Success",
+                                        message:
+                                            "Create inspection successfully",
+                                        data: insertResult,
+                                    });
+                                }
+                            );
                         }
                     );
                 }
