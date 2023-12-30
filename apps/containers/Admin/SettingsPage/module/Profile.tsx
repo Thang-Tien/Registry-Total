@@ -97,13 +97,13 @@ const Profile = () => {
   const [me, setMe] = useState({
     name : '', address: '', phone: 0, email : '', dateOfBirth : '', role : '',ssn: '', centre_id: 0,
   });
-  
+  const df = { name: "Thiện pờ rồ", age: 18}
   useEffect( ()=> {console.log(me.centre_id)},[me])
   useEffect(() => {
     document.title = "Hồ sơ cá nhân";
 
     const fetchData = async () => {
-      const data = localStorage.getItem("data") === null ? JSON.stringify(user): localStorage.getItem("data");
+      const data = localStorage.getItem("data") === null ? JSON.stringify(df): localStorage.getItem("data");
       setMe(JSON.parse(data));
       try {
         const response = await fetch(

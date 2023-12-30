@@ -59,12 +59,9 @@ const LoginForm = (props: LoginFormProps) => {
       
       
       localStorage.setItem("accessToken", res.token);
-      localStorage.setItem("user", JSON.stringify(res.user[0]));
+      localStorage.setItem("data", JSON.stringify(res.user[0]));
       console.log(res.user[0]);
       setUser(res.user[0]);
-      console.log(res.user);
-      const usertest = localStorage.getItem("user");
-      
       
     if ( res.token) {
       router.push("/HomePage"); 
