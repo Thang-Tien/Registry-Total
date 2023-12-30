@@ -2,47 +2,28 @@
 
 import { Card } from "antd";
 import { Column, Line } from "@ant-design/plots";
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 const ChartLine: React.FC = () => {
-    const data = [
-        {
-            month: "1/2023",
-            value: 25,
-        },
-        {
-            month: "2/2023",
-            value: 12,
-        },
-        {
-            month: "3/2023",
-            value: 9,
-        },
-        {
-            month: "4/2023",
-            value: 15,
-        },
-        {
-            month: "5/2023",
-            value: 8,
-        },
-        {
-            month: "6/2023",
-            value: 21,
-        },
-        {
-            month: "7/2023",
-            value: 7,
-        },
-        {
-            month: "8/2023",
-            value: 17,
-        },
-        {
-            month: "9/2023",
-            value: 13,
-        },
-    ];
+    const user = { centreID: 1, userID: 19 };
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+        // Fetch data from the API
+        fetch(
+            `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/stat/each_centre/count/last_twelve_months/${user.centreID}`
+        )
+            .then((response) => response.json())
+            .then((result) => {
+                if (result.status === "Success") {
+                    const reversedData = result.data.reverse();
+                    setData(reversedData);
+                } else {
+                    console.error("Failed to fetch data from the API");
+                }
+            })
+            .catch((error) => console.error("Error fetching data:", error));
+    }, [user.centreID]); // user.centreID là biến phụ thuộc, thay đổi biến này thì chạy lại useEffect để fetch API
 
     return (
         <div style={{ width: "calc((100vw - 256px - 64px - 20px) /3 *2)" }}>
@@ -58,16 +39,16 @@ const ChartLine: React.FC = () => {
             >
                 <Line
                     data={data}
-                    xField="month"
-                    yField="value"
+                    xField="monthYear"
+                    yField="count"
                     height={250}
-                    xAxis={{ tickCount: 5 }}
+                    xAxis={{ tickCount: 4 }}
                     smooth={true}
                     meta={{
-                        value: {
+                        count: {
                             alias: "Số lượng",
                         },
-                        month: {
+                        monthYear: {
                             alias: "Tháng",
                         },
                     }}

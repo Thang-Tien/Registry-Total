@@ -1,101 +1,10 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { Card, Statistic, Table, Input, Space, Button } from "antd";
 import { DoubleRightOutlined, SearchOutlined } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
-
-const dataSource = [
-    {
-        key: "1",
-        inspectionNumber: "2023-003523",
-        plateNumber: "31H6-282.35",
-        inspectionDate: "13/12/2023",
-        expiredDate: "13/06/2024",
-        action: "",
-    },
-    {
-        key: "2",
-        inspectionNumber: "2023-003523",
-        plateNumber: "31H6-282.35",
-        inspectionDate: "13/12/2023",
-        expiredDate: "13/06/2024",
-        action: "",
-    },
-    {
-        key: "3",
-        inspectionNumber: "2023-003523",
-        plateNumber: "31H6-282.35",
-        inspectionDate: "13/12/2023",
-        expiredDate: "13/06/2024",
-        action: "",
-    },
-    {
-        key: "4",
-        inspectionNumber: "2023-003523",
-        plateNumber: "31H6-282.35",
-        inspectionDate: "13/12/2023",
-        expiredDate: "13/06/2024",
-        action: "",
-    },
-    {
-        key: "5",
-        inspectionNumber: "2023-003523",
-        plateNumber: "31H6-282.35",
-        inspectionDate: "13/12/2023",
-        expiredDate: "13/06/2024",
-        action: "",
-    },
-    {
-        key: "6",
-        inspectionNumber: "2023-003523",
-        plateNumber: "31H6-282.35",
-        inspectionDate: "13/12/2023",
-        expiredDate: "13/06/2024",
-        action: "",
-    },
-    {
-        key: "7",
-        inspectionNumber: "2023-003523",
-        plateNumber: "31H6-282.35",
-        inspectionDate: "13/12/2023",
-        expiredDate: "13/06/2024",
-        action: "",
-    },
-    {
-        key: "8",
-        inspectionNumber: "2023-003523",
-        plateNumber: "31H6-282.35",
-        inspectionDate: "13/12/2023",
-        expiredDate: "13/06/2024",
-        action: "",
-    },
-    {
-        key: "9",
-        inspectionNumber: "2023-003523",
-        plateNumber: "31H6-282.35",
-        inspectionDate: "13/12/2023",
-        expiredDate: "13/06/2024",
-        action: "",
-    },
-    {
-        key: "10",
-        inspectionNumber: "2023-003524",
-        plateNumber: "31H6-282.35",
-        inspectionDate: "13/12/2023",
-        expiredDate: "13/06/2024",
-        action: "",
-    },
-    {
-        key: "11",
-        inspectionNumber: "2023-003522",
-        plateNumber: "31H6-282.35",
-        inspectionDate: "13/12/2023",
-        expiredDate: "13/06/2024",
-        action: "",
-    },
-];
 
 const InspectionTable: React.FC = () => {
     // const [tableParams, setTableParams] = useState<TableParams>({
@@ -104,10 +13,70 @@ const InspectionTable: React.FC = () => {
     //         pageSize: 10,
     //     },
     // });
-
+    const user = { centreID: 1, userID: 19 };
+    const [dataSource, setDataSource] = useState([]);
+    const [inspectionCount, setInspectionCount] = useState<number | null>(null);
     const [searchText, setSearchText] = useState("");
     const [searchedColumn, setSearchedColumn] = useState("");
     const searchInput = useRef(null);
+
+    useEffect(() => {
+        const fetchCountAll = async () => {
+            try {
+                const response = await fetch(
+                    `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/stat/each_centre/count/${user.centreID}`
+                );
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Assuming the API response contains the count in the 'total' field
+                    setInspectionCount(data.data[0].total);
+                } else {
+                    console.error("Failed to fetch data from API:", data.error);
+                }
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+
+        const fetchDataSource = async () => {
+            try {
+                const response = await fetch(
+                    `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/${user.centreID}`
+                );
+
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+
+                const data = await response.json();
+
+                setDataSource(
+                    data.data.map((item, index) => ({
+                        key: String(index + 1),
+                        inspection_number: item.inspection_number,
+                        number_plate: item.number_plate,
+                        inspection_date: new Date(
+                            item.inspection_date
+                        ).toLocaleDateString("en-GB"), // Use 'en-GB' locale for dd/mm/yyyy format
+                        expired_date: new Date(
+                            item.expired_date
+                        ).toLocaleDateString("en-GB"), // Use 'en-GB' locale for dd/mm/yyyy format
+                        action: <DoubleRightOutlined />,
+                    }))
+                );
+
+                console.log("Updated data source:", dataSource);
+            } catch (error) {
+                console.error(
+                    "There has been a problem with your fetch operation:",
+                    error
+                );
+            }
+        };
+        fetchCountAll();
+        fetchDataSource();
+    }, [user.centreID]);
 
     const handleSearch = (selectedKeys, confirm, dataIndex) => {
         confirm();
@@ -143,7 +112,7 @@ const InspectionTable: React.FC = () => {
                 <Input
                     ref={searchInput}
                     placeholder={`Tìm kiếm ${
-                        dataIndex === "inspectionNumber"
+                        dataIndex === "inspection_number"
                             ? "số đăng kiểm"
                             : "biển số xe "
                     }`}
@@ -234,36 +203,36 @@ const InspectionTable: React.FC = () => {
     const columns = [
         {
             title: "Số đăng kiểm",
-            dataIndex: "inspectionNumber",
-            key: "inspectionNumber",
+            dataIndex: "inspection_number",
+            key: "inspection_number",
             align: "center",
             sorter: (a, b) =>
-                a.inspectionNumber.localeCompare(b.inspectionNumber),
+                a.inspection_number.localeCompare(b.inspection_number),
             sortDirections: ["ascend", "descend"],
             showSorterTooltip: false,
-            ...getColumnSearchProps("inspectionNumber"),
+            ...getColumnSearchProps("inspection_number"),
         },
         {
             title: "Biển số xe",
-            dataIndex: "plateNumber",
-            key: "plateNumber",
+            dataIndex: "number_plate",
+            key: "number_plate",
             align: "center",
             sorter: (a, b) =>
-                a.inspectionNumber.localeCompare(b.inspectionNumber),
+                a.inspection_number.localeCompare(b.inspection_number),
             sortDirections: ["ascend", "descend"],
             showSorterTooltip: false,
-            ...getColumnSearchProps("plateNumber"),
+            ...getColumnSearchProps("number_plate"),
         },
         {
             title: "Ngày đăng kiểm",
-            dataIndex: "inspectionDate",
-            key: "inspectionDate",
+            dataIndex: "inspection_date",
+            key: "inspection_date",
             align: "center",
         },
         {
             title: "Ngày hết hạn",
-            dataIndex: "expiredDate",
-            key: "expiredDate",
+            dataIndex: "expired_date",
+            key: "expired_date",
             align: "center",
         },
         {
@@ -292,7 +261,7 @@ const InspectionTable: React.FC = () => {
                         padding: "0 10px",
                     }}
                 >
-                    Tổng số xe đã đăng kiểm: 1000
+                    Tổng số xe đã đăng kiểm: {inspectionCount || 0}
                 </div>
             )}
             dataSource={dataSource}

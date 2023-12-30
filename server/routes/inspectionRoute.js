@@ -64,6 +64,9 @@ router.get("/:centre_id", inspectionController.getInspection);
 
 // đưa ra 5 đăng kiểm gần nhất của trung tâm mà staff đang làm việc
 router.get("/recently/:centre_id", inspectionController.getRecentlyInspection);
+
+// đưa ra thông tin đăng kiểm của người dùng
+router.get("/mine/:user_id", inspectionController.getMineInspection);
 // đưa ra thông tin đăng kiểm của trung tâm mà staff đang làm việc bao gồm thông tin chi tiết
 // tất cả thông tin chi tiết ( nối ba bảng gồm: inspections, cars, car_owners)
 router.get(

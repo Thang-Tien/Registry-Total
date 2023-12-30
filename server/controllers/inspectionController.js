@@ -317,8 +317,14 @@ exports.getInspection = (req, res) => {
     const centreID = req.params.centre_id;
     let queryString = utils.generateQueryString(req.query);
     connection.query(
-        `SELECT *
-								FROM inspections 
+        `SELECT i.inspection_id, 
+								c.car_id, 
+								i.inspection_number, 
+								c.number_plate,
+								i.inspection_date,
+								i.expired_date
+								FROM inspections AS i
+                                INNER JOIN cars c ON c.car_id = i.car_id
                     WHERE ${queryString ? queryString : 1} AND centre_id = ?
 				ORDER BY
   					EXTRACT(YEAR FROM inspection_date) DESC, 
@@ -380,6 +386,45 @@ exports.getRecentlyInspection = (req, res) => {
                     message: `Can't find inspection with ${utils.generateErrorQueryValue(
                         req.query
                     )}`,
+                });
+            } else {
+                return res.status(200).json({
+                    status: "Success",
+                    data: result,
+                });
+            }
+        }
+    );
+};
+
+// Get inspection by user_id (đăng kiểm của tôi)
+
+exports.getMineInspection = async (req, res) => {
+    const userID = req.params.user_id;
+    let queryString = utils.generateQueryStringWithDate(
+        req.query,
+        "inspection_date"
+    );
+    connection.query(
+        `SELECT i.inspection_id, 
+			    c.car_id, 
+				i.inspection_number, 
+			    c.number_plate,
+				i.inspection_date,
+				i.expired_date 
+		FROM inspections AS i
+			INNER JOIN cars c ON c.car_id = i.car_id 
+        WHERE ${queryString ? queryString : 1} AND i.user_id = ?
+        ORDER BY
+  			EXTRACT(YEAR FROM inspection_date) DESC, 
+			EXTRACT(MONTH FROM inspection_date) DESC,
+			EXTRACT(DAY FROM inspection_date) DESC`,
+        [userID],
+        (err, result, fields) => {
+            if (err) {
+                return res.status(500).json({
+                    status: "Failed",
+                    error: err,
                 });
             } else {
                 return res.status(200).json({
