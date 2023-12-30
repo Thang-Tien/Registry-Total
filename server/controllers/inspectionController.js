@@ -305,7 +305,9 @@ exports.getInspection = (req, res) => {
 	let queryString = utils.generateQueryString(req.query);
 	connection.query(
 		`SELECT * FROM inspections 
-                    WHERE ${queryString ? queryString : 1} AND centre_id = ?`,
+                    WHERE ${queryString ? queryString : 1} AND centre_id = ?
+					ORDER BY
+  			EXTRACT(YEAR FROM inspection_date) DESC, EXTRACT(MONTH FROM inspection_date) DESC,EXTRACT(DAY FROM inspection_date) DESC`,
 		[req.user.centre_id],
 		(err, result, fields) => {
 			if (err) {
