@@ -1,60 +1,30 @@
 "use client";
 
 import { Card } from "antd";
-import { Column, Line } from "@ant-design/plots";
-import React from "react";
+import { Column } from "@ant-design/plots";
+import React, { useEffect, useState } from "react";
 
 const ChartLine: React.FC = () => {
-    const data = [
-        {
-            count: 897,
-            monthYear: "8/2022",
-        },
-        {
-            count: 942,
-            monthYear: "9/2022",
-        },
-        {
-            count: 1118,
-            monthYear: "10/2022",
-        },
-        {
-            count: 1266,
-            monthYear: "11/2022",
-        },
-        {
-            count: 1605,
-            monthYear: "12/2022",
-        },
-        {
-            count: 743,
-            monthYear: "1/2023",
-        },
-        {
-            count: 862,
-            monthYear: "2/2023",
-        },
-        {
-            count: 737,
-            monthYear: "3/2023",
-        },
-        {
-            count: 796,
-            monthYear: "4/2023",
-        },
-        {
-            count: 371,
-            monthYear: "5/2023",
-        },
-        {
-            count: 13,
-            monthYear: "6/2023",
-        },
-        {
-            count: 1,
-            monthYear: "9/2023",
-        },
-    ];
+    const user = { centreID: 1, userID: 19 };
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+        // Fetch data from the API
+        fetch(
+            `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/stat/each_centre/count/last_twelve_months/${user.centreID}`
+        )
+            .then((response) => response.json())
+            .then((result) => {
+                if (result.status === "Success") {
+                    const reversedData = result.data.reverse();
+                    setData(reversedData);
+                } else {
+                    console.error("Failed to fetch data from the API");
+                }
+            })
+            .catch((error) => console.error("Error fetching data:", error));
+    }, [user.centreID]); // user.centreID là biến phụ thuộc, thay đổi biến này thì chạy lại useEffect để fetch API
+
     return (
         <div style={{ width: "calc((100vw - 256px - 64px - 20px) /3 *2)" }}>
             <Card

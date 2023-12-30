@@ -1,123 +1,120 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Card, Statistic, Table } from "antd";
-import imge from "../../../../public/image/check-2.svg";
-import Image from "next/image";
 import { DoubleRightOutlined, ForwardFilled } from "@ant-design/icons";
 import Link from "next/link";
 
-const dataSource = [
-    {
-        key: "1",
-        inspectionNumber: "2023-003523",
-        plateNumber: "31H6-282.35",
-        inspectionDate: "13/12/2023",
-        expiredDate: "13/06/2024",
-        action: "",
-    },
-    {
-        key: "2",
-        inspectionNumber: "2023-003523",
-        plateNumber: "31H6-282.35",
-        inspectionDate: "13/12/2023",
-        expiredDate: "13/06/2024",
-        action: "",
-    },
-    {
-        key: "3",
-        inspectionNumber: "2023-003523",
-        plateNumber: "31H6-282.35",
-        inspectionDate: "13/12/2023",
-        expiredDate: "13/06/2024",
-        action: "",
-    },
-    {
-        key: "4",
-        inspectionNumber: "2023-003523",
-        plateNumber: "31H6-282.35",
-        inspectionDate: "13/12/2023",
-        expiredDate: "13/06/2024",
-        action: "",
-    },
-    {
-        key: "5",
-        inspectionNumber: "2023-003523",
-        plateNumber: "31H6-282.35",
-        inspectionDate: "13/12/2023",
-        expiredDate: "13/06/2024",
-        action: "",
-    },
-];
+const RecentInspection: React.FC = () => {
+    const user = { centreID: 1, userID: 19 };
+    const columns = [
+        {
+            title: "Số đăng kiểm",
+            dataIndex: "inspection_number",
+            key: "inspection_number",
+            align: "center",
+        },
+        {
+            title: "Biển số xe",
+            dataIndex: "number_plate",
+            key: "number_plate",
+            align: "center",
+        },
+        {
+            title: "Ngày đăng kiểm",
+            dataIndex: "inspection_date",
+            key: "inspection_date",
+            align: "center",
+        },
+        {
+            title: "Ngày hết hạn",
+            dataIndex: "expired_date",
+            key: "expired_date",
+            align: "center",
+        },
+        {
+            title: "",
+            dataIndex: "action",
+            key: "action",
+            align: "center",
+        },
+    ];
+    const [dataSource, setDataSource] = useState([]);
 
-const columns = [
-    {
-        title: "Số đăng kiểm",
-        dataIndex: "inspectionNumber",
-        key: "inspectionNumber",
-        align: "center",
-    },
-    {
-        title: "Biển số xe",
-        dataIndex: "plateNumber",
-        key: "plateNumber",
-        align: "center",
-    },
-    {
-        title: "Ngày đăng kiểm",
-        dataIndex: "inspectionDate",
-        key: "inspectionDate",
-        align: "center",
-    },
-    {
-        title: "Ngày hết hạn",
-        dataIndex: "expiredDate",
-        key: "expiredDate",
-        align: "center",
-    },
-    {
-        title: "",
-        dataIndex: "action",
-        key: "action",
-        align: "center",
-        render: () => <DoubleRightOutlined />,
-    },
-];
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch(
+                    `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/recently/${user.centreID}`
+                );
 
-const RecentInspection: React.FC = () => (
-    <Table
-        title={() => (
-            <div
-                style={{
-                    fontSize: "16px",
-                    fontWeight: "bold",
-                    padding: "0 10px",
-                }}
-            >
-                Đăng kiểm gần đây
-            </div>
-        )}
-        footer={() => (
-            <div
-                style={{
-                    fontSize: "16px",
-                    textAlign: "center",
-                    fontWeight: "500",
-                    color: "blue",
-                    // padding: "0 10px",
-                }}
-            >
-                <a href="/inspection/all" style={{ alignItems: "center" }}>
-                    Xem thêm
-                    <ForwardFilled style={{ paddingLeft: 5 }} />
-                </a>
-            </div>
-        )}
-        dataSource={dataSource}
-        columns={columns}
-        pagination={false}
-        scroll={{ x: "calc(100vw - 256px - 72px)" }} // Adjust the value as needed
-    />
-);
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+
+                const data = await response.json();
+
+                setDataSource(
+                    data.data.map((item, index) => ({
+                        key: String(index + 1),
+                        inspection_number: item.inspection_number,
+                        number_plate: item.number_plate,
+                        inspection_date: new Date(
+                            item.inspection_date
+                        ).toLocaleDateString("en-GB"), // Use 'en-GB' locale for dd/mm/yyyy format
+                        expired_date: new Date(
+                            item.expired_date
+                        ).toLocaleDateString("en-GB"), // Use 'en-GB' locale for dd/mm/yyyy format
+                        action: <DoubleRightOutlined />,
+                    }))
+                );
+
+                console.log("Updated dataSource:", dataSource);
+            } catch (error) {
+                console.error("Error fetching data:", error.message);
+            }
+        };
+
+        fetchData();
+    }, [user.centreID]); // centreID: dependency array to run the effect only once on mount
+
+    return (
+        <Table
+            title={() => (
+                <div
+                    style={{
+                        fontSize: "16px",
+                        fontWeight: "bold",
+                        padding: "0 10px",
+                    }}
+                >
+                    Đăng kiểm gần đây
+                </div>
+            )}
+            footer={() => (
+                <div
+                    style={{
+                        fontSize: "16px",
+                        textAlign: "center",
+                        fontWeight: "500",
+                        color: "blue",
+                        // padding: "0 10px",
+                    }}
+                >
+                    <Link href="/inspection/all">
+                        <div style={{ alignItems: "center" }}>
+                            Xem thêm
+                            <ForwardFilled style={{ paddingLeft: 5 }} />
+                        </div>
+                    </Link>
+                </div>
+            )}
+            dataSource={dataSource}
+            columns={columns}
+            pagination={false}
+            scroll={{ x: "calc(100vw - 256px - 72px)" }}
+        />
+    );
+};
 
 export default RecentInspection;
