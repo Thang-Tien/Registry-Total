@@ -506,14 +506,26 @@ exports.createInspection = (req, res) => {
 					//kthuc
 					connection.query(
 						`INSERT INTO inspections (inspection_id, inspection_number, inspection_date, car_id, user_id, centre_id, specify, first_time, expired_date)
-          SELECT
-            COALESCE(MAX(inspection_id), 0) + 1,
-            CONCAT(YEAR(CURDATE()), '-', LPAD(COALESCE(MAX(CAST(SUBSTRING(inspection_number, 6) AS UNSIGNED)), 0) + 1, 6, '0')),
-            ?,
-            (SELECT car_id FROM cars WHERE number_plate = ?),
-            ?, ?, ?, ?,
-            ?
-          FROM inspections`,
+    SELECT
+        COALESCE(MAX(inspection_id), 0) + 1,
+        CASE 
+            WHEN (
+                SELECT COUNT(*) 
+                FROM inspections 
+                WHERE YEAR(inspection_date) = YEAR(CURDATE())
+            ) = 0 THEN CONCAT(YEAR(CURDATE()), '-000000')
+            ELSE CONCAT(
+                YEAR(CURDATE()),"-", 
+                LPAD(
+                    (SELECT COUNT(*)  FROM inspections WHERE YEAR(inspection_date) = YEAR(CURDATE())), 6, '0'
+                )
+            )
+        END,
+        ?,
+        (SELECT car_id FROM cars WHERE number_plate = ?),
+        ?, ?, ?, ?,
+        ?
+    FROM inspections`,
 						[
 							inspection_date,
 							number_plate,
