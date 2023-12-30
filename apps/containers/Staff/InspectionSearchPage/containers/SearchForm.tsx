@@ -23,7 +23,7 @@ const SearchForm: React.FC = () => {
 
                 // Extracting relevant information and updating the options state
                 const updatedOptions = data.data.map((item) => ({
-                    key: item.inspection_id,
+                    inspection_id: item.inspection_id,
                     value: item.inspection_number,
                     name: item.name,
                 }));
@@ -122,7 +122,9 @@ const SearchForm: React.FC = () => {
                     renderItem={(item) => (
                         <List.Item
                             actions={[
-                                <a href={`/inspection/id/`}>Xem chi tiết</a>,
+                                <a href={`/inspection/${item.inspection_id}`}>
+                                    Xem chi tiết
+                                </a>,
                             ]}
                         >
                             <List.Item.Meta
