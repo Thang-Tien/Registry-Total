@@ -535,6 +535,8 @@ exports.getInspectionAndOwner = (req, res) => {
 // DONE
 // Tạo đăng kiểm cho trung tâm mà staff đang làm việc
 exports.createInspection = (req, res) => {
+    const userID = req.body.userID; // You should include userID in the request body
+    const centreID = req.body.centreID; // You should include centreID in the request body
     const number_plate = req.body.number_plate;
     const wheel_formula = req.body.wheel_formula; // công thức bánh xe
     const wheel_tread = req.body.wheel_tread; // vết bánh xe
@@ -690,8 +692,8 @@ exports.createInspection = (req, res) => {
                         [
                             inspection_date,
                             number_plate,
-                            req.user.user_id,
-                            req.user.centre_id,
+                            userID,
+                            centreID,
                             specify,
                             first_time,
                             expired_date,

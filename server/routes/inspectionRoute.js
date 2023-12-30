@@ -85,10 +85,6 @@ router.get(
     inspectionController.getInspectionAndOwner
 );
 // Tạo đăng kiểm cho trung tâm mà staff đang làm việc
-router.post(
-    "/createInspection/",
-    authController.authenticateToken,
-    inspectionController.createInspection
-);
+router.post("/createInspection/", inspectionController.createInspection);
 
 module.exports = router;

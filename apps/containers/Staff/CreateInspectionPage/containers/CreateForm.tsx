@@ -15,7 +15,7 @@ import {
     Checkbox,
     Result,
 } from "antd";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import img from "./../../../../public/image/search-2.svg";
 import Image from "next/image";
@@ -28,10 +28,134 @@ import {
 import Link from "next/link";
 
 const CreateForm: React.FC = () => {
+    const user = { centreID: 1, userID: 19 };
     const [current, setCurrent] = useState(0); // current step
     const [error, setError] = useState(false);
     const [found, setFound] = useState(false); // data found or not
     const [isOpen, setIsOpen] = useState(false); // modal open or not
+    const [options, setOptions] = useState([]);
+    const [postData, setPostData] = useState({});
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch(
+                    `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/cars/number_plate`
+                );
+                const data = await response.json();
+
+                // Extracting relevant information and updating the options state
+                const updatedOptions = data.data.map((item) => ({
+                    value: item.number_plate,
+                }));
+
+                setOptions(updatedOptions);
+
+                console.log(updatedOptions);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+        fetchData();
+    }, []);
+
+    const inputItems = [
+        {
+            label: "Công thức bánh xe",
+            name: "wheel_formula",
+            placeholder: "VD: 6x6",
+        },
+        {
+            type: "number",
+            label: "Vết bánh xe",
+            name: "wheel_tread",
+            addonAfter: "mm",
+        },
+        {
+            label: "Kích thước bao",
+            name: "overall_dimension",
+            addonAfter: "mm",
+            placeholder: "VD: 4288 x 1535 x 1485",
+        },
+        {
+            label: "Kích thước lòng thùng xe",
+            name: "container_dimension",
+            addonAfter: "mm",
+            placeholder: "VD: 2495 x 1423 x 1110",
+        },
+        {
+            type: "number",
+            label: "Chiều dài cơ sở",
+            name: "length_base",
+            addonAfter: "mm",
+        },
+        {
+            type: "number",
+            label: "Khối lượng bản thân",
+            name: "kerb_mass",
+            addonAfter: "kg",
+        },
+        {
+            label: "Khối lượng hàng CC theo TK/CP TGGT",
+            name: "designed_and_authorized_payload",
+            addonAfter: "kg",
+            placeholder: "VD: 531/700",
+        },
+        {
+            label: "Khối lượng toàn bộ theo TK/CP TGGT",
+            name: "designed_and_authorized_total_mass",
+            addonAfter: "kg",
+            placeholder: "VD: 2964/2914",
+        },
+        {
+            label: "Khối lượng kéo theo TK/CP TGGT",
+            name: "designed_and_authorized_towed_mass",
+            addonAfter: "kg",
+            placeholder: "VD: 1899/1679",
+        },
+        {
+            type: "number",
+            label: "Số lượng người cho phép chở",
+            name: "permissible_carry",
+        },
+        {
+            type: "number",
+            label: "Thể tích làm việc của động cơ",
+            name: "engine_displacement",
+            addonAfter: (
+                <span>
+                    cm<sup>3</sup>
+                </span>
+            ),
+        },
+        {
+            label: "Công suất lớn nhất/tốc độ quay",
+            name: "maximum_output_to_rpm_ratio",
+            placeholder: "VD: 130kW/6333vph",
+        },
+        { label: "Loại nhiên liệu", name: "fuel" },
+        {
+            type: "number",
+            label: "Số lượng lốp",
+            name: "number_of_tires",
+            addonAfter: "lốp",
+        },
+        {
+            label: "Cỡ lốp/trục",
+            name: "tire_size",
+            placeholder: "VD: 225/65 R17",
+        },
+        {
+            type: "checkbox",
+            label: "Kinh doanh vận tải",
+            name: "purpose",
+        },
+        {
+            type: "checkbox",
+            label: "Cải tạo",
+            name: "recovered",
+        },
+    ];
     const stepsData = [
         {
             key: 0,
@@ -91,112 +215,57 @@ const CreateForm: React.FC = () => {
         );
     };
 
-    const onFinish = (values) => {
+    const onFinish = async (values) => {
+        // Set checkbox values to 0 if they are undefined
+        const updatedValues = {
+            ...values,
+            purpose: values.purpose ? "business" : "personal",
+            recovered: values.recovered ? "1" : "0",
+        };
+
+        // Add attributes from the user object to the postData
+        const updatedPostData = {
+            ...postData,
+            ...updatedValues,
+            centreID: user.centreID,
+            userID: user.userID,
+        };
+
+        // Update the state of postData
+        setPostData(updatedPostData);
+
         // Handle the form submission here
-        console.log("Received values:", values);
-        // You can perform any necessary actions with the form data
-        nextStep();
+        console.log("Received values:", updatedValues);
+        console.log("Posting data:", updatedPostData);
+
+        try {
+            // Make the API call
+            const response = await fetch(
+                `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/createInspection`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(updatedPostData),
+                }
+            );
+
+            if (response.ok) {
+                console.log("Data posted successfully");
+                // You can do something after successful posting
+                setPostData({});
+                nextStep();
+            } else {
+                console.error("Failed to post data");
+                // Handle the error as needed
+            }
+        } catch (error) {
+            console.error("Error during API call:", error);
+            // Handle the error as needed
+        }
     };
 
-    const numberPlateData = ["29A-123.45", "29A-123.46", "29A-123.47"];
-
-    const inputItems = [
-        {
-            label: "Công thức bánh xe",
-            name: "wheelFormula",
-            placeholder: "VD: 6x6",
-        },
-        {
-            type: "number",
-            label: "Vết bánh xe",
-            name: "wheelTread",
-            addonAfter: "mm",
-        },
-        {
-            label: "Kích thước bao",
-            name: "overallDimension",
-            addonAfter: "mm",
-            placeholder: "VD: 4288 x 1535 x 1485",
-        },
-        {
-            label: "Kích thước lòng thùng xe",
-            name: "containerDimension",
-            addonAfter: "mm",
-            placeholder: "VD: 2495 x 1423 x 1110",
-        },
-        {
-            type: "number",
-            label: "Chiều dài cơ sở",
-            name: "lengthBase",
-            addonAfter: "mm",
-        },
-        {
-            type: "number",
-            label: "Khối lượng bản thân",
-            name: "kerbMass",
-            addonAfter: "kg",
-        },
-        {
-            label: "Khối lượng hàng CC theo TK/CP TGGT",
-            name: "designedAndAuthorizedPayload",
-            addonAfter: "kg",
-            placeholder: "VD: 531/700",
-        },
-        {
-            label: "Khối lượng toàn bộ theo TK/CP TGGT",
-            name: "designedAndAuthorizedTotalMass",
-            addonAfter: "kg",
-            placeholder: "VD: 2964/2914",
-        },
-        {
-            label: "Khối lượng kéo theo TK/CP TGGT",
-            name: "designedAndAuthorizedTowedMass",
-            addonAfter: "kg",
-            placeholder: "VD: 1899/1679",
-        },
-        {
-            type: "number",
-            label: "Số lượng người cho phép chở",
-            name: "permissibleCarry",
-        },
-        {
-            type: "number",
-            label: "Thể tích làm việc của động cơ",
-            name: "engineDisplacement",
-            addonAfter: (
-                <span>
-                    cm<sup>3</sup>
-                </span>
-            ),
-        },
-        {
-            label: "Công suất lớn nhất/tốc độ quay",
-            name: "maximumOutputToRpmRatio",
-            placeholder: "VD: 130kW/6333vph",
-        },
-        { label: "Loại nhiên liệu", name: "fuel" },
-        {
-            type: "number",
-            label: "Số lượng lốp",
-            name: "numberOfTires",
-            addonAfter: "lốp",
-        },
-        {
-            label: "Cỡ lốp/trục",
-            name: "tireSize",
-            placeholder: "VD: 225/65 R17",
-        },
-        {
-            type: "checkbox",
-            label: "Kinh doanh vận tải",
-            name: "business",
-        },
-        {
-            type: "checkbox",
-            label: "Cải tạo",
-            name: "recovered",
-        },
-    ];
     return (
         <div style={{ display: "flex", flexDirection: "column" }}>
             <Steps
@@ -228,12 +297,26 @@ const CreateForm: React.FC = () => {
                             setFound(false);
                             setError(false);
                         }}
-                        // Temp onSearch based on the sample data
                         onSearch={(value) => {
                             setError(false);
-                            // Value is the input value
-                            const exactMatch = numberPlateData.includes(value);
+
+                            // Trim the entered value to remove leading and trailing spaces
+                            const trimmedValue = value.trim();
+
+                            // Check for an exact case-sensitive match in the options array
+                            const exactMatch = options.some(
+                                (option) => option.value === trimmedValue
+                            );
+
                             setFound(exactMatch);
+                            if (exactMatch) {
+                                setPostData({
+                                    ...postData,
+                                    number_plate: trimmedValue,
+                                });
+                                console.log(postData);
+                            }
+
                             if (!exactMatch) {
                                 setError(true);
                             }
@@ -347,7 +430,13 @@ const CreateForm: React.FC = () => {
                     title="Đăng kiểm cho phương tiện thành công"
                     extra={
                         <Space size="large">
-                            <Button size="large" onClick={() => setCurrent(0)}>
+                            <Button
+                                size="large"
+                                onClick={() => {
+                                    setCurrent(0);
+                                    console.log(postData);
+                                }}
+                            >
                                 Quay về
                             </Button>
                             <Link href="/inspection/id">
