@@ -18,7 +18,7 @@ const CenterCreate = (props) => {
       />
       <Button.Float
         onClick={() => setOpenModal(true)}
-        style={{ border: "1px dashed", borderRadius: "20px", height: "40px" }}
+        style={{ border: "1px dashed", borderRadius: "20px", height: "30px" }}
       >
         <Flex.Row alignItems="center" gap="6px">
           <IoAddCircleOutline />

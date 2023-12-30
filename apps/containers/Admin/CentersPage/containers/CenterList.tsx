@@ -1,5 +1,5 @@
-import { Avatar, List, Row, Col, Select } from "antd";
-import { useEffect, useState } from "react";
+import { Avatar, List, Select } from "antd";
+import { useState } from "react";
 import image from "../../../../public/image/centre.png";
 import Link from "next/link";
 import Flex from "@/modules/ui/components/Flex";

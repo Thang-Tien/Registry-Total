@@ -2,7 +2,7 @@ import cx from "classnames";
 import styles from "./index.module.scss";
 import Flex from "@/modules/ui/components/Flex";
 import NavBar from "../NavBar";
-import All from "./containers/All";
+import Total from "./containers/Total";
 import ThisYear from "./containers/ThisYear";
 import ThisMonth from "./containers/ThisMonth";
 import Centers from "./containers/Centers";
@@ -34,7 +34,7 @@ export default function HomePage({ className, style }: Props) {
         >
           <Flex.Col gap={"20px"} style={{ padding: "24px 32px" }}>
             <Flex.Row gap={"20px"}>
-              <All />
+              <Total />
               <ThisYear />
               <ThisMonth />
               <Centers />
