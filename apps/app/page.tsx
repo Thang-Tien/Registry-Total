@@ -7,8 +7,8 @@
 
   export default function RouteToHomePage() {
     return <div>
-      <SettingsPage mode = "profile"/>
-      {/* <AuthenticationPage/> */}
+      {/* <SettingsPage mode = "profile"/> */}
+      <AuthenticationPage/>
       {/* <HomePage/> */}
       </div>
   }

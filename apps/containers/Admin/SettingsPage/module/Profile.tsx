@@ -92,22 +92,24 @@ const Profile = () => {
   const [submitting, setSubmitting] = useState(false);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState({
-    name : '', address: '', phone: 0, email : '', dateOfBirth : ''
+    name: '', address: '', phone: 0, email: '', date_of_birth: ''
   });
   const [me, setMe] = useState({
-    name : '', address: '', phone: 0, email : '', dateOfBirth : '', role : '',ssn: '', centre_id: 0,
+    name: '', address: '', phone: 0, email: '', date_of_birth: '', role: '', ssn: '', centre_id: 0,
   });
-  const df = { name: "Thiện pờ rồ", age: 18}
-  useEffect( ()=> {console.log(me.centre_id)},[me])
+  const df = { name: "Thiện pờ rồ", age: 18 }
+  useEffect(() => { console.log(me.centre_id) }, [me])
+  
+  // 
   useEffect(() => {
     document.title = "Hồ sơ cá nhân";
-
+    const data = localStorage.getItem("data") === null ? JSON.stringify(df) : localStorage.getItem("data");
+    setMe(JSON.parse(data));
     const fetchData = async () => {
-      const data = localStorage.getItem("data") === null ? JSON.stringify(df): localStorage.getItem("data");
-      setMe(JSON.parse(data));
+
       try {
         const response = await fetch(
-          `http://localhost:8000/api/v1/centres?centre_id=${me.centre_id}` ,
+          `http://localhost:8000/api/v1/centres?centre_id=${me.centre_id}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -119,18 +121,18 @@ const Profile = () => {
         if (!response.ok) {
           throw new Error("Can not get.");
         }
-        
+
         const res = await response.json();
         setUser(res.data[0]);
         setLoading(false);
       } catch (err) {
         setLoading(false);
-          console.error(err.message);
+        console.error(err.message);
       }
     };
 
     fetchData();
-  }, [me]);
+  }, []);
 
   const openErrorNotification = (message) => {
     notificationApi["error"]({
@@ -257,7 +259,7 @@ const Profile = () => {
                 }
                 style={marginSmall}
               >
-                {processBirthDate(me.dateOfBirth)}
+                {processBirthDate(me.date_of_birth)}
               </Descriptions.Item>
               <Descriptions.Item
                 label={
@@ -368,7 +370,7 @@ const Profile = () => {
             const datas = {
               name: values.name,
               phone: values.phone,
-              dateOfBirth: values.birthDate.split("/").reverse().join("-"),
+              date_of_birth: values.birthDate.split("/").reverse().join("-"),
             };
 
             const response = await fetch(
@@ -393,7 +395,7 @@ const Profile = () => {
 
             const newUser = me;
             newUser.name = datas.name;
-            newUser.dateOfBirth = datas.dateOfBirth;
+            newUser.date_of_birth = datas.date_of_birth;
             newUser.phone = datas.phone;
 
             setUser(newUser);
@@ -404,7 +406,7 @@ const Profile = () => {
             form.resetFields();
           } catch (err) {
             setSubmitting(false);
-             console.error(err);
+            console.error(err);
           }
         }}
       >
@@ -419,7 +421,7 @@ const Profile = () => {
           }}
           initialValues={{
             name: me.name,
-            birthDate: processBirthDate(me.dateOfBirth),
+            birthDate: processBirthDate(me.date_of_birth),
             phone: me.phone,
           }}
         >
