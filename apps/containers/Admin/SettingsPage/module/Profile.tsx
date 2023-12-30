@@ -91,16 +91,23 @@ const Profile = () => {
   const [messageApi, messageContextHolder] = message.useMessage();
   const [submitting, setSubmitting] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState({
+    name : '', address: '', phone: 0, email : '', dateOfBirth : ''
+  });
+  const [me, setMe] = useState({
+    name : '', address: '', phone: 0, email : '', dateOfBirth : '', role : '',ssn: '', centre_id: 0,
+  });
   
-
+  useEffect( ()=> {console.log(me.centre_id)},[me])
   useEffect(() => {
     document.title = "Hồ sơ cá nhân";
 
     const fetchData = async () => {
+      const data = localStorage.getItem("data") === null ? JSON.stringify(user): localStorage.getItem("data");
+      setMe(JSON.parse(data));
       try {
         const response = await fetch(
-          `http://localhost:8000/api/v1/users/getMe`,
+          `http://localhost:8000/api/v1/centres?centre_id=${me.centre_id}` ,
           {
             headers: {
               "Content-Type": "application/json",
@@ -112,9 +119,9 @@ const Profile = () => {
         if (!response.ok) {
           throw new Error("Can not get.");
         }
-
+        
         const res = await response.json();
-        setUser(res.user);
+        setUser(res.data[0]);
         setLoading(false);
       } catch (err) {
         setLoading(false);
@@ -123,7 +130,7 @@ const Profile = () => {
     };
 
     fetchData();
-  }, []);
+  }, [me]);
 
   const openErrorNotification = (message) => {
     notificationApi["error"]({
@@ -203,12 +210,12 @@ const Profile = () => {
             >
               <Avatar src={avatar} size={100} />
               <Space direction="vertical" size="small">
-                <span className={classes.name}>{JSON.parse(localStorage.getItem("user")).name}</span>
+                <span className={classes.name}>{me.name}</span>
                 <span className={classes.role}>
-                  {JSON.parse(localStorage.getItem("user")).role === "staff" ? "Nhân viên" : "Quản trị viên"}
+                  {me.role === "staff" ? "Nhân viên" : "Quản trị viên"}
                 </span>
                 <span className={classes.address}>
-                  {"user.workFor.address"}, Việt Nam
+                  {user.address}, Việt Nam
                 </span>
               </Space>
             </Space>
@@ -242,7 +249,7 @@ const Profile = () => {
                 label={<TextWithIcon Icon={IoPersonOutline} text="Họ và tên" />}
                 style={marginSmall}
               >
-                {JSON.parse(localStorage.getItem("user")).name}
+                {me.name}
               </Descriptions.Item>
               <Descriptions.Item
                 label={
@@ -250,7 +257,7 @@ const Profile = () => {
                 }
                 style={marginSmall}
               >
-                {processBirthDate(JSON.parse(localStorage.getItem("user")).dateOfBirth)}
+                {processBirthDate(me.dateOfBirth)}
               </Descriptions.Item>
               <Descriptions.Item
                 label={
@@ -258,7 +265,7 @@ const Profile = () => {
                 }
                 style={marginSmall}
               >
-                +84 {JSON.parse(localStorage.getItem("user")).phone}
+                +84 {me.phone}
               </Descriptions.Item>
               <Descriptions.Item
                 label={
@@ -269,13 +276,13 @@ const Profile = () => {
                 }
                 style={marginSmall}
               >
-                {JSON.parse(localStorage.getItem("user")).ssn}
+                {me.ssn}
               </Descriptions.Item>
               <Descriptions.Item
                 label={<TextWithIcon Icon={IoMailOutline} text="Email" />}
                 style={marginSmall}
               >
-                {JSON.parse(localStorage.getItem("user")).email}
+                {me.email}
               </Descriptions.Item>
             </Descriptions>
           </Card>
@@ -307,7 +314,7 @@ const Profile = () => {
                 }
                 style={marginSmall}
               >
-                {"user.workFor.address"}
+                {user.address}
               </Descriptions.Item>
               <Descriptions.Item
                 label={
@@ -315,20 +322,20 @@ const Profile = () => {
                 }
                 style={marginSmall}
               >
-                +84 {"user.workFor.phone"}
+                +84 {user.phone}
               </Descriptions.Item>
               <Descriptions.Item
                 label={<TextWithIcon Icon={IoMailOutline} text="Email" />}
                 style={marginSmall}
               >
-                {"user.workFor.email"}
+                {user.email}
               </Descriptions.Item>
               <Descriptions.Item
                 label={
                   <TextWithIcon
                     Icon={IoConstructOutline}
                     text={
-                      JSON.parse(localStorage.getItem("user")).role === "staff"
+                      me.role === "staff"
                         ? "Tên đơn vị đăng kiểm"
                         : "Cục đăng kiểm"
                     }
@@ -336,7 +343,7 @@ const Profile = () => {
                 }
                 style={marginSmall}
               >
-                {"user.workFor.name"}
+                {user.name}
               </Descriptions.Item>
             </Descriptions>
           </Card>
@@ -384,10 +391,10 @@ const Profile = () => {
               throw new Error("An error occured");
             }
 
-            const newUser = user;
-            // newUser.name = datas.name;
-            // newUser.dateOfBirth = datas.dateOfBirth;
-            // newUser.phone = datas.phone;
+            const newUser = me;
+            newUser.name = datas.name;
+            newUser.dateOfBirth = datas.dateOfBirth;
+            newUser.phone = datas.phone;
 
             setUser(newUser);
 
@@ -411,9 +418,9 @@ const Profile = () => {
             span: 16,
           }}
           initialValues={{
-            name: JSON.parse(localStorage.getItem("user")).name,
-            birthDate: processBirthDate(JSON.parse(localStorage.getItem("user")).date),
-            phone: JSON.parse(localStorage.getItem("user")).phone,
+            name: me.name,
+            birthDate: processBirthDate(me.dateOfBirth),
+            phone: me.phone,
           }}
         >
           <Form.Item
