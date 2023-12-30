@@ -23,6 +23,7 @@ const SearchForm: React.FC = () => {
 
                 // Extracting relevant information and updating the options state
                 const updatedOptions = data.data.map((item) => ({
+                    key: item.inspection_id,
                     value: item.inspection_number,
                     name: item.name,
                 }));

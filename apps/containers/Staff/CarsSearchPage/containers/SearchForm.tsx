@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AutoComplete, Input, List, Typography, Skeleton, Avatar } from "antd";
 import Image from "next/image";
 import searchImage from "./../../../../public/image/search-1.svg";
@@ -11,22 +11,33 @@ import Link from "next/link";
 const { Text } = Typography;
 
 const SearchForm: React.FC = () => {
-    const options = [
-        { value: "37A1-153.15" },
-        { value: "37A2-153.15" },
-        { value: "37A3-153.15" },
-        { value: "37A4-153.15" },
-        { value: "37A5-153.15" },
-        { value: "37A2-153.16" },
-        { value: "37A2-153.17" },
-        { value: "37A2-153.18" },
-        { value: "37A2-153.19" },
-        { value: "37A2-153.20" },
-        { value: "37A1-153.21" },
-        { value: "37A1-153.05" },
-        { value: "37A1-153.30" },
-        { value: "37A1-153.40" },
-    ];
+    const [options, setOptions] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch(
+                    `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/cars/number_plate`
+                );
+                const data = await response.json();
+
+                // Extracting relevant information and updating the options state
+                const updatedOptions = data.data.map((item) => ({
+                    key: item.car_id,
+                    value: item.number_plate,
+                    registration_number: item.registration_number,
+                }));
+
+                setOptions(updatedOptions);
+
+                console.log(updatedOptions);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+        fetchData();
+    }, []);
+
     const [selectedValues, setSelectedValues] = useState<string[]>([]);
     const [searchStatus, setSearchStatus] = useState<string>("Start");
 
@@ -47,20 +58,22 @@ const SearchForm: React.FC = () => {
         setSearchStatus(matchingOptions.length > 0 ? "List" : "Not Found");
 
         // Do something with the selected values, for example, store them in state
-        setSelectedValues(matchingOptions.map((option) => option.value));
-        // You can also perform any other actions here based on the selected values
+        setSelectedValues(matchingOptions);
+
+        // // Log the selected values
+        // console.log("Selected Values:", matchingOptions);
     };
 
     return (
         <div>
             <AutoComplete
                 style={{ width: "100%" }}
-                options={options}
-                filterOption={(inputValue, option) =>
-                    option?.value
-                        .toUpperCase()
-                        .indexOf(inputValue.trim().toUpperCase()) !== -1
-                }
+                // options={options}
+                // filterOption={(inputValue, option) =>
+                //     option?.value
+                //         .toUpperCase()
+                //         .indexOf(inputValue.trim().toUpperCase()) !== -1
+                // }
             >
                 <Input.Search
                     size="large"
@@ -118,8 +131,8 @@ const SearchForm: React.FC = () => {
                                         width={30}
                                     />
                                 }
-                                title={item}
-                                description={"#2023-000001"}
+                                title={item.value}
+                                description={"#" + item.registration_number}
                             />
                         </List.Item>
                     )}

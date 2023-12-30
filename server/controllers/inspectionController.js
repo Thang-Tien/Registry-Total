@@ -391,7 +391,7 @@ exports.getInspectionPerCentreID = (req, res) => {
 exports.getAllINspectionNumberAndCentreName = (req, res) => {
     let queryString = utils.generateQueryString(req.query);
     connection.query(
-        `SELECT i.inspection_number, r.name
+        `SELECT i.inspection_id, i.inspection_number, r.name
 			FROM inspections AS i 
             INNER JOIN registration_centres AS r 
             ON r.centre_id = i.centre_id`,

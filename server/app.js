@@ -2,7 +2,7 @@ const express = require("express");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-// const carRouter = require("./routes/carRoute");
+const carRouter = require("./routes/carRoute");
 const inspectionRoute = require("./routes/inspectionRoute");
 const centreRoute = require("./routes/centreRoute");
 const userRoute = require("./routes/userRoute");
@@ -18,7 +18,7 @@ app.use(
 app.use(morgan("dev"));
 app.use(bodyParser());
 
-// app.use("/api/v1/cars", carRouter);
+app.use("/api/v1/cars", carRouter);
 app.use("/api/v1/inspections", inspectionRoute);
 app.use("/api/v1/centres", centreRoute);
 app.use("/api/v1/users", userRoute);
