@@ -38,6 +38,17 @@ const RecentInspection: React.FC = () => {
             key: "action",
             align: "center",
         },
+        {
+            title: "",
+            dataIndex: "action",
+            key: "action",
+            align: "center",
+            render: (text, record) => (
+                <Link href={`/inspection/${record.inspection_id}`}>
+                    <DoubleRightOutlined style={{ color: "black" }} />
+                </Link>
+            ),
+        },
     ];
     const [dataSource, setDataSource] = useState([]);
 
@@ -57,6 +68,7 @@ const RecentInspection: React.FC = () => {
                 setDataSource(
                     data.data.map((item, index) => ({
                         key: String(index + 1),
+                        inspection_id: item.inspection_id,
                         inspection_number: item.inspection_number,
                         number_plate: item.number_plate,
                         inspection_date: new Date(
@@ -65,7 +77,7 @@ const RecentInspection: React.FC = () => {
                         expired_date: new Date(
                             item.expired_date
                         ).toLocaleDateString("en-GB"), // Use 'en-GB' locale for dd/mm/yyyy format
-                        action: <DoubleRightOutlined />,
+                        // action: <DoubleRightOutlined />,
                     }))
                 );
 
@@ -89,24 +101,6 @@ const RecentInspection: React.FC = () => {
                     }}
                 >
                     Đăng kiểm gần đây
-                </div>
-            )}
-            footer={() => (
-                <div
-                    style={{
-                        fontSize: "16px",
-                        textAlign: "center",
-                        fontWeight: "500",
-                        color: "blue",
-                        // padding: "0 10px",
-                    }}
-                >
-                    <Link href="/inspection/all">
-                        <div style={{ alignItems: "center" }}>
-                            Xem thêm
-                            <ForwardFilled style={{ paddingLeft: 5 }} />
-                        </div>
-                    </Link>
                 </div>
             )}
             dataSource={dataSource}

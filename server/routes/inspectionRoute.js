@@ -80,9 +80,8 @@ router.get("/mine/:user_id", inspectionController.getMineInspection);
 // đưa ra thông tin đăng kiểm của trung tâm mà staff đang làm việc bao gồm thông tin chi tiết
 // tất cả thông tin chi tiết ( nối ba bảng gồm: inspections, cars, car_owners)
 router.get(
-    "/get_inspection_owner/",
-    authController.authenticateToken,
-    inspectionController.getInspectionAndOwner
+    "/get_inspection_owner/:inspection_id",
+    inspectionController.getInspectionAndOwnerPerID
 );
 // Tạo đăng kiểm cho trung tâm mà staff đang làm việc
 router.post("/createInspection/", inspectionController.createInspection);

@@ -7,9 +7,14 @@ import InformationCard from "./containers/InformationCard";
 export type Props = {
     className?: string;
     style?: React.CSSProperties;
+    inspectionId?: string; // Add inspectionId prop
 };
 
-export default function InspectionInformationPage({ className, style }: Props) {
+export default function InspectionInformationPage({
+    className,
+    style,
+    inspectionId,
+}: Props) {
     return (
         <div className={cx(className, styles.container)} style={style}>
             <Flex.Row style={{ width: "100%", minHeight: "100vh" }}>
@@ -22,7 +27,8 @@ export default function InspectionInformationPage({ className, style }: Props) {
                         background: "#e4e4e7",
                     }}
                 >
-                    <InformationCard />
+                    <InformationCard inspectionId={inspectionId} />
+                    {/* Pass inspectionId to InformationCard */}
                 </div>
             </Flex.Row>
         </div>

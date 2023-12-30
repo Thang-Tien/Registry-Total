@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Card, Statistic, Table, Input, Space, Button } from "antd";
 import { DoubleRightOutlined, SearchOutlined } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
+import RouteToInspectionInformationPage from "../../../../app/inspection/[...id]/page";
 
 const InspectionTable: React.FC = () => {
     // const [tableParams, setTableParams] = useState<TableParams>({
@@ -54,6 +55,7 @@ const InspectionTable: React.FC = () => {
                 setDataSource(
                     data.data.map((item, index) => ({
                         key: String(index + 1),
+                        inspection_id: item.inspection_id,
                         inspection_number: item.inspection_number,
                         number_plate: item.number_plate,
                         inspection_date: new Date(
@@ -62,7 +64,6 @@ const InspectionTable: React.FC = () => {
                         expired_date: new Date(
                             item.expired_date
                         ).toLocaleDateString("en-GB"), // Use 'en-GB' locale for dd/mm/yyyy format
-                        action: <DoubleRightOutlined />,
                     }))
                 );
 
@@ -240,13 +241,11 @@ const InspectionTable: React.FC = () => {
             dataIndex: "action",
             key: "action",
             align: "center",
-            render: () => {
-                return (
-                    <Link href="/inspection/id">
-                        <DoubleRightOutlined style={{ color: "black" }} />
-                    </Link>
-                );
-            },
+            render: (text, record) => (
+                <Link href={`/inspection/${record.inspection_id}`}>
+                    <DoubleRightOutlined style={{ color: "black" }} />
+                </Link>
+            ),
         },
     ];
 

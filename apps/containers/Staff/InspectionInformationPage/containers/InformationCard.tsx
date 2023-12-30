@@ -1,19 +1,20 @@
 "use client";
 
-import { Card, Tabs, Button } from "antd";
+import { Card, Button } from "antd";
 import React from "react";
-import {
-    ArrowLeftOutlined,
-    UserOutlined,
-    CarOutlined,
-    SettingOutlined,
-    HistoryOutlined,
-} from "@ant-design/icons";
-
-import type { TabsProps } from "antd";
+import { ArrowLeftOutlined } from "@ant-design/icons";
+import type { ReactNode } from "react";
 import InspectionContent from "./InspectionContent";
 
-const InformationCard: React.FC = () => {
+type InformationCardProps = {
+    inspectionId?: string;
+    children?: ReactNode;
+};
+
+const InformationCard: React.FC<InformationCardProps> = ({
+    inspectionId,
+    children,
+}) => {
     return (
         <Card
             style={{
@@ -27,7 +28,7 @@ const InformationCard: React.FC = () => {
                 <Button
                     type="text"
                     icon={<ArrowLeftOutlined />}
-                    onClick={() => console.log("Back")}
+                    onClick={() => console.log("back")}
                 />
             }
         >
@@ -37,8 +38,9 @@ const InformationCard: React.FC = () => {
                         Thông tin đăng kiểm
                     </div>
                 }
-                description={<InspectionContent />}
+                description={<InspectionContent inspectionId={inspectionId} />}
             />
+            {children}
         </Card>
     );
 };

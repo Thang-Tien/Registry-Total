@@ -501,15 +501,58 @@ exports.getMineInspection = async (req, res) => {
 // DONE
 // đưa ra thông tin đăng kiểm của trung tâm mà staff đang làm việc bao gồm thông tin chi tiết
 // tất cả thông tin chi tiết ( nối ba bảng gồm: inspections, cars, car_owners)
-exports.getInspectionAndOwner = (req, res) => {
+exports.getInspectionAndOwnerPerID = (req, res) => {
+    const inspectionID = req.params.inspection_id;
     let queryString = utils.generateQueryString(req.query);
     connection.query(
-        `SELECT * 
+        `SELECT     i.inspection_id,
+                    i.inspection_number,
+                    i.inspection_date, 
+                    i.expired_date, 
+                    r.name AS registration_name,
+                    u.phone AS user_phone,
+                    u.email AS user_email, 
+                    u.name AS user_name,
+                    c.wheel_formula, 
+                    c.wheel_tread,
+                    c.overall_dimension, 
+                    c.container_dimension,
+                    c.length_base,
+                    c.kerb_mass,
+                    c.designed_and_authorized_payload,
+                    c.designed_and_authorized_total_mass,
+                    c.designed_and_authorized_towed_mass,
+                    c.permissible_carry,
+                    c.fuel,
+                    c.engine_displacement,
+                    c.maximum_output_to_rpm_ratio,
+                    c.number_of_tires_and_tire_size,
+                    c.number_plate,
+                    c.registration_number,
+                    c.registration_date,
+                    c.type,
+                    c.brand,
+                    c.model_code,
+                    c.engine_number,
+                    c.chassis_number,
+                    c.manufactured_year,
+                    c.manufactured_country,
+                    c.purpose,
+                    c.recovered,
+                    co.name AS owner_name,
+                    co.address,
+                    co.phone AS owner_phone,
+                    co.email AS owner_email,
+                    co.role
                     FROM inspections i 
+                    INNER JOIN users as u ON i.user_id = u.user_id
                     INNER JOIN cars c ON c.car_id = i.car_id
                     INNER JOIN car_owners co ON co.owner_id = c.owner_id
-                    WHERE ${queryString ? queryString : 1} AND i.centre_id = ?`,
-        [req.user.centre_id],
+                    INNER JOIN registration_centres r ON i.centre_id = r.centre_id
+                    WHERE ${
+                        queryString ? queryString : 1
+                    } AND i.inspection_id = ?`,
+        [inspectionID],
         (err, result, fields) => {
             if (err) {
                 return res.status(500).json({
