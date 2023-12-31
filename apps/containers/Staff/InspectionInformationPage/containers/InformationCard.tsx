@@ -28,7 +28,7 @@ const InformationCard: React.FC<InformationCardProps> = ({
                 <Button
                     type="text"
                     icon={<ArrowLeftOutlined />}
-                    onClick={() => console.log("back")}
+                    onClick={() => history.back()}
                 />
             }
         >

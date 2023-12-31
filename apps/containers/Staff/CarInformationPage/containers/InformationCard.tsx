@@ -21,31 +21,31 @@ const { Item } = Descriptions;
 
 type InformationCardProps = {
     carId?: string;
-    children?: React.ReactNode;
 };
 
-const InformationCard: React.FC<InformationCardProps> = ({
-    carId,
-    children,
-}) => {
+const InformationCard: React.FC<InformationCardProps> = ({ carId }) => {
     const [carData, setCarData] = useState<any>(null);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await fetch(
-                    `http://localhost:8000/api/v1/cars/${carId}`
+                    `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/cars/${carId}`
                 );
-
                 const data = await response.json();
-                setCarData(data.data[0]); // Assuming you want to set the first car in the array
+                setCarData(data.data[0]);
             } catch (error) {
-                console.log(error);
+                console.error("Error fetching inspection data:", error);
             }
         };
 
         fetchData();
     }, [carId]);
+
+    if (!carData) {
+        return <div>Loading...</div>;
+    }
+
     const onChange = (key: string) => {
         console.log(key);
     };
@@ -252,7 +252,7 @@ const InformationCard: React.FC<InformationCardProps> = ({
                 <Button
                     type="text"
                     icon={<ArrowLeftOutlined />}
-                    onClick={() => console.log("Back")}
+                    onClick={() => history.back()}
                 />
             }
         >
