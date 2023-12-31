@@ -8,4 +8,6 @@ router.get(
     carController.getAllNumberPlateAndRegistrationNumber
 );
 
+router.get("/:car_id", carController.getCarAndOwnerPerID);
+
 module.exports = router;

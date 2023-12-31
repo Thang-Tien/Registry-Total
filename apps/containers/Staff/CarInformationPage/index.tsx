@@ -7,9 +7,10 @@ import InformationCard from "./containers/InformationCard";
 export type Props = {
     className?: string;
     style?: React.CSSProperties;
+    carId?: string; // Add carID prop
 };
 
-export default function CarInformationPage({ className, style }: Props) {
+export default function CarInformationPage({ className, style, carId }: Props) {
     return (
         <div className={cx(className, styles.container)} style={style}>
             <Flex.Row style={{ width: "100%", minHeight: "100vh" }}>
@@ -22,7 +23,7 @@ export default function CarInformationPage({ className, style }: Props) {
                         background: "#e4e4e7",
                     }}
                 >
-                    <InformationCard />
+                    <InformationCard carId={carId} />
                 </div>
             </Flex.Row>
         </div>

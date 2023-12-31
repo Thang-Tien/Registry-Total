@@ -26,7 +26,7 @@ const InspectionContent: React.FC<Props> = ({ inspectionId }) => {
         const fetchData = async () => {
             try {
                 const response = await fetch(
-                    `http://localhost:8000/api/v1/inspections/get_inspection_owner/${inspectionId}`
+                    `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/get_inspection_owner/${inspectionId}`
                 );
                 const data = await response.json();
                 setInspectionData(data.data[0]);
