@@ -104,9 +104,9 @@ const Profile = () => {
   useEffect(() => {
     document.title = "Hồ sơ cá nhân";
     const data = localStorage.getItem("data") === null ? JSON.stringify(df) : localStorage.getItem("data");
-    setMe(JSON.parse(data));
+    if (data != null) setMe(JSON.parse(data));
+    
     const fetchData = async () => {
-
       try {
         const response = await fetch(
           `http://localhost:8000/api/v1/centres?centre_id=${me.centre_id}`,

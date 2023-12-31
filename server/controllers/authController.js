@@ -79,23 +79,26 @@ exports.authenticateToken = async (req, res, next) => {
                 })
             }
 
-            console.log(decode.iat, parseInt(currentUser[0].last_change_password_date.getTime() / 1000, 10))
-            // check if user is using old token which was generated before changing password
-            if (decode.iat < parseInt(currentUser[0].last_change_password_date.getTime() / 1000, 10)) {
-                return res.status(400).json({
-                    status: "Failed",
-                    error: "Your password has changed, please login again!"
-                })
+            if (currentUser[0].last_change_password_date) {
+                console.log("check", decode.iat, parseInt(currentUser[0].last_change_password_date.getTime() / 1000, 10))
+                // check if user is using old token which was generated before changing password
+                if (decode.iat < parseInt(currentUser[0].last_change_password_date.getTime() / 1000, 10)) {
+                    return res.status(400).json({
+                        status: "Failed",
+                        error: "Your password has changed, please login again!"
+                    })
+                }
+
+                const currentTime = new Date(new Date().setTime(new Date().getTime() + 7 * 60 * 60 * 1000))
+                // check if token's expired date > current date
+                if (decode.exp < parseInt(currentTime / 1000, 10)) {
+                    return res.status(400).json({
+                        status: "Failed",
+                        error: "Your token is expired!"
+                    })
+                }
             }
 
-            const currentTime = new Date(new Date().setTime(new Date().getTime() + 7 * 60 * 60 * 1000))
-            // check if token's expired date > current date
-            if (decode.exp < parseInt(currentTime / 1000, 10)) {
-                return res.status(400).json({
-                    status: "Failed",
-                    error: "Your token is expired!"
-                })
-            }
 
             req.user = currentUser[0]
             next()
@@ -111,7 +114,7 @@ exports.authenticateToken = async (req, res, next) => {
 }
 
 exports.restrictAccessTo = (...roles) => {
-    
+
     return (req, res, next) => {
         console.log(roles.includes(req.user.role))
         console.log("role", roles)
