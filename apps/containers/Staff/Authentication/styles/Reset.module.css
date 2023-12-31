@@ -1,0 +1,31 @@
+.reset {
+    width: 60%;
+    margin: auto;
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2.4rem;
+}
+
+.input {
+    border: none;
+    gap: 1rem;
+}
+
+.icon {
+    font-size: 1.8rem;
+    color: rgba(22, 119, 255, 0.645);
+}
+
+.button {
+    width: 100%;
+    margin-bottom: 24px;
+}
+
+.title {
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: var(--color-black);
+}

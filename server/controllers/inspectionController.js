@@ -669,6 +669,37 @@ exports.getInspectionAndOwnerPerID = (req, res) => {
         }
     );
 };
+
+// Đưa ra số lượng đăng kiểm all
+exports.countAllInspection = (req, res) => {
+    let queryString = utils.generateQueryString(req.query);
+    connection.query(
+        `SELECT     COUNT(*) AS value
+                    FROM inspections i 
+                    WHERE ${queryString ? queryString : 1}`,
+        (err, result, fields) => {
+            if (err) {
+                return res.status(500).json({
+                    status: "Failed",
+                    message: err,
+                });
+            } else if (result.length == 0) {
+                return res.status(404).json({
+                    status: "Failed",
+                    message: `Can't find inspection with ${utils.generateErrorQueryValue(
+                        req.query
+                    )}`,
+                });
+            } else {
+                return res.status(200).json({
+                    status: "Success",
+                    data: result,
+                });
+            }
+        }
+    );
+};
+
 // DONE
 // Tạo đăng kiểm cho trung tâm mà staff đang làm việc
 exports.createInspection = (req, res) => {

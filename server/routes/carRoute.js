@@ -17,5 +17,4 @@ router.get(
 
 router.get("/:car_id", carController.getCarAndOwnerPerID);
 
-
 module.exports = router;
