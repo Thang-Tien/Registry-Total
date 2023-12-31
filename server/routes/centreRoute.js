@@ -10,6 +10,7 @@ router.get('/most_inspects', centreController.centresWithMostInspects)
 
 // get centre, add queries ()
 router.get('/', centreController.getCentre)
+router.get('/staff/:centre_id', centreController.getStaffByCentre)
 
 router.post('/add_centre', centreController.addCentre)
 router.post('/update_centre/:centre_id', centreController.updateCentre)

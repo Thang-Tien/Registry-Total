@@ -150,4 +150,26 @@ exports.deactivateCentre = (req, res) => {
 }
 
 
+exports.getStaffByCentre = (req, res) => {
+    connection.query(`SELECT * FROM users WHERE centre_id = ${req.params.centre_id}`, (err, result, fields) => {
 
+        if (err) {
+            return res.status(500).json({
+                status: "Failed",
+                error: err
+            })
+        } else if (result.length == 0) {
+            return res.status(400).json({
+                status: "Failed",
+                error: `Centre with centre_id = ${req.params.centre_id} doesn't exist`
+            })
+        }
+        else {
+            return res.status(200).json({
+                status: "Success",
+                data: result
+            })
+        }
+
+    })
+}
