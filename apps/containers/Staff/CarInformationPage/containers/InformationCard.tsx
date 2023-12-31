@@ -26,6 +26,20 @@ type InformationCardProps = {
 const InformationCard: React.FC<InformationCardProps> = ({ carId }) => {
     const [carData, setCarData] = useState<any>(null);
 
+    const addHoursAndFormatDate = (dateString, hours) => {
+        const originalDate = new Date(dateString);
+        originalDate.setHours(originalDate.getHours() + hours);
+
+        // Format the date to dd/mm/yyyy
+        const formattedDate =
+            originalDate.getDate().toString().padStart(2, "0") +
+            "/" +
+            (originalDate.getMonth() + 1).toString().padStart(2, "0") +
+            "/" +
+            originalDate.getFullYear();
+
+        return formattedDate;
+    };
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -133,7 +147,8 @@ const InformationCard: React.FC<InformationCardProps> = ({ carId }) => {
                         {carData.registration_number || 0}
                     </Item>
                     <Item label={"Ngày đăng kí"}>
-                        {carData.registration_date || 0}
+                        {addHoursAndFormatDate(carData.registration_date, 7) ||
+                            0}
                     </Item>
                     <Item label={"Loại phương tiện"}>{carData.type || 0}</Item>
                     <Item label={"Nhãn hiệu"}>{carData.brand || 0}</Item>

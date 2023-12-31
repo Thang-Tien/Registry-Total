@@ -22,6 +22,20 @@ export type Props = {
 const InspectionContent: React.FC<Props> = ({ inspectionId }) => {
     const [inspectionData, setInspectionData] = useState<any>(null);
 
+    const addHoursAndFormatDate = (dateString, hours) => {
+        const originalDate = new Date(dateString);
+        originalDate.setHours(originalDate.getHours() + hours);
+
+        // Format the date to dd/mm/yyyy
+        const formattedDate =
+            originalDate.getDate().toString().padStart(2, "0") +
+            "/" +
+            (originalDate.getMonth() + 1).toString().padStart(2, "0") +
+            "/" +
+            originalDate.getFullYear();
+
+        return formattedDate;
+    };
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -118,7 +132,10 @@ const InspectionContent: React.FC<Props> = ({ inspectionId }) => {
                         {inspectionData.registration_number || 0}
                     </Item>
                     <Item label={"Ngày đăng kí"}>
-                        {inspectionData.registration_date || 0}
+                        {addHoursAndFormatDate(
+                            inspectionData.registration_date,
+                            7
+                        ) || 0}
                     </Item>
                     <Item label={"Loại phương tiện"}>
                         {inspectionData.type || 0}
@@ -244,7 +261,10 @@ const InspectionContent: React.FC<Props> = ({ inspectionId }) => {
                             </span>
                         }
                     >
-                        {inspectionData.inspection_date || 0}
+                        {addHoursAndFormatDate(
+                            inspectionData.inspection_date,
+                            7
+                        ) || 0}
                     </Item>
                     <Item
                         label={
@@ -253,7 +273,10 @@ const InspectionContent: React.FC<Props> = ({ inspectionId }) => {
                             </span>
                         }
                     >
-                        {inspectionData.expired_date || 0}
+                        {addHoursAndFormatDate(
+                            inspectionData.expired_date,
+                            7
+                        ) || 0}
                     </Item>
                     <Item
                         label={

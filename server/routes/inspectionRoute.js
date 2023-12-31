@@ -64,6 +64,7 @@ router.get(
     inspectionController.predictAboutToInspectOfEachCentre
 );
 
+router.get("/stat/total/", inspectionController.countAllInspection);
 // đưa ra tất cả inspection number và tên trung tâm đăng kiểm để search
 router.get(
     "/inspection_number",

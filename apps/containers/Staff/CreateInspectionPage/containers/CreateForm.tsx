@@ -35,9 +35,10 @@ const CreateForm: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false); // modal open or not
     const [options, setOptions] = useState([]);
     const [postData, setPostData] = useState({});
+    const [totalInspection, setTotalInspection] = useState(null);
 
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchNumberPlateData = async () => {
             try {
                 const response = await fetch(
                     `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/cars/number_plate`
@@ -56,7 +57,28 @@ const CreateForm: React.FC = () => {
                 console.error("Error fetching data:", error);
             }
         };
+
+        const fetchData = async () => {
+            try {
+                const response = await fetch(
+                    `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/stat/total`
+                );
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Increment the value by 1
+                    const totalInspectionValue = data.data[0].value + 1;
+                    setTotalInspection(totalInspectionValue);
+                } else {
+                    console.error("Error fetching data:", data);
+                }
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+
         fetchData();
+        fetchNumberPlateData();
     }, []);
 
     const inputItems = [
@@ -439,7 +461,7 @@ const CreateForm: React.FC = () => {
                             >
                                 Quay về
                             </Button>
-                            <Link href="/inspection/id">
+                            <Link href={`/inspection/${totalInspection}`}>
                                 <Button type="primary" size="large">
                                     Xem đăng kiểm
                                 </Button>
