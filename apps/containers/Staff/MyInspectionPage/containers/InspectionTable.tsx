@@ -7,13 +7,16 @@ import { DoubleRightOutlined, SearchOutlined } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
 
 const InspectionTable: React.FC = () => {
-    // const [tableParams, setTableParams] = useState<TableParams>({
-    //     pagination: {
-    //         current: 1,
-    //         pageSize: 10,
-    //     },
-    // });
-    const user = { centreID: 1, userID: 19 };
+    const df = { name: "Thiện pờ rồ", age: 18 };
+    const [user, setUser] = useState({
+        user_id: "",
+        centre_id: "",
+        name: "",
+        address: "",
+        phone: 0,
+        email: "",
+        date_of_birth: "",
+    });
     const [dataSource, setDataSource] = useState([]);
     const [inspectionCount, setInspectionCount] = useState<number | null>(null);
     const [searchText, setSearchText] = useState("");
@@ -21,10 +24,15 @@ const InspectionTable: React.FC = () => {
     const searchInput = useRef(null);
 
     useEffect(() => {
+        const data =
+            localStorage.getItem("data") === null
+                ? JSON.stringify(df)
+                : localStorage.getItem("data");
+        if (data != null) setUser(JSON.parse(data));
         const fetchCountAll = async () => {
             try {
                 const response = await fetch(
-                    `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/stat/each_centre/count/mine/${user.userID}`
+                    `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/stat/each_centre/count/mine/${user.user_id}`
                 );
                 const data = await response.json();
 
@@ -42,7 +50,7 @@ const InspectionTable: React.FC = () => {
         const fetchDataSource = async () => {
             try {
                 const response = await fetch(
-                    `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/mine/${user.userID}`
+                    `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/mine/${user.user_id}`
                 );
 
                 if (!response.ok) {
@@ -76,7 +84,7 @@ const InspectionTable: React.FC = () => {
         };
         fetchCountAll();
         fetchDataSource();
-    }, [user.centreID, user.userID]);
+    }, [user.user_id]);
 
     const handleSearch = (selectedKeys, confirm, dataIndex) => {
         confirm();

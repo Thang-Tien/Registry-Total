@@ -5,13 +5,27 @@ import { Column, Line } from "@ant-design/plots";
 import React, { useState, useEffect } from "react";
 
 const ChartLine: React.FC = () => {
-    const user = { centreID: 1, userID: 19 };
+    const df = { name: "Thiện pờ rồ", age: 18 };
+    const [user, setUser] = useState({
+        user_id: "",
+        centre_id: "",
+        name: "",
+        address: "",
+        phone: 0,
+        email: "",
+        date_of_birth: "",
+    });
     const [data, setData] = useState([]);
 
     useEffect(() => {
+        const data =
+            localStorage.getItem("data") === null
+                ? JSON.stringify(df)
+                : localStorage.getItem("data");
+        if (data != null) setUser(JSON.parse(data));
         // Fetch data from the API
         fetch(
-            `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/stat/each_centre/count/every_month/${user.centreID}`
+            `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/stat/each_centre/count/every_month/${user.centre_id}`
         )
             .then((response) => response.json())
             .then((result) => {
@@ -23,7 +37,7 @@ const ChartLine: React.FC = () => {
                 }
             })
             .catch((error) => console.error("Error fetching data:", error));
-    }, [user.centreID]); // user.centreID là biến phụ thuộc, thay đổi biến này thì chạy lại useEffect để fetch API
+    }, [user.user_id]); // user.centreID là biến phụ thuộc, thay đổi biến này thì chạy lại useEffect để fetch API
 
     return (
         <div style={{ width: "calc((100vw - 256px - 64px - 20px) /3 *2)" }}>

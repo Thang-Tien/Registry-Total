@@ -329,7 +329,13 @@ const InspectionContent: React.FC<Props> = ({ inspectionId }) => {
             }}
         >
             <Collapse items={data} defaultActiveKey={"inspection"} accordion />
-            <div style={{ display: "flex" }}>
+            <div
+                style={{
+                    display: "flex",
+                    alignItems: "center",
+                    flexDirection: "column",
+                }}
+            >
                 <InspectionPDF inspectionData={inspectionData} />
             </div>
         </div>

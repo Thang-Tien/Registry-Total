@@ -15,11 +15,11 @@ export type Props = {
     style?: React.CSSProperties;
 };
 
-export default function HomePage({ className, style }: Props) {
+export default function DashboardPage({ className, style }: Props) {
     return (
         <div className={cx(className, styles.container)} style={style}>
             <Flex.Row style={{ width: "100%" }} padding={"0"}>
-                <NavBar active="" />
+                <NavBar active="dashboard" />
                 <div
                     style={{
                         background: "#e4e4e7",

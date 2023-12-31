@@ -36,18 +36,18 @@ function getItem(
 
 export type Props = {
     active:
-        | ""
+        | "dashboard"
         | "inspection"
         | "inspection/create"
         | "cars/search"
         | "statistics"
-        | "account";
+        | "settings";
 };
 
 export default function NavBar({ active }: Props) {
     const items: MenuItem[] = [
         // <AppstoreOutlined />, <InboxOutlined />, <CarOutlined />, <SearchOutlined />, <LineChartOutlined />, <UserOutlined /> are icons
-        getItem("Bảng điều khiển", "", <AppstoreOutlined />),
+        getItem("Bảng điều khiển", "dashboard", <AppstoreOutlined />),
         getItem("Quản lý đăng kiểm", "inspection", <CarOutlined />, [
             getItem("Tất cả đăng kiểm", "inspection/all"),
             getItem("Đăng kiểm của tôi", "inspection/me"),
@@ -56,12 +56,15 @@ export default function NavBar({ active }: Props) {
         getItem("Tạo đăng kiểm", "inspection/create", <PlusCircleOutlined />),
         getItem("Tra cứu phương tiện", "cars/search", <SearchOutlined />),
         getItem("Thống kê", "statistics", <LineChartOutlined />),
-        getItem("Tài khoản", "account", <UserOutlined />, [
-            getItem("Cài đặt", "account/profile"),
-            getItem("Đăng xuất", "logout"),
+        getItem("Tài khoản", "settings", <UserOutlined />, [
+            getItem("Cài đặt", "settings/profile"),
+            getItem("Đăng xuất", "auth"),
         ]),
     ];
 
+    const clearLocalStorage = () => {
+        localStorage.clear();
+    };
     // Array contain key of root submenu
     const rootSubmenuKeys = ["cars", "account"];
 
@@ -84,9 +87,18 @@ export default function NavBar({ active }: Props) {
     const router = useRouter();
 
     const onClick: MenuProps["onClick"] = (e) => {
-        router.prefetch(`/${e.keyPath[0]}`);
-        router.push(`/${e.keyPath[0]}`);
+        const selectedKey = e.keyPath[0];
+
+        // Prefetch and navigate to the selected key
+        router.prefetch(`/${selectedKey}`);
+        router.push(`/${selectedKey}`);
+
+        // Check if the selected key is "auth" and call clearLocalStorage
+        if (selectedKey === "auth") {
+            clearLocalStorage();
+        }
     };
+
     return (
         <Flex.Col gap="50px" style={{ maxWidth: "256px" }}>
             <button className={styles.button}>

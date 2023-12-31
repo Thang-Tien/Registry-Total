@@ -6,7 +6,16 @@ import { DoubleRightOutlined, ForwardFilled } from "@ant-design/icons";
 import Link from "next/link";
 
 const RecentInspection: React.FC = () => {
-    const user = { centreID: 1, userID: 19 };
+    const df = { name: "Thiện pờ rồ", age: 18 };
+    const [user, setUser] = useState({
+        user_id: "",
+        centre_id: "",
+        name: "",
+        address: "",
+        phone: 0,
+        email: "",
+        date_of_birth: "",
+    });
     const columns = [
         {
             title: "Số đăng kiểm",
@@ -53,10 +62,18 @@ const RecentInspection: React.FC = () => {
     const [dataSource, setDataSource] = useState([]);
 
     useEffect(() => {
+        console.log(user);
+    }, [user]);
+    useEffect(() => {
+        const data =
+            localStorage.getItem("data") === null
+                ? JSON.stringify(df)
+                : localStorage.getItem("data");
+        if (data != null) setUser(JSON.parse(data));
         const fetchData = async () => {
             try {
                 const response = await fetch(
-                    `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/recently/${user.centreID}`
+                    `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/recently/${user.centre_id}`
                 );
 
                 if (!response.ok) {
@@ -88,7 +105,7 @@ const RecentInspection: React.FC = () => {
         };
 
         fetchData();
-    }, [user.centreID]); // centreID: dependency array to run the effect only once on mount
+    }, [user.user_id]); // centreID: dependency array to run the effect only once on mount
 
     return (
         <Table

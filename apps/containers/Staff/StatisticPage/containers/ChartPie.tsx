@@ -5,17 +5,31 @@ import { Column, Line, Pie } from "@ant-design/plots";
 import React, { useEffect, useState } from "react";
 
 const ChartPie: React.FC = () => {
-    const user = { centreID: 1, userID: 19 };
+    const df = { name: "Thiện pờ rồ", age: 18 };
+    const [user, setUser] = useState({
+        user_id: "",
+        centre_id: "",
+        name: "",
+        address: "",
+        phone: 0,
+        email: "",
+        date_of_birth: "",
+    });
     const [countExpired, setCountExpired] = useState<number | null>(null);
     const [countAboutToExpired, setCountAboutToExpired] = useState<
         number | null
     >(null);
 
     useEffect(() => {
+        const data =
+            localStorage.getItem("data") === null
+                ? JSON.stringify(df)
+                : localStorage.getItem("data");
+        if (data != null) setUser(JSON.parse(data));
         const fetchExpiredData = async () => {
             try {
                 const response = await fetch(
-                    `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/stat/each_centre/count/expired/month/${user.centreID}`
+                    `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/stat/each_centre/count/expired/month/${user.centre_id}`
                 );
                 const data = await response.json();
                 if (
@@ -38,7 +52,7 @@ const ChartPie: React.FC = () => {
         const fetchAboutToExpiredData = async () => {
             try {
                 const response = await fetch(
-                    `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/stat/each_centre/count/about_to_expired/month/${user.centreID}`
+                    `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/stat/each_centre/count/about_to_expired/month/${user.centre_id}`
                 );
                 const data = await response.json();
                 if (
@@ -60,7 +74,7 @@ const ChartPie: React.FC = () => {
 
         fetchExpiredData();
         fetchAboutToExpiredData();
-    }, [user.centreID]); // user.centreID là biến phụ thuộc, thay đổi biến này thì chạy lại useEffect để fetch API
+    }, [user.user_id]); // user.centreID là biến phụ thuộc, thay đổi biến này thì chạy lại useEffect để fetch API
 
     const chartData = [
         {

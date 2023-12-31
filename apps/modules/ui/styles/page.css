@@ -1,0 +1,59 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+}
+html {
+    font-size: 62.5%;
+}
+
+@media (max-width: 75em) {
+    html {
+        font-size: 56.25%;
+    }
+}
+
+@media (max-width: 48em) {
+    html {
+        font-size: 50%;
+    }
+}
+.ant-menu-item,
+.ant-menu-submenu-title {
+    gap: 1.2rem;
+}
+
+.ant-menu-title-content {
+    margin-inline-start: 0 !important;
+}
+
+.ant-menu-inline-collapsed-tooltip {
+    display: none;
+}
+
+.ant-form-item-explain-error {
+    margin-left: 2.8rem;
+    font-size: 12px;
+}
+
+.ant-input::placeholder {
+    font-weight: 500;
+    font-size: 1.4rem;
+}
+
+.ant-table-title {
+    font-weight: 600;
+    margin-left: 2rem;
+    font-size: 16px;
+}
+
+.ant-descriptions-item-container,
+.ant-descriptions-item-label {
+    align-items: center !important;
+}
+
+@media (max-width: 62em) {
+    .ant-menu-title-content {
+        margin-inline-start: 0 !important;
+    }
+}
