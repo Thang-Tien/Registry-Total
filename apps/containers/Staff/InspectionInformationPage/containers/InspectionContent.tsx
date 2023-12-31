@@ -223,7 +223,11 @@ const InspectionContent: React.FC<Props> = ({ inspectionId }) => {
             key: "inspection",
             label: "Thông tin đăng kiểm",
             children: (
-                <Descriptions column={1} layout="vertical">
+                <Descriptions
+                    column={1}
+                    layout="vertical"
+                    style={{ padding: "12px" }}
+                >
                     <Item
                         label={
                             <span>

@@ -325,7 +325,7 @@ const CreateForm: React.FC = () => {
                     />
 
                     {/* Code phần modal, sau khi bấm xem thông tin*/}
-                    <Modal
+                    {/* <Modal
                         open={isOpen}
                         footer={null}
                         title="Thông tin phương tiện"
@@ -336,7 +336,7 @@ const CreateForm: React.FC = () => {
                         }
                     >
                         Content gì đó của modal
-                    </Modal>
+                    </Modal> */}
 
                     {/* Khi tìm thấy phương tiện thì hiển thị from (found == true) */}
                     {found && (
@@ -348,9 +348,9 @@ const CreateForm: React.FC = () => {
                             }}
                             size="middle"
                         >
-                            <Button onClick={() => setIsOpen(true)}>
+                            {/* <Button onClick={() => setIsOpen(true)}>
                                 Xem thông tin
-                            </Button>
+                            </Button> */}
                             <Popconfirm
                                 title="Đăng kiểm phương tiện"
                                 description="Bạn có chắc chắn muốn đăng kiểm phương tiện này?"

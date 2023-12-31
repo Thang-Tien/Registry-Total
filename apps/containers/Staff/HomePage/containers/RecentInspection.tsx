@@ -103,6 +103,24 @@ const RecentInspection: React.FC = () => {
                     Đăng kiểm gần đây
                 </div>
             )}
+            footer={() => (
+                <div
+                    style={{
+                        fontSize: "16px",
+                        textAlign: "center",
+                        fontWeight: "500",
+                        color: "blue",
+                        // padding: "0 10px",
+                    }}
+                >
+                    <Link href="/inspection/all">
+                        <div style={{ alignItems: "center" }}>
+                            Xem thêm
+                            <ForwardFilled style={{ paddingLeft: 5 }} />
+                        </div>
+                    </Link>
+                </div>
+            )}
             dataSource={dataSource}
             columns={columns}
             pagination={false}
