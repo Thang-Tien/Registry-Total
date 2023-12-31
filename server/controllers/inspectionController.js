@@ -72,7 +72,7 @@ exports.countTotalAboutToExpiredInspectionsOfAllCentre = async (req, res) => {
 }
 
 exports.predictAboutToInspect = async (req, res) => {
-    connection.query(`SELECT COUNT(*) FROM cars WHERE inspected = false`, (err, result, fields) => {
+    connection.query(`SELECT COUNT(*) as total FROM cars WHERE inspected = false`, (err, result, fields) => {
         if (err) {
             return res.status(500).json({
                 status: "Failed",
