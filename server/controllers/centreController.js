@@ -151,7 +151,7 @@ exports.deactivateCentre = (req, res) => {
 
 
 exports.getStaffByCentre = (req, res) => {
-    connection.query(`SELECT * FROM users WHERE centre_id = ${req.params.centre_id}`, (err, result, fields) => {
+    connection.query(`SELECT * FROM users WHERE centre_id = ${req.params.centre_id} AND active = true`, (err, result, fields) => {
 
         if (err) {
             return res.status(500).json({
@@ -161,7 +161,7 @@ exports.getStaffByCentre = (req, res) => {
         } else if (result.length == 0) {
             return res.status(400).json({
                 status: "Failed",
-                error: `Centre with centre_id = ${req.params.centre_id} doesn't exist`
+                error: `Centre with centre_id = ${req.params.centre_id} doesn't exist or centre has no active user`
             })
         }
         else {
