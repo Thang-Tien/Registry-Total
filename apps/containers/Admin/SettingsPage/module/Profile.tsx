@@ -98,7 +98,7 @@ const Profile = () => {
     name: '', address: '', phone: 0, email: '', date_of_birth: '', role: '', ssn: '', centre_id: 0,
   });
   const df = { name: "Thiện pờ rồ", age: 18 }
-  useEffect(() => { console.log(me.centre_id) }, [me])
+  useEffect(() => { console.log(me.date_of_birth) }, [me])
   
   // 
   useEffect(() => {
@@ -132,7 +132,7 @@ const Profile = () => {
     };
 
     fetchData();
-  }, []);
+  }, [me.centre_id]);
 
   const openErrorNotification = (message) => {
     notificationApi["error"]({
