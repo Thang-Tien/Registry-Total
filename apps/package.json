@@ -24,18 +24,21 @@
     "eslint-config-next": "^13.4.19",
     "eslint-plugin-prettier": "^5.0.0",
     "json-bigint": "^1.0.0",
+    "jsonwebtoken": "^9.0.2",
     "next": "^14.0.3",
     "next-transpile-modules": "^10.0.1",
     "postgres": "^3.4.0",
     "protocol": "*",
     "react": "18.2.0",
+    "react-auth-kit": "^3.0.0-alpha.44",
     "react-dom": "18.2.0",
     "react-dropzone": "^14.2.3",
     "react-highlight-words": "^0.20.0",
     "react-icons": "^4.12.0",
     "react-router-dom": "^6.21.1",
     "react-tooltip": "^5.21.1",
-    "swr": "^2.2.4"
+    "swr": "^2.2.4",
+    "validate-date": "^2.1.0"
   },
   "devDependencies": {
     "@types/node": "20.4.4",
