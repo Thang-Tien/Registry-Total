@@ -1,7 +1,6 @@
 import { Column } from "@ant-design/plots";
 import { Card, Col, Row, Select, Skeleton, Space } from "antd";
 import { useEffect, useState } from "react";
-import { useAuthHeader } from "react-auth-kit";
 
 const now = new Date();
 const yearOptions = [];
@@ -19,7 +18,6 @@ map.set("Miền Trung", area2);
 map.set("Miền Nam", area3);
 
 const ColumnChart = () => {
-  const authHeader = useAuthHeader();
   const [items, setItems] = useState([]);
   const [year, setYear] = useState(now.getFullYear());
   const [loading, setLoading] = useState(false);

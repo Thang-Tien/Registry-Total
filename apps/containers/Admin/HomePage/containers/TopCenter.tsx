@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { DoubleRightOutlined } from "@ant-design/icons";
 import { IoPlayForwardOutline } from "react-icons/io5";
@@ -11,7 +11,42 @@ interface DataType {
   count: number;
 }
 
-const TopCenter = () => {
+export default function TopCenter() {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+
+  useEffect(() => {
+    setLoading(true);
+
+    const getData = async () => {
+      await delay(2400);
+
+      try {
+        const response = await fetch(
+          `http://fall2324w3g10.int3306.freeddns.org/api/v1/centres/most_inspects`
+        );
+        if (!response.ok) throw new Error("Fail to get data");
+
+        const tmp = await response.json();
+        const tmpData: DataType[] = [];
+        tmp.data.forEach((e) => {
+          tmpData.push({
+            key: `${e.centre_id}`,
+            center: e.name,
+            count: e.total_inspection,
+          });
+        });
+        setData(tmpData);
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        console.log(error);
+      }
+    };
+    getData();
+  }, []);
+
   const columns: ColumnType<DataType>[] = [
     {
       title: "Tên trung tâm",
@@ -43,19 +78,11 @@ const TopCenter = () => {
     },
   ];
 
-  const tableData: DataType[] = [];
-  for (let i = 0; i < 5; i++) {
-    tableData.push({
-      key: `${i}`,
-      center: `Trung tâm đăng kiểm ${i}`,
-      count: i,
-    });
-  }
-
   return (
     <Table
       title={() => "Những trung tâm đăng kiểm nhiều nhất"}
       bordered
+      loading={loading}
       footer={() => (
         <Link
           href="/centers"
@@ -71,11 +98,9 @@ const TopCenter = () => {
         </Link>
       )}
       columns={columns}
-      dataSource={tableData}
+      dataSource={data == null ? [] : data}
       pagination={false}
       scroll={{ x: 550 }}
     />
   );
-};
-
-export default TopCenter;
+}

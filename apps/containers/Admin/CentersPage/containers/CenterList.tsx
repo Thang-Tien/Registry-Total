@@ -1,5 +1,5 @@
 import { Avatar, List, Select } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import image from "../../../../public/image/centre.png";
 import Link from "next/link";
 import Flex from "@/modules/ui/components/Flex";
@@ -28,18 +28,23 @@ const CenterList = (props) => {
   const [provinceOptions, setProvinceOptions] = useState([]);
   const [dataSource, setDataSource] = useState([]);
 
-  const data: DataType[] = [];
-  for (let i = 0; i < 100; i++) {
-    data.push({
-      id: i,
-      name: `Trung tâm đăng kiểm ${i}`,
-      address: `${i % 10}`,
-    });
-  }
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await fetch("http://fall2324w3g10.int3306.freeddns.org/api/v1/centres");
+        const data = await response.json();
+        setCentres(data.data);
+
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getData();
+  },[centres]);
 
   return (
     <div>
-      <Flex.Row gap="20px" style={{marginBottom: "20px" }}>
+      <Flex.Row gap="20px" style={{ marginBottom: "20px" }}>
         <Flex.Cell>
           <Select
             value={side}
@@ -130,7 +135,7 @@ const CenterList = (props) => {
       </Flex.Row>
       <List
         pagination={{ align: "center" }}
-        dataSource={data}
+        dataSource={centres}
         style={{
           backgroundColor: "white",
           borderRadius: "6px",
@@ -138,7 +143,7 @@ const CenterList = (props) => {
         }}
         renderItem={(item) => (
           <List.Item
-            actions={[<Link href={`/centers/${item.id}`}>Xem chi tiết</Link>]}
+            actions={[<Link href={`/centers/${item.centre_id}`}>Xem chi tiết</Link>]}
           >
             <List.Item.Meta
               avatar={<Avatar src={image.src} />}

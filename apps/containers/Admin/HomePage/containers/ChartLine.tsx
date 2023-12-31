@@ -1,65 +1,57 @@
 "use client";
 
 import { Card } from "antd";
-import { Column, Line } from "@ant-design/plots";
-import React from "react";
+import { Column } from "@ant-design/plots";
+import React, { useEffect, useState } from "react";
 
-const ChartLine: React.FC = () => {
-  const data = [
-    {
-      count: 897,
-      monthYear: "8/2022",
-    },
-    {
-      count: 942,
-      monthYear: "9/2022",
-    },
-    {
-      count: 1118,
-      monthYear: "10/2022",
-    },
-    {
-      count: 1266,
-      monthYear: "11/2022",
-    },
-    {
-      count: 1605,
-      monthYear: "12/2022",
-    },
-    {
-      count: 743,
-      monthYear: "1/2023",
-    },
-    {
-      count: 862,
-      monthYear: "2/2023",
-    },
-    {
-      count: 737,
-      monthYear: "3/2023",
-    },
-    {
-      count: 796,
-      monthYear: "4/2023",
-    },
-    {
-      count: 371,
-      monthYear: "5/2023",
-    },
-    {
-      count: 13,
-      monthYear: "6/2023",
-    },
-    {
-      count: 1,
-      monthYear: "9/2023",
-    },
-  ];
+interface DataType{
+  count: number,
+  monthYear: string
+}
+
+export default function ChartLine() {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const delay = ms => new Promise(res => setTimeout(res, ms));
+
+  useEffect(() => {
+    setLoading(true);
+    const getData = async () => {
+      await delay(3000)
+      try {
+
+        const date = new Date();
+        const year = date.getFullYear();
+
+        const response = await fetch(
+          `http://fall2324w3g10.int3306.freeddns.org/api/v1/inspections/stat/all_centre/count/by_year?year=${year}`
+        );
+        if(!response.ok) throw new Error("Fail to get data");
+
+        const tmp = await response.json();
+        const tmpData: DataType[]  = [];
+
+        tmp.data.forEach(e => {
+          tmpData.push({
+            count: e.total,
+            monthYear: `${e.month}/${year}`
+          })
+        });
+        setData(tmpData);
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        console.log(error);
+      }
+    };
+    getData();
+  }, []);
+
   return (
     <div style={{ width: "calc((100vw - 256px - 64px - 100px) /3 * 2)" }}>
-      <Card title="Thống kê" style={{width: "inherit"}}>
+      <Card title="Thống kê" style={{ width: "inherit" }} loading = {loading}>
         <Column
-          data={data}
+          data={data == null ? [] : data}
           xField="monthYear"
           yField="count"
           height={250}
@@ -88,6 +80,4 @@ const ChartLine: React.FC = () => {
       </Card>
     </div>
   );
-};
-
-export default ChartLine;
+}

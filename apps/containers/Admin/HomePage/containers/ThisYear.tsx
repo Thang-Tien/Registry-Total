@@ -1,6 +1,6 @@
 import cx from "classnames";
 import styles from "./index.module.scss";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Card, Statistic } from "antd";
 import imge from "../../../../public/image/grow-2.svg";
 import Image from "next/image";
@@ -11,10 +11,44 @@ export type Props = {
 };
 
 export default function ThisYear({ className, style }: Props) {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+
+  useEffect(() => {
+    setLoading(true);
+
+    const getData = async () => {
+      await delay(1700);
+      try {
+        const date = new Date();
+        const year = date.getFullYear();
+        const response = await fetch(
+          `http://fall2324w3g10.int3306.freeddns.org/api/v1/inspections/stat/all_centre/count?year=${year}`
+        );
+        if (!response.ok) throw new Error("Fail to get data");
+
+        const tmp = await response.json();
+        setData(tmp.data);
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        console.log(error);
+      }
+    };
+    getData();
+  }, []);
+
   return (
     <div className={cx(className, styles.container)} style={style}>
-      <Card style={{ width: "calc((100vw - 256px - 64px - 60px) / 4)" }}>
-        <Statistic title={"Đăng kiểm trong năm nay"} value={3523} />
+      <Card
+        style={{ width: "calc((100vw - 256px - 64px - 60px) / 4)" }}
+        loading={loading}
+      >
+        <Statistic
+          title={"Đăng kiểm trong năm nay"}
+          value={data == null ? 0 : data.total}
+        />
         <div
           style={{
             display: "flex",
