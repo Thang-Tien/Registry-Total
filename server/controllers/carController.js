@@ -1,5 +1,7 @@
 const connection = require("../config/DBConnection");
 const utils = require("../utils/utils");
+const xlsxToJson = require('../utils/xlsx')
+
 
 exports.getAllNumberPlateAndRegistrationNumber = (req, res) => {
     let queryString = utils.generateQueryString(req.query);
@@ -90,9 +92,6 @@ exports.getCarAndOwnerPerID = (req, res) => {
         }
     );
 };
-const connection = require('../config/DBConnection')
-const utils = require('../utils/utils')
-const xlsxToJson = require('../utils/xlsx')
 
 exports.getCarFromId = async (req, res) => {
     connection.query('SELECT * FROM cars WHERE car_id = ?', req.params.carId, (err, result, fields) => {

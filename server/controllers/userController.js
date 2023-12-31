@@ -2,7 +2,6 @@ const connection = require('../config/DBConnection')
 const utils = require('../utils/utils')
 const bcrypt = require('bcrypt')
 const sendEmail = require('../utils/email')
-const { connect } = require('../routes/centreRoute')
 
 exports.getUser = (req, res) => {
     let queryString = utils.generateQueryString(req.query);
