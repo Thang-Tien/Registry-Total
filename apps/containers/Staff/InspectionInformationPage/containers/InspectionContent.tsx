@@ -13,6 +13,8 @@ import {
     CheckOutlined,
     CloseOutlined,
 } from "@ant-design/icons";
+import InspectionPDF from "./InspectionPDF";
+
 const { Item } = Descriptions;
 
 export type Props = {
@@ -327,13 +329,7 @@ const InspectionContent: React.FC<Props> = ({ inspectionId }) => {
             }}
         >
             <Collapse items={data} defaultActiveKey={"inspection"} accordion />
-            <Button
-                type="primary"
-                style={{ marginTop: "12px", alignSelf: "center" }}
-                size="large"
-            >
-                <DownloadOutlined /> Tải xuống đăng kiểm
-            </Button>
+            <InspectionPDF inspectionData={inspectionData} />
         </div>
     );
 };
