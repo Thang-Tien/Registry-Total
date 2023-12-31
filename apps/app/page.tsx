@@ -1,14 +1,19 @@
-  "use client";
-  import AuthenticationPage from "../containers/Admin/Authentication";
-  import HomePage from "../containers/Admin/HomePage";
-  import "modules/ui/styles/page.css"
-  import SettingsPage from "../containers/Admin/SettingsPage";
+"use client";
+import { use, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import AuthenticationPage from "../containers/Staff/Authentication";
+import HomePage from "../containers/Staff/HomePage";
 
+export default function RouteToHomePage() {
+    const router = useRouter();
 
-  export default function RouteToHomePage() {
-    return <div>
-      {/* <SettingsPage mode = "profile"/> */}
-      <AuthenticationPage/>
-      {/* <HomePage/> */}
-      </div>
-  }
+    useEffect(() => {
+        router.push("/auth");
+    }, []);
+    // const pushAuth = () => {
+    //     router.push("/auth");
+    // };
+
+    // pushAuth();
+    return <div></div>;
+}

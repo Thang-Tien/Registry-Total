@@ -8,9 +8,10 @@
     "lint:fix": "next lint --fix --dir ."
   },
   "dependencies": {
-    "@ant-design/plots": "^1.2.5",
+    "@ant-design/plots": "^1.2.6",
     "@blockfrost/blockfrost-js": "^5.4.0",
     "@next/font": "^13.4.19",
+    "@react-pdf/renderer": "^3.1.14",
     "@tiptap/extension-bold": "^2.1.12",
     "@tiptap/extension-heading": "^2.1.10",
     "@tiptap/extension-image": "^2.1.10",
@@ -32,7 +33,9 @@
     "react-auth-kit": "^3.0.0-alpha.44",
     "react-dom": "18.2.0",
     "react-dropzone": "^14.2.3",
+    "react-highlight-words": "^0.20.0",
     "react-icons": "^4.12.0",
+    "react-router-dom": "^6.21.1",
     "react-tooltip": "^5.21.1",
     "swr": "^2.2.4",
     "validate-date": "^2.1.0"

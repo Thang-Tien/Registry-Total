@@ -47,7 +47,6 @@ exports.generateErrorQueryValue = (query) => {
     let errorValueString = ''
     for (let key in query) {
         if (key != 'limit') errorValueString += `${key} = ${query[key]}, `
-
     }
     errorValueString = errorValueString.substring(0, errorValueString.length - 2)
     return errorValueString
