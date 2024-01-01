@@ -2,7 +2,7 @@
 
 import cx from "classnames";
 import styles from "./index.module.scss";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Flex from "@/modules/ui/components/Flex";
 import NavBar from "../NavBar";
 import CenterCreate from "./containers/CenterCreate";
@@ -14,6 +14,9 @@ export type Props = {
 };
 
 export default function CenterPage({ className, style }: Props) {
+  const [loading, setLoading] = useState(false);
+  const [address, setAddress] = useState([]);
+
   useEffect(() => {
     document.title = "Tất cả trung tâm";
   }, []);
@@ -29,12 +32,12 @@ export default function CenterPage({ className, style }: Props) {
             overflow: "auto",
             display: "flex",
             justifyContent: "center",
-            padding: "100px 0"
+            padding: "100px 0",
           }}
         >
-          <Flex.Col style={{width:"640px"}}>
-            <CenterCreate />
-            <CenterList />
+          <Flex.Col style={{ width: "640px" }}>
+            <CenterCreate address={address} loading={loading} />
+            <CenterList setLoading={setLoading} setAddress={setAddress} />
           </Flex.Col>
         </div>
       </Flex.Row>

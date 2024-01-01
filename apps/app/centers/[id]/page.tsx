@@ -5,7 +5,7 @@ import CenterProfile from "../../../containers/Admin/CentersPage/containers/Cent
 export default function RouteToCenterID({params}: {params: {id: string}}) {
   return (
     <div>
-        <CenterProfile centerId = {1} />
+        <CenterProfile centerId = {Number(params.id)} />
     </div>
   );
 }

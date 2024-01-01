@@ -12,7 +12,7 @@ interface DataType {
 }
 
 export default function TopCenter() {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState([] as any);
   const [loading, setLoading] = useState(false);
   const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
@@ -98,7 +98,7 @@ export default function TopCenter() {
         </Link>
       )}
       columns={columns}
-      dataSource={data == null ? [] : data}
+      dataSource={data}
       pagination={false}
       scroll={{ x: 550 }}
     />

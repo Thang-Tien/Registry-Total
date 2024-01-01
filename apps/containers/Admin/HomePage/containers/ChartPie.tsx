@@ -4,13 +4,8 @@ import { Card } from "antd";
 import { Pie } from "@ant-design/plots";
 import React, { useEffect, useState } from "react";
 
-interface DataType {
-  type: string;
-  value: number;
-}
-
 export default function ChartPie() {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState([] as any);
   const [loading, setLoading] = useState(false);
   const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
@@ -23,26 +18,34 @@ export default function ChartPie() {
       try {
         const date = new Date();
         const year = date.getFullYear();
-        const month = date.getMonth() + 1;
-        const response = await fetch(
-          `http://fall2324w3g10.int3306.freeddns.org/api/v1/inspections/stat/all_centre/count/by_year?year=${year}`
+        const month = 12;
+        let response = await fetch(
+          `http://fall2324w3g10.int3306.freeddns.org/api/v1/inspections/stat/all_centre/count/by_year?year=${2023}`
         );
         if (!response.ok) throw new Error("Fail to get data");
 
-        const tmp = await response.json();
-        let expired = Math.round(Math.random() * 50),
-          newly = Math.round(Math.random() * 50),
-          abExpired = Math.round(Math.random() * 50);
-
+        let tmp = await response.json();
+        let expired = 0,
+          newly = 0,
+          abExpired = 0;
+        
         tmp.data.forEach((e) => {
           if (e.month <= month) {
-            if (month - e >= 6) expired += e.count;
-            if (month - e == 1) abExpired += e.count;
-            if (month - e == 0) newly += e.count;
+            console.log(e.count);
+            if (month - e.month >= 8) expired += e.total;
+            else if (month - e.month == 0) newly += e.total;
+            else if (month - e.month <= 2) abExpired += e.total;
           }
         });
 
-        const tmpData: DataType[] = [];
+        response = await fetch(
+          `http://fall2324w3g10.int3306.freeddns.org/api/v1/inspections/stat/all_centre/prediction/about_to_inspect`
+        );
+        if (!response.ok) throw new Error("Fail to get data");
+        tmp = await response.json();
+
+        newly += Math.round(tmp.data.total / 100);
+        const tmpData: any[] = [];
         tmpData.push({
           type: "Đã hết hạn",
           value: expired,
@@ -55,7 +58,6 @@ export default function ChartPie() {
           type: "Mới (dự đoán)",
           value: newly,
         });
-
         setData(tmpData);
         setLoading(false);
       } catch (error) {
@@ -71,10 +73,11 @@ export default function ChartPie() {
       <Card
         title="Trong tháng này"
         style={{ width: "calc((100vw - 256px - 64px -100px)/3)" }}
+        loading={loading}
       >
         <Pie
           appendPadding={10}
-          data={data == null ? [] : data}
+          data={data}
           angleField="value"
           colorField="type"
           radius={0.75}

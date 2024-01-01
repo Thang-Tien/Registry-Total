@@ -2,22 +2,34 @@ import { ConfigProvider, Table, Input, Space, Button, DatePicker } from "antd";
 import classes from "./InspectionTable.module.scss";
 import { DoubleRightOutlined, SearchOutlined } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 
 const { RangePicker } = DatePicker;
 
-const processDate = (date) => {
-  if (!date) return;
-  const [month, day, year] = new Date(date).toLocaleDateString().split("/");
-  return [day.padStart(2, "0"), month.padStart(2, "0"), year].join("/");
-};
-
 const InspectionTable = (props) => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState([] as any);
+  const [loading, setLoading] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
+  const delay = (ms) => new Promise((res) => setTimeout(res, ms));
   const searchInput = useRef(null);
+
+  function formatDate(s: string) {
+    let value = s.split("-");
+    let day = value[2].split("T")[0];
+    return `${day}/${value[1]}/${value[0]}`;
+  }
+
+  const compareDates = (a: string, b: string): number => {
+    let tmp = a.split("/");
+    const dateA = new Date(`${tmp[2]}/${tmp[1]}/${tmp[0]}`);
+    tmp = b.split("/");
+    const dateB = new Date(`${tmp[2]}/${tmp[1]}/${tmp[0]}`);
+    if (dateA < dateB) return -1;
+    if (dateA > dateB) return +1;
+    return 0;
+  };
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -64,7 +76,7 @@ const InspectionTable = (props) => {
             format="DD-MM-YYYY"
             value={selectedKeys[0]}
             onChange={(e) => {
-              if(e!==null) setSelectedKeys(e.length ? [e] : []);
+              if (e !== null) setSelectedKeys(e.length ? [e] : []);
             }}
           />
           <Space size="middle" style={{ margin: "auto" }}>
@@ -108,8 +120,9 @@ const InspectionTable = (props) => {
       >
         <Input
           ref={searchInput}
-          placeholder={`Tìm kiếm ${dataIndex === "inspectionNumber" ? "số đăng kiểm" : "biển số xe "
-            }`}
+          placeholder={`Tìm kiếm ${
+            dataIndex === "inspectionNumber" ? "số đăng kiểm" : "biển số xe "
+          }`}
           value={selectedKeys[0]}
           onChange={(e) =>
             setSelectedKeys(e.target.value ? [e.target.value] : [])
@@ -153,7 +166,7 @@ const InspectionTable = (props) => {
       record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
     onFilterDropdownOpenChange: (visible) => {
       if (visible) {
-        setTimeout(() => searchInput.current?.select(), 100);
+        setTimeout(() => (searchInput.current as any)?.select(), 100);
       }
     },
     render: (text) =>
@@ -172,17 +185,39 @@ const InspectionTable = (props) => {
       ),
   });
 
-  const testData = [];
-  for (let index = 0; index < 100; index++) {
-    data.push({
-      key: index,
-      inspectionNumber: index,
-      numberPlate: index,
-      inspectionDate: new Date(),
-      expiredDate: new Date(),
-    })
-  }
-  setData(testData);
+  useEffect(() => {
+    setLoading(true);
+    const getData = async () => {
+      await delay(1500);
+      try {
+        const response = await fetch(
+          `http://fall2324w3g10.int3306.freeddns.org/api/v1/inspections?centre_id=${props.centerId}`
+        );
+        if (!response.ok) throw new Error("Fail to get data");
+
+        const tmp = await response.json();
+        const tmpData: any[] = [];
+        console.log(tmp.data);
+
+        tmp.data.forEach((e) => {
+          tmpData.push({
+            key: e.inspection_id,
+            inspectionNumber: e.inspection_number,
+            numberPlate: `15A6-${e.inspection_id}`,
+            inspectionDate: formatDate(e.inspection_date),
+            expiredDate: formatDate(e.expired_date),
+          });
+        });
+
+        setData(tmpData);
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        console.log(error);
+      }
+    };
+    getData();
+  }, []);
 
   const columns = [
     {
@@ -207,8 +242,8 @@ const InspectionTable = (props) => {
       dataIndex: "inspectionDate",
       key: "inspectionDate",
       align: "center",
-      render: (text) => processDate(text),
-      sorter: (a, b) => new Date(a.inspectionDate).valueOf() - new Date(b.inspectionDate).valueOf(),
+      render: (text) => text,
+      sorter: (a, b) => compareDates(a.inspectionDate,b.inspectionDate),
       sortDirections: ["ascend"],
       showSorterTooltip: false,
       ...getColumnDateFilterProps("inspectionDate"),
@@ -218,8 +253,8 @@ const InspectionTable = (props) => {
       dataIndex: "expiredDate",
       key: "expiredDate",
       align: "center",
-      render: (text) => processDate(text),
-      sorter: (a, b) => new Date(a.expiredDate).valueOf() - new Date(b.expiredDate).valueOf(),
+      render: (text) => text,
+      sorter: (a, b) => compareDates(a.expiredDate,b.expiredDate),
       sortDirections: ["descend", "ascend"],
       showSorterTooltip: false,
       ...getColumnDateFilterProps("expiredDate"),
@@ -239,14 +274,6 @@ const InspectionTable = (props) => {
     },
   ];
 
-  const tableData = data.map((d) => {
-    return {
-      key: d.id,
-      ...d,
-      numberPlate: d.car.numberPlate,
-    };
-  });
-
   return (
     <ConfigProvider
       theme={{
@@ -258,9 +285,10 @@ const InspectionTable = (props) => {
     >
       <Table
         title={() => `Tổng số xe đã đăng kiểm: ${data.length}`}
-        columns={columns}
+        loading={loading}
+        columns={columns as any}
         className={classes.table}
-        dataSource={tableData}
+        dataSource={data}
         pagination={{
           position: ["bottomCenter"],
         }}

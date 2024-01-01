@@ -1,12 +1,24 @@
-import { Form, Modal, Input, Select } from "antd";
+import { Form, Modal, Input, Select, notification } from "antd";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const CenterCreateModal = (props) => {
   const [form] = Form.useForm();
   const [submitting, setSubmitting] = useState(false);
+  const [api, contextHolder] = notification.useNotification();
+  const router = useRouter();
+  const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+
+  const openNotification = (type, message, description) => {
+    api[type]({
+      message: message,
+      description: description,
+    });
+  };
 
   return (
     <>
+      {contextHolder}
       <Modal
         title={
           props.mode === "edit"
@@ -18,6 +30,7 @@ const CenterCreateModal = (props) => {
           props.setOpen(false);
         }}
         open={props.open}
+        okButtonProps={{ loading: submitting }}
         okText={
           submitting
             ? props.mode === "edit"
@@ -28,10 +41,64 @@ const CenterCreateModal = (props) => {
             : "Tạo trung tâm"
         }
         cancelText="Hủy"
-        onOk={() => {
+        cancelButtonProps={{ disabled: submitting }}
+        onOk={async () => {
           setSubmitting(true);
-          form.validateFields();
-          setSubmitting(false);
+          await delay(1500);
+          try {
+            const res = await form.validateFields();
+
+            let newCenter = {
+              name: `${
+                props.mode === "edit"
+                  ? res.name
+                  : `Trung tâm đăng kiểm ${res.name.trim()}`
+              }`,
+              address: `${res.address}`,
+              phone: `${res.phone}`,
+              email: `${res.email}`,
+            };
+            let centerData = JSON.stringify(newCenter);
+            const response = await fetch(
+              `http://fall2324w3g10.int3306.freeddns.org/api/v1/centres/${
+                props.mode === "edit" ? "update" : "add"
+              }_centre${props.mode === "edit" ? `/${props.centerId}` : ""}`,
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: centerData,
+              }
+            );
+
+            const tmp = await response.json();
+            if (!response.ok) {
+              const message = res.message
+                .replace("name", "Tên trung tâm")
+                .replace("slug", "Tên trung tâm")
+                .replace("phone", "Số điện thoại");
+              openNotification(
+                "error",
+                "Lỗi",
+                message.charAt(0).toUpperCase().concat(message.slice(1))
+              );
+              throw new Error("Failed");
+            }
+            if (props.mode === "edit") {
+              props.setCenterName(newCenter.name);
+              props.setCenterAddress(newCenter.address);
+              props.setCenterPhone(newCenter.phone);
+              props.setCenterEmail(newCenter.email);
+            }
+            setSubmitting(false);
+            form.resetFields();
+            props.setOpen(false);
+          } catch (error) {
+            setSubmitting(false);
+            props.setOpen(false);
+            console.log(error);
+          }
         }}
       >
         <Form
@@ -70,7 +137,14 @@ const CenterCreateModal = (props) => {
               },
             ]}
           >
-            <Select showSearch allowClear placeholder="Chọn tỉnh/thành phố" />
+            <Select
+              showSearch
+              allowClear
+              placeholder="Chọn tỉnh/thành phố"
+              options={props.addressList.map((address) => {
+                return { value: address, title: address };
+              })}
+            />
           </Form.Item>
           <Form.Item
             name="phone"
@@ -95,9 +169,6 @@ const CenterCreateModal = (props) => {
             ]}
           >
             <Input maxLength={100} allowClear />
-          </Form.Item>
-          <Form.Item name="description" label="Mô tả">
-            <Input.TextArea rows={4} />
           </Form.Item>
         </Form>
       </Modal>

@@ -11,7 +11,7 @@ export type Props = {
 };
 
 export default function Total({ className, style }: Props) {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState(0 as any);
   const [loading, setLoading] = useState(false);
   const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
@@ -47,7 +47,7 @@ export default function Total({ className, style }: Props) {
       >
         <Statistic
           title={"Tổng số lượng đăng kiểm"}
-          value={data === null ? 0 : data.total}
+          value={data.total}
         />
         <div
           style={{

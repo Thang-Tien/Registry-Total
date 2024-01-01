@@ -11,14 +11,15 @@ const CenterCreate = (props) => {
   return (
     <div style={{ marginBottom: "20px" }}>
       <CenterCreateModal
-        provinces={props.provinces}
+        addressList={props.address}
         setOpen={setOpenModal}
         open={openModal}
         mode="add"
       />
       <Button.Float
         onClick={() => setOpenModal(true)}
-        style={{ border: "1px dashed", borderRadius: "20px", height: "30px" }}
+        style={{ border: "0.3px dashed", borderRadius: "20px", height: "30px" }}
+        disabled = {props.loading}
       >
         <Flex.Row alignItems="center" gap="6px">
           <IoAddCircleOutline />

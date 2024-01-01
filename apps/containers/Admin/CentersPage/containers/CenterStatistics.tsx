@@ -1,7 +1,7 @@
-import StaffColumnChart from "../../Statistics/StaffColumnChart";
+import ColumnChartAdmin from "../../Statistics/ColumnChartAdmin";
 
 const CentreStatistics = (props) => {
-  return <StaffColumnChart centreId={props.centreId} />;
+  return <ColumnChartAdmin centerId={props.centerId} />;
 };
 
 export default CentreStatistics;

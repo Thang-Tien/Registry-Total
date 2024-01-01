@@ -4,7 +4,7 @@ import imge from "../../../../public/image/check-3.svg";
 import Image from "next/image";
 
 export default function Centers() {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const delay = ms => new Promise(res => setTimeout(res, ms));
 
@@ -22,8 +22,6 @@ export default function Centers() {
         const tmp = await response.json();
         setData(tmp.data);
         setLoading(false);
-        console.log(tmp.data);
-
       } catch (error) {
         setLoading(false);
         console.log(error);
@@ -39,7 +37,7 @@ export default function Centers() {
     >
       <Statistic
         title={"Số lượng các trung tâm đăng kiểm"}
-        value={data == null ? 0 : data.length}
+        value={data.length}
       />
       <div
         style={{

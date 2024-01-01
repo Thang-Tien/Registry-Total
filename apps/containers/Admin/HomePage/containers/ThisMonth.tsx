@@ -5,7 +5,7 @@ import Image from "next/image";
 
 export default function ThisMonth() {
 
-  const [data, setData] = useState(null);
+  const [data, setData] = useState(0 as any);
   const [loading, setLoading] = useState(false);
   const delay = ms => new Promise(res => setTimeout(res, ms));
 
@@ -19,7 +19,7 @@ export default function ThisMonth() {
         const month = date.getMonth() + 1;
         const year = date.getFullYear();
         const response = await fetch(
-          `http://fall2324w3g10.int3306.freeddns.org/api/v1/inspections/stat/all_centre/count?month=${month}&year=${year}`
+          `http://fall2324w3g10.int3306.freeddns.org/api/v1/inspections/stat/all_centre/count?month=${12}&year=${2023}`
         );
         if (!response.ok) throw new Error("Fail to get data");
 
@@ -42,7 +42,7 @@ export default function ThisMonth() {
     >
       <Statistic
         title={"Đăng kiểm trong tháng này"}
-        value={data == null ? 0 : data.total}
+        value={data.total}
       />
       <div
         style={{
