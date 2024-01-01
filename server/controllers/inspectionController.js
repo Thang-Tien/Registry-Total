@@ -107,6 +107,29 @@ exports.countInspectionOfACentre = (req, res) => {
         })
 }
 
+exports.countInspectionOfACentreEveryMonth = (req, res) => {
+    let queryString = utils.generateQueryStringWithDate(
+        req.query,
+        "inspection_date"
+    );
+    console.log(queryString)
+    connection.query(`SELECT COUNT(*) AS total, MONTH(inspection_date) AS month FROM inspections WHERE centre_id = ${req.params.centre_id} AND ${queryString ? queryString : 1} GROUP BY month`,
+        utils.getQueryValue(req.query),
+        (err, result, fields) => {
+            if (err) {
+                return res.status(500).json({
+                    status: "Failed",
+                    error: err,
+                });
+            } else {
+                return res.status(200).json({
+                    status: "Success",
+                    data: result
+                })
+            }
+        })
+}
+
 exports.countInspectionsOfAllCentreByYear = async (req, res) => {
     let queryString = utils.generateQueryStringWithDate(req.query, 'inspection_date')
     connection.query(`SELECT MONTH(inspection_date) AS month, COUNT(*) AS total FROM inspections WHERE ${queryString ? queryString : 1} GROUP BY MONTH(inspection_date)`, 

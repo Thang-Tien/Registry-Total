@@ -10,7 +10,10 @@ router.get('/stat/all_centre/count/',
 
 router.get('/stat/:centre_id/count/',
     inspectionController.countInspectionOfACentre)
-    
+
+router.get('/stat/:centre_id/count/every_month',
+    inspectionController.countInspectionOfACentreEveryMonth)
+
 router.get('/stat/all_centre/count/by_year',
     inspectionController.countInspectionsOfAllCentreByYear)
 
