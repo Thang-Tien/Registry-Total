@@ -194,7 +194,7 @@ exports.searchCar = (req, res) => {
 }
 
 exports.getOwner = (req, res) => {
-    connection(`SELECT * FROM car_owners WHERE owner_id = ${req.query.owner_id}`, (err, result, fields) => {
+    connection.query(`SELECT * FROM car_owners WHERE owner_id = ${req.query.owner_id}`, (err, result, fields) => {
         if (err) {
             return res.status(500).json({
                 status: "Failed",
