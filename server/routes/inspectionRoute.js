@@ -10,6 +10,9 @@ router.get('/stat/all_centre/count/',
 
 router.get('/stat/:centre_id/count/',
     inspectionController.countInspectionOfACentre)
+    
+router.get('/stat/all_centre/count/by_year',
+    inspectionController.countInspectionsOfAllCentreByYear)
 
 router.get('/stat/all_centre/count/expired',
     inspectionController.countTotalExpiredInspectionsOfAllCentre)
