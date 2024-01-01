@@ -189,7 +189,7 @@ exports.searchInspection = (req, res) => {
                     message: `Can't find inspection with inspection_number = ${req.query.inspection_number}`,
                 });
             } else {
-                return res.status(500).json({
+                return res.status(200).json({
                     status: "Success",
                     data: result.sort((a, b) => {
                         let i = a.inspection_number.indexOf(req.query.inspection_number)
