@@ -17,7 +17,7 @@ const ChangePassword = () => {
     notification.useNotification();
   const [messageApi, messageContextHolder] = message.useMessage();
   const [isChanging, setIsChanging] = useState(false);
- 
+  
 
   useEffect(() => {
     document.title = "Thay đổi mật khẩu";
@@ -40,18 +40,22 @@ const ChangePassword = () => {
 
   const onFinish = async (values) => {
     try {
+      if (values.newpassword != values.confirm) {
+        openErrorNotification();
+        throw new Error("Password confirm doesn't match ....");
+      }
+
       const data = {
-        passwordCurrent: values.password,
-        password: values.newpassword,
-        passwordConfirm: values.confirm,
+        currentPassword: values.password,
+        newPassword: values.confirm,
       };
 
       setIsChanging(true);
 
       const response = await fetch(
-        `http://localhost:8000/api/v1/users/updatePassword`,
+        `http://localhost:8000/api/v1/users/change-password`,
         {
-          method: "PATCH",
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: "Bearer " + localStorage.getItem("accessToken"),
@@ -59,7 +63,9 @@ const ChangePassword = () => {
           body: JSON.stringify(data),
         }
       );
-
+      
+      const tmp = await response.json();
+      console.log(tmp)
       setIsChanging(false);
 
       if (!response.ok) {
