@@ -85,7 +85,7 @@ exports.predictAboutToInspect = async (req, res) => {
     );
 };
 
-exports.countInspectionOfACentre = (req, res) => {
+exports.countInspectionsOfACentre = (req, res) => {
     let queryString = utils.generateQueryStringWithDate(
         req.query,
         "inspection_date"
@@ -107,7 +107,7 @@ exports.countInspectionOfACentre = (req, res) => {
         })
 }
 
-exports.countInspectionOfACentreEveryMonth = (req, res) => {
+exports.countInspectionsOfACentreEveryMonth = (req, res) => {
     let queryString = utils.generateQueryStringWithDate(
         req.query,
         "inspection_date"
@@ -127,6 +127,27 @@ exports.countInspectionOfACentreEveryMonth = (req, res) => {
                 })
             }
         })
+}
+
+exports.countInspectionsOfAllCentreEveryMonth = (req, res) => {
+    let queryString = utils.generateQueryStringForInspectionsAndCentre(req.query);
+    connection.query(
+        `SELECT COUNT(*) AS total, MONTH(i.inspection_date) as month FROM inspections i INNER JOIN registration_centres r ON i.centre_id = r.centre_id WHERE ${queryString ? queryString : 1} GROUP BY month`,
+        utils.getQueryValue(req.query),
+        (err, result, fields) => {
+            if (err) {
+                return res.status(500).json({
+                    status: "Failed",
+                    error: err,
+                });
+            } else {
+                return res.status(200).json({
+                    status: "Success",
+                    data: result,
+                });
+            }
+        }
+    );
 }
 
 exports.countInspectionsOfAllCentreByYear = async (req, res) => {

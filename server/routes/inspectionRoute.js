@@ -8,11 +8,14 @@ const authController = require('../controllers/authController')
 router.get('/stat/all_centre/count/',
     inspectionController.countInspectionsOfAllCentre)
 
+router.get('/stat/all_centre/count/every_month/',
+    inspectionController.countInspectionsOfAllCentreEveryMonth)
+
 router.get('/stat/:centre_id/count/',
-    inspectionController.countInspectionOfACentre)
+    inspectionController.countInspectionsOfACentre)
 
 router.get('/stat/:centre_id/count/every_month',
-    inspectionController.countInspectionOfACentreEveryMonth)
+    inspectionController.countInspectionsOfACentreEveryMonth)
 
 router.get('/stat/all_centre/count/by_year',
     inspectionController.countInspectionsOfAllCentreByYear)

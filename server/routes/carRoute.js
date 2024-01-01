@@ -10,6 +10,7 @@ const upload = multer({dest: 'uploads/xlsx/'});
 // add queries to filter car (id, model, number_plate)
 router.get('/', carController.getCar)
 router.get('/search', carController.searchCar)
+router.get('/owner', carController.getOwner)
 
 router.post('/upload', upload.single("file"), carController.upload)
 router.get(

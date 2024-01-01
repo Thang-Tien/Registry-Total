@@ -192,3 +192,24 @@ exports.searchCar = (req, res) => {
         }
     })
 }
+
+exports.getOwner = (req, res) => {
+    connection(`SELECT * FROM car_owners WHERE owner_id = ${req.query.owner_id}`, (err, result, fields) => {
+        if (err) {
+            return res.status(500).json({
+                status: "Failed",
+                error: err
+            })
+        } else if (result.length == 0) {
+            return res.status(400).json({
+                status: "Failed",
+                error: `Cannot find car owner with owner_id = ${req.query.owner_id}`
+            })
+        } else {
+            return res.status(200).json({
+                status: "Success",
+                data: result[0]
+            })
+        }
+    })
+}

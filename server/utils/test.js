@@ -41,23 +41,16 @@ const generateQueryFromXlsx = (json) => {
     return query
 }
 
-connection.query(`SELECT * FROM inspections WHERE expired_date < NOW() LIMIT 1000`, (err, result, fields) => {
+connection.query(`SELECT * FROM inspections WHERE 1`, (err, result, fields) => {
     if (err) {
         console.log(err)
 
     } else {
-
-        // console.log(getFieldsFromXlsx(result[0]))
-        // console.log(result[0].inspection_date)
-        // console.log(generateQueryFromXlsx(result))
-        connection.query(`INSERT INTO inspections ${getFieldsFromXlsx(result[0])} VALUES ${generateQueryFromXlsx(result)}`,
-            (err, result, fields) => {
-                if (err) {
-                    console.log(err)
-                } else {
-                    console.log("done")
-                }
-            })
+        connection.query(`INSERT INTO inspections ${getFieldsFromXlsx(result[0])} VALUES ${generateQueryFromXlsx(result)}`, (err, result) => {
+            if (err) console.log(err)
+            else console.log("done")
+        })
     }
 
 })
+
