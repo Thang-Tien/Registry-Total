@@ -12,7 +12,7 @@ router.post('/check-otp', authController.checkOTP)
 router.patch('/reset-password', authController.resetPassword)
 
 router.post('/create_account', userController.createUser)
-router.delete('/delete_account',  userController.deleteUser)
+router.post('/delete_account',  userController.deleteUser)
 router.post('/update_info', userController.changeUserInfo)
 
 router.get('/', userController.getUser)

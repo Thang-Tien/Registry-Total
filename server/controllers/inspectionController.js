@@ -107,7 +107,7 @@ exports.getInspection = (req, res) => {
             } else {
                 return res.status(200).json({
                     status: "Success",
-                    data: result[0],
+                    data: result,
                 });
             }
         }
