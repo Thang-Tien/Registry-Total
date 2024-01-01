@@ -217,8 +217,7 @@ const InspectionContent: React.FC<Props> = ({ inspectionId }) => {
                         {inspectionData.designed_and_authorized_total_mass || 0}
                     </Item>
                     <Item label={"Khối lượng kéo theo TK/CP TGGT"}>
-                        {inspectionData.designed_and_authorized_towing_mass ||
-                            0}
+                        {inspectionData.designed_and_authorized_towed_mass || 0}
                     </Item>
                     <Item label={"Số người cho phép chở"}>
                         {inspectionData.permissible_carry || 0}

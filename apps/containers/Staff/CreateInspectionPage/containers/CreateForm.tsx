@@ -28,7 +28,16 @@ import {
 import Link from "next/link";
 
 const CreateForm: React.FC = () => {
-    const user = { centreID: 1, userID: 19 };
+    const df = { name: "Thiện pờ rồ", age: 18 };
+    const [user, setUser] = useState({
+        user_id: "",
+        centre_id: "",
+        name: "",
+        address: "",
+        phone: 0,
+        email: "",
+        date_of_birth: "",
+    });
     const [current, setCurrent] = useState(0); // current step
     const [error, setError] = useState(false);
     const [found, setFound] = useState(false); // data found or not
@@ -38,6 +47,11 @@ const CreateForm: React.FC = () => {
     const [totalInspection, setTotalInspection] = useState(null);
 
     useEffect(() => {
+        const data =
+            localStorage.getItem("data") === null
+                ? JSON.stringify(df)
+                : localStorage.getItem("data");
+        if (data != null) setUser(JSON.parse(data));
         const fetchNumberPlateData = async () => {
             try {
                 const response = await fetch(
@@ -249,8 +263,8 @@ const CreateForm: React.FC = () => {
         const updatedPostData = {
             ...postData,
             ...updatedValues,
-            centreID: user.centreID,
-            userID: user.userID,
+            centre_id: user.centre_id,
+            user_id: user.user_id,
         };
 
         // Update the state of postData

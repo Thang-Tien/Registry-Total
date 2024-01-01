@@ -121,7 +121,7 @@ const InspectionPDF = ({ inspectionData }) => {
                         Overall Dimension: {inspectionData.overall_dimension}
                     </Text>
                     <Text style={styles.data}>
-                        Inside cargo container dimension{" "}
+                        Inside cargo container dimension:{" "}
                         {inspectionData.container_dimension}
                     </Text>
                     <Text style={styles.data}>
@@ -131,7 +131,7 @@ const InspectionPDF = ({ inspectionData }) => {
                         Kerb Mass: {inspectionData.kerb_mass}
                     </Text>
                     <Text style={styles.data}>
-                        Design/Authorized pay load{" "}
+                        Design/Authorized pay load:{" "}
                         {inspectionData.designed_and_authorized_payload}
                     </Text>
 
