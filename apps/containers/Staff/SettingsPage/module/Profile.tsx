@@ -374,9 +374,9 @@ const Profile = () => {
             };
 
             const response = await fetch(
-              `/api/v1/users/updateMe`,
+              `http://localhost:8000/api/v1/users/update_info`,
               {
-                method: "PATCH",
+                method: "POST",
                 headers: {
                   "Content-Type": "application/json",
                   Authorization: "Bearer " + localStorage.getItem("accessToken"),

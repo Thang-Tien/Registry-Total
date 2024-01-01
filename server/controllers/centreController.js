@@ -37,7 +37,7 @@ exports.centresWithMostInspects = async (req, res) => {
 }
 
 exports.getCentre = (req, res) => {
-    connection.query(`SELECT * FROM registration_centres WHERE active = 1 ${utils.generateQueryString(req.query) ? `AND ${utils.generateQueryString(req.query)}` : 1}`, utils.getQueryValue(req.query),
+    connection.query(`SELECT * FROM registration_centres WHERE ${utils.generateQueryString(req.query) ? utils.generateQueryString(req.query) : 1} AND active = 1`, utils.getQueryValue(req.query),
         (err, result, fields) => {
             if (err) {
                 return res.status(500).json({
