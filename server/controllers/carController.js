@@ -163,3 +163,26 @@ exports.upload = (req, res) => {
             }
         })
 }
+
+
+
+exports.searchCar = (req, res) => {
+    connection.query(`SELECT * FROM cars WHERE number_plate LIKE('%${req.query.number_plate}%')`, (err, result, fields) => {
+        if (err) {
+            return res.status(500).json({
+                status: "Failed",
+                error: err
+            })
+        } else if (result.length == 0) {
+            return res.status(400).json({
+                status: "Failed",
+                error: `Cannot find car with number_plate ${req.query.number_plate}`
+            })
+        } else {
+            return res.status(200).json({
+                status: "Success",
+                data: result.sort()
+            })
+        }
+    })
+}
