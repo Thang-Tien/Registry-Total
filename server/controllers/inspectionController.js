@@ -30,7 +30,7 @@ exports.countInspectionsOfAllCentre = async (req, res) => {
 
 exports.countTotalExpiredInspectionsOfAllCentre = async (req, res) => {
     connection.query(
-        `SELECT COUNT(*) FROM inspections WHERE expired_date < NOW()`,
+        `SELECT COUNT(*) as total FROM inspections WHERE expired_date < NOW()`,
         (err, result, fields) => {
             if (err) {
                 return res.status(500).json({
@@ -68,7 +68,7 @@ exports.countTotalAboutToExpiredInspectionsOfAllCentre = async (req, res) => {
 
 exports.predictAboutToInspect = async (req, res) => {
     connection.query(
-        `SELECT COUNT(*) FROM cars WHERE inspected = false`,
+        `SELECT COUNT(*) as total FROM cars WHERE inspected = false`,
         (err, result, fields) => {
             if (err) {
                 return res.status(500).json({
