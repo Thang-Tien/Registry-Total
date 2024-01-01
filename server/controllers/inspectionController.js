@@ -112,7 +112,6 @@ exports.countInspectionOfACentreEveryMonth = (req, res) => {
         req.query,
         "inspection_date"
     );
-    console.log(queryString)
     connection.query(`SELECT COUNT(*) AS total, MONTH(inspection_date) AS month FROM inspections WHERE centre_id = ${req.params.centre_id} AND ${queryString ? queryString : 1} GROUP BY month`,
         utils.getQueryValue(req.query),
         (err, result, fields) => {
