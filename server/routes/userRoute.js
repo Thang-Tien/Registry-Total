@@ -13,7 +13,7 @@ router.patch('/reset-password', authController.resetPassword)
 
 router.post('/create_account', userController.createUser)
 router.post('/delete_account',  userController.deleteUser)
-router.post('/update_info', userController.changeUserInfo)
+router.post('/update_info', authController.authenticateToken, userController.changeUserInfo)
 
 router.get('/', userController.getUser)
 

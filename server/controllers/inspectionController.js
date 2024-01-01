@@ -9,8 +9,7 @@ exports.countInspectionsOfAllCentre = async (req, res) => {
         "inspection_date"
     );
     connection.query(
-        `SELECT COUNT(*) as total FROM inspections i INNER JOIN registration_centres r ON i.centre_id = r.centre_id WHERE ${
-            queryString ? queryString : 1
+        `SELECT COUNT(*) as total FROM inspections i INNER JOIN registration_centres r ON i.centre_id = r.centre_id WHERE ${queryString ? queryString : 1
         }`,
         utils.getQueryValue(req.query),
         (err, result, fields) => {
@@ -86,6 +85,28 @@ exports.predictAboutToInspect = async (req, res) => {
     );
 };
 
+exports.countInspectionOfACentre = (req, res) => {
+    let queryString = utils.generateQueryStringWithDate(
+        req.query,
+        "inspection_date"
+    );
+    connection.query(`SELECT COUNT(*) AS total FROM inspections WHERE centre_id = ${req.params.centre_id} AND ${queryString}`,
+        utils.getQueryValue(req.query),
+        (err, result, fields) => {
+            if (err) {
+                return res.status(500).json({
+                    status: "Failed",
+                    error: err,
+                });
+            } else {
+                return res.status(200).json({
+                    status: "Success",
+                    total: result[0]
+                })
+            }
+        })
+}
+
 exports.getInspection = (req, res) => {
     let queryString = utils.generateQueryString(req.query);
     connection.query(
@@ -127,9 +148,8 @@ exports.countInspectionsOfEachCentre = async (req, res) => {
     connection.query(
         `SELECT COUNT(*) as total 
                      FROM inspections i 
-                     WHERE ${
-                         queryString ? queryString : 1
-                     } AND i.centre_id = ?`,
+                     WHERE ${queryString ? queryString : 1
+        } AND i.centre_id = ?`,
         [centreID],
         (err, result, fields) => {
             if (err) {
@@ -163,9 +183,8 @@ exports.countInspectionsOfEachCentreThisMonth = async (req, res) => {
     connection.query(
         `SELECT COUNT(*) as total 
                      FROM inspections i  
-                     WHERE ${
-                         queryString ? queryString : 1
-                     } AND i.inspection_date <= LAST_DAY(NOW()) AND i.centre_id = ? AND i.inspection_date >= ?`,
+                     WHERE ${queryString ? queryString : 1
+        } AND i.inspection_date <= LAST_DAY(NOW()) AND i.centre_id = ? AND i.inspection_date >= ?`,
         [centreID, firstDayOfMonth],
         (err, result, fields) => {
             if (err) {
@@ -199,9 +218,8 @@ exports.countInspectionsOfEachCentreThisYear = async (req, res) => {
     connection.query(
         `SELECT COUNT(*) as total 
                      FROM inspections i 
-                     WHERE ${
-                         queryString ? queryString : 1
-                     } AND YEAR(i.inspection_date) = YEAR(NOW()) AND i.centre_id = ? `,
+                     WHERE ${queryString ? queryString : 1
+        } AND YEAR(i.inspection_date) = YEAR(NOW()) AND i.centre_id = ? `,
         [centreID, firstDayOfMonth],
         (err, result, fields) => {
             if (err) {
@@ -661,9 +679,8 @@ exports.getInspectionAndOwnerPerID = (req, res) => {
                     INNER JOIN cars c ON c.car_id = i.car_id
                     INNER JOIN car_owners co ON co.owner_id = c.owner_id
                     INNER JOIN registration_centres r ON i.centre_id = r.centre_id
-                    WHERE ${
-                        queryString ? queryString : 1
-                    } AND i.inspection_id = ?`,
+                    WHERE ${queryString ? queryString : 1
+        } AND i.inspection_id = ?`,
         [inspectionID],
         (err, result, fields) => {
             if (err) {
@@ -921,9 +938,9 @@ exports.createInspection = (req, res) => {
                                     kerb_mass + " (kg)",
                                     designed_and_authorized_payload + " (kg)",
                                     designed_and_authorized_total_mass +
-                                        " (kg)",
+                                    " (kg)",
                                     designed_and_authorized_towed_mass +
-                                        " (kg)",
+                                    " (kg)",
                                     permissible_carry,
                                     engine_displacement + " (cm3)",
                                     maximum_output_to_rpm_ratio,
