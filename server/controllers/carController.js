@@ -167,7 +167,7 @@ exports.upload = (req, res) => {
 
 
 exports.searchCar = (req, res) => {
-    connection.query(`SELECT * FROM cars WHERE number_plate LIKE('%${req.query.number_plate}%')`, (err, result, fields) => {
+    connection.query(`SELECT * FROM cars WHERE number_plate LIKE('${req.query.number_plate}%')`, (err, result, fields) => {
         if (err) {
             return res.status(500).json({
                 status: "Failed",
@@ -181,7 +181,13 @@ exports.searchCar = (req, res) => {
         } else {
             return res.status(200).json({
                 status: "Success",
-                data: result.sort()
+                data: result.sort((a, b) => {
+                    let i = a.number_plate.indexOf(req.query.number_plate)
+                    let j = b.number_plate.indexOf(req.query.number_plate)
+                    if (i < j) return - 1
+                    else if (i > j) return 1
+                    else return 0
+                })
             })
         }
     })

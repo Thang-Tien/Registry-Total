@@ -30,6 +30,8 @@ router.get('/stat/all_centre/prediction/about_to_inspect',
 router.get('/',
     inspectionController.getInspection)
 
+router.get('/search',
+    inspectionController.searchInspection)
 
 // đếm tổng số lượng đăng kiểm của centre mà staff đang làm việc
 router.get(

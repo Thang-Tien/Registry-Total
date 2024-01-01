@@ -131,20 +131,20 @@ exports.countInspectionOfACentreEveryMonth = (req, res) => {
 
 exports.countInspectionsOfAllCentreByYear = async (req, res) => {
     let queryString = utils.generateQueryStringWithDate(req.query, 'inspection_date')
-    connection.query(`SELECT MONTH(inspection_date) AS month, COUNT(*) AS total FROM inspections WHERE ${queryString ? queryString : 1} GROUP BY MONTH(inspection_date)`, 
-    utils.getQueryValue(req.query), (err, result, fields) => {
-        if (err) {
-            return res.status(500).json({
-                status: 'Failed',
-                 error: err
-            })
-        } else {
-            return res.status(200).json({
-                status: "Success",
-                data: result
-            })
-        }
-    })
+    connection.query(`SELECT MONTH(inspection_date) AS month, COUNT(*) AS total FROM inspections WHERE ${queryString ? queryString : 1} GROUP BY MONTH(inspection_date)`,
+        utils.getQueryValue(req.query), (err, result, fields) => {
+            if (err) {
+                return res.status(500).json({
+                    status: 'Failed',
+                    error: err
+                })
+            } else {
+                return res.status(200).json({
+                    status: "Success",
+                    data: result
+                })
+            }
+        })
 }
 
 exports.getInspection = (req, res) => {
@@ -174,6 +174,34 @@ exports.getInspection = (req, res) => {
         }
     );
 };
+
+exports.searchInspection = (req, res) => {
+    connection.query(`SELECT * FROM inspections WHERE inspection_number LIKE('${req.query.inspection_number}%')`,
+        (err, result, fields) => {
+            if (err) {
+                return res.status(500).json({
+                    status: "Failed",
+                    error: err,
+                });
+            } else if (result.length == 0) {
+                return res.status(404).json({
+                    status: "Failed",
+                    message: `Can't find inspection with inspection_number = ${req.query.inspection_number}`,
+                });
+            } else {
+                return res.status(500).json({
+                    status: "Success",
+                    data: result.sort((a, b) => {
+                        let i = a.inspection_number.indexOf(req.query.inspection_number)
+                        let j = b.inspection_number.indexOf(req.query.inspection_number)
+                        if (i < j) return - 1
+                        else if (i > j) return 1
+                        else return 0
+                    })
+                })
+            }
+        })
+}
 
 //DONE
 // đếm tổng số lượng đăng kiểm của centre mà staff đang làm việc
