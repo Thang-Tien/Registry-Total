@@ -8,12 +8,11 @@ export default function RouteToHomePage() {
     const router = useRouter();
 
     useEffect(() => {
-        router.push("/auth");
+        if(localStorage.length === 0)
+        router.push("/auth"); 
+        else 
+        router.push("/dashboard");
     }, []);
-    // const pushAuth = () => {
-    //     router.push("/auth");
-    // };
 
-    // pushAuth();
     return <div></div>;
 }
