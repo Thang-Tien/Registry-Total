@@ -36,7 +36,7 @@ const LoginForm = (props: LoginFormProps) => {
 
         try {
             const response = await fetch(
-                `${process.env.NEXT_PUBLIC_HOSTNAME}api/v1/users/login`,
+                `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/users/login`,
                 {
                     method: "POST",
                     headers: {

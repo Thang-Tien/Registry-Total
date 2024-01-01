@@ -11,7 +11,7 @@ const Verify = (props) => {
     setIsSubmitting(true);
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_HOSTNAME}api/v1/users/check-otp`,
+        `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/users/check-otp`,
         {
           method: "POST",
           headers: {
