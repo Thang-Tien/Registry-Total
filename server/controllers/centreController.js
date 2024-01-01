@@ -37,7 +37,7 @@ exports.centresWithMostInspects = async (req, res) => {
 }
 
 exports.getCentre = (req, res) => {
-    connection.query(`SELECT * FROM registration_centres WHERE ${utils.generateQueryString(req.query) ? utils.generateQueryString(req.query) : 1}`, utils.getQueryValue(req.query),
+    connection.query(`SELECT * FROM registration_centres WHERE active = 1 ${utils.generateQueryString(req.query) ? `AND ${utils.generateQueryString(req.query)}` : 1}`, utils.getQueryValue(req.query),
         (err, result, fields) => {
             if (err) {
                 return res.status(500).json({
@@ -47,7 +47,7 @@ exports.getCentre = (req, res) => {
             } else if (result.length == 0) {
                 return res.status(500).json({
                     status: "Failed",
-                    error: `Can't find centre with ${utils.generateErrorQueryValue(req.query)}`
+                    error: `Can't find centre with ${utils.generateErrorQueryValue(req.query)} OR centre is inactive`
                 })
             } else {
                 return res.status(200).json({
