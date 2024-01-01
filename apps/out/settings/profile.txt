@@ -1,4 +1,4 @@
-0:["zJCmrS06hsy9wvcIH3FP7",[[["",{"children":["settings",{"children":["profile",{"children":["__PAGE__",{}]}]}]},"$undefined","$undefined",true],"$L1",[null,"$L2"]]]]
+0:["XpptuVWuUDbn16I05CAx_",[[["",{"children":["settings",{"children":["profile",{"children":["__PAGE__",{}]}]}]},"$undefined","$undefined",true],"$L1",[null,"$L2"]]]]
 3:HL["/_next/static/css/2273660b2ca3349e.css","style",{"crossOrigin":""}]
 4:I[56954,[],""]
 5:I[7264,[],""]

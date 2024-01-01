@@ -22,7 +22,7 @@ const NewPassword = (props: NewPasswordProps) => {
 
         try {
             const response = await fetch(
-                `http://localhost:8000/api/v1/users/reset-password`,
+                `${process.env.NEXT_PUBLIC_HOSTNAME}api/v1/users/reset-password`,
                 {
                     method: "PATCH",
                     headers: {
