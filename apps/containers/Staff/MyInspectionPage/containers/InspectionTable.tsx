@@ -5,6 +5,8 @@ import Link from "next/link";
 import { Card, Statistic, Table, Input, Space, Button } from "antd";
 import { DoubleRightOutlined, SearchOutlined } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
+import { AlignType } from "rc-table/lib/interface";
+import { SortOrder, FilterDropdownProps } from "antd/lib/table/interface";
 
 const InspectionTable: React.FC = () => {
     const df = { name: "Thiện pờ rồ", age: 18 };
@@ -110,7 +112,7 @@ const InspectionTable: React.FC = () => {
             selectedKeys,
             confirm,
             clearFilters,
-        }) => (
+        }: FilterDropdownProps) => (
             <div
                 style={{
                     padding: 8,
@@ -185,7 +187,7 @@ const InspectionTable: React.FC = () => {
         */
         onFilterDropdownOpenChange: (visible) => {
             if (visible) {
-                setTimeout(() => searchInput.current?.select(), 100);
+                setTimeout(() => (searchInput as any).current?.select(), 100);
             }
         },
         /*
@@ -213,10 +215,10 @@ const InspectionTable: React.FC = () => {
             title: "Số đăng kiểm",
             dataIndex: "inspection_number",
             key: "inspection_number",
-            align: "center",
+            align: "center" as AlignType,
             sorter: (a, b) =>
                 a.inspection_number.localeCompare(b.inspection_number),
-            sortDirections: ["ascend", "descend"],
+            sortDirections: ["ascend", "descend"] as SortOrder[],
             showSorterTooltip: false,
             ...getColumnSearchProps("inspection_number"),
         },
@@ -224,10 +226,10 @@ const InspectionTable: React.FC = () => {
             title: "Biển số xe",
             dataIndex: "number_plate",
             key: "number_plate",
-            align: "center",
+            align: "center" as AlignType,
             sorter: (a, b) =>
                 a.inspection_number.localeCompare(b.inspection_number),
-            sortDirections: ["ascend", "descend"],
+            sortDirections: ["ascend", "descend"] as SortOrder[],
             showSorterTooltip: false,
             ...getColumnSearchProps("number_plate"),
         },
@@ -235,19 +237,19 @@ const InspectionTable: React.FC = () => {
             title: "Ngày đăng kiểm",
             dataIndex: "inspection_date",
             key: "inspection_date",
-            align: "center",
+            align: "center" as AlignType,
         },
         {
             title: "Ngày hết hạn",
             dataIndex: "expired_date",
             key: "expired_date",
-            align: "center",
+            align: "center" as AlignType,
         },
         {
             title: "",
             dataIndex: "action",
             key: "action",
-            align: "center",
+            align: "center" as AlignType,
             render: (text, record) => (
                 <Link href={`/inspection/${record.inspection_id}`}>
                     <DoubleRightOutlined style={{ color: "black" }} />

@@ -7,7 +7,7 @@ import type { ReactNode } from "react";
 import InspectionContent from "./InspectionContent";
 
 type InformationCardProps = {
-    inspectionId?: string;
+    inspectionId?: any;
     children?: ReactNode;
 };
 

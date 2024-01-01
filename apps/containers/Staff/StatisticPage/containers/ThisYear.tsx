@@ -19,6 +19,11 @@ const ThisYear: React.FC = () => {
     const [inspectionCount, setInspectionCount] = useState<number | null>(null);
 
     useEffect(() => {
+        const data =
+            localStorage.getItem("data") === null
+                ? JSON.stringify(df)
+                : localStorage.getItem("data");
+        if (data != null) setUser(JSON.parse(data));
         const fetchData = async () => {
             try {
                 const response = await fetch(

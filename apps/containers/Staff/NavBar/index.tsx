@@ -36,6 +36,7 @@ function getItem(
 
 export type Props = {
     active:
+        | ""
         | "dashboard"
         | "inspection"
         | "inspection/create"

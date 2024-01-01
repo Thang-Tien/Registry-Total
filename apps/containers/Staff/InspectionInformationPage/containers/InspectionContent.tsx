@@ -18,7 +18,7 @@ import InspectionPDF from "./InspectionPDF";
 const { Item } = Descriptions;
 
 export type Props = {
-    inspectionId: string;
+    inspectionId: any;
 };
 
 const InspectionContent: React.FC<Props> = ({ inspectionId }) => {

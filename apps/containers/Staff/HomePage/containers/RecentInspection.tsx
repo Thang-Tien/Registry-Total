@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Card, Statistic, Table } from "antd";
 import { DoubleRightOutlined, ForwardFilled } from "@ant-design/icons";
 import Link from "next/link";
+import { AlignType } from "rc-table/lib/interface";
 
 const RecentInspection: React.FC = () => {
     const df = { name: "Thiện pờ rồ", age: 18 };
@@ -21,37 +22,31 @@ const RecentInspection: React.FC = () => {
             title: "Số đăng kiểm",
             dataIndex: "inspection_number",
             key: "inspection_number",
-            align: "center",
+            align: "center" as AlignType,
         },
         {
             title: "Biển số xe",
             dataIndex: "number_plate",
             key: "number_plate",
-            align: "center",
+            align: "center" as AlignType,
         },
         {
             title: "Ngày đăng kiểm",
             dataIndex: "inspection_date",
             key: "inspection_date",
-            align: "center",
+            align: "center" as AlignType,
         },
         {
             title: "Ngày hết hạn",
             dataIndex: "expired_date",
             key: "expired_date",
-            align: "center",
+            align: "center" as AlignType,
         },
         {
             title: "",
             dataIndex: "action",
             key: "action",
-            align: "center",
-        },
-        {
-            title: "",
-            dataIndex: "action",
-            key: "action",
-            align: "center",
+            align: "center" as AlignType,
             render: (text, record) => (
                 <Link href={`/inspection/${record.inspection_id}`}>
                     <DoubleRightOutlined style={{ color: "black" }} />

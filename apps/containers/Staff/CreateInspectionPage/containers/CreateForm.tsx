@@ -42,7 +42,7 @@ const CreateForm: React.FC = () => {
     const [error, setError] = useState(false);
     const [found, setFound] = useState(false); // data found or not
     const [isOpen, setIsOpen] = useState(false); // modal open or not
-    const [options, setOptions] = useState([]);
+    const [options, setOptions] = useState([] as any);
     const [postData, setPostData] = useState({});
     const [totalInspection, setTotalInspection] = useState(null);
 
@@ -222,12 +222,15 @@ const CreateForm: React.FC = () => {
                     label={type !== "checkbox" && label}
                     name={name}
                     rules={
-                        type !== "checkbox" && [
-                            {
-                                required: true,
-                                message: "Trường này không được để trống!",
-                            },
-                        ]
+                        type !== "checkbox"
+                            ? [
+                                  {
+                                      required: true,
+                                      message:
+                                          "Trường này không được để trống!",
+                                  },
+                              ]
+                            : [] // Empty array for checkbox
                     }
                     valuePropName={type === "checkbox" ? "checked" : "value"}
                 >
@@ -237,9 +240,7 @@ const CreateForm: React.FC = () => {
                             style={{ width: "100%" }}
                         />
                     )}
-                    {type === "checkbox" && (
-                        <Checkbox>{type === "checkbox" && label}</Checkbox>
-                    )}
+                    {type === "checkbox" && <Checkbox>{label}</Checkbox>}
                     {!type && (
                         <Input
                             addonAfter={addonAfter}
@@ -357,7 +358,7 @@ const CreateForm: React.FC = () => {
                                 setError(true);
                             }
                         }}
-                        status={error && "error"}
+                        status={error ? "error" : ""}
                     />
 
                     {/* Code phần modal, sau khi bấm xem thông tin*/}

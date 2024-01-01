@@ -10,8 +10,14 @@ import Link from "next/link";
 
 const { Text } = Typography;
 
+interface CarItem {
+    car_id: string;
+    value: string;
+    registration_number: string;
+}
+
 const SearchForm: React.FC = () => {
-    const [options, setOptions] = useState([]);
+    const [options, setOptions] = useState([] as any);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -22,7 +28,8 @@ const SearchForm: React.FC = () => {
                 const data = await response.json();
 
                 // Extracting relevant information and updating the options state
-                const updatedOptions = data.data.map((item) => ({
+                let updatedOptions: any[] = [];
+                updatedOptions = data.data.map((item) => ({
                     car_id: item.car_id,
                     value: item.number_plate,
                     registration_number: item.registration_number,
@@ -38,7 +45,7 @@ const SearchForm: React.FC = () => {
         fetchData();
     }, []);
 
-    const [selectedValues, setSelectedValues] = useState<string[]>([]);
+    const [selectedValues, setSelectedValues] = useState([] as any);
     const [searchStatus, setSearchStatus] = useState<string>("Start");
 
     const handleSearch = (value) => {
@@ -120,7 +127,11 @@ const SearchForm: React.FC = () => {
                     renderItem={(item) => (
                         <List.Item
                             actions={[
-                                <Link href={`/cars/${item.car_id}`}>
+                                <Link
+                                    href={`/cars/${
+                                        (item as { car_id: string }).car_id
+                                    }`}
+                                >
                                     Xem chi tiết
                                 </Link>,
                             ]}
@@ -133,8 +144,12 @@ const SearchForm: React.FC = () => {
                                         width={30}
                                     />
                                 }
-                                title={item.value}
-                                description={"#" + item.registration_number}
+                                title={(item as { value: string }).value}
+                                description={
+                                    "#" +
+                                    (item as { registration_number: string })
+                                        .registration_number
+                                }
                             />
                         </List.Item>
                     )}

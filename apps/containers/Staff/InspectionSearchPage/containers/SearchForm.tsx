@@ -10,7 +10,7 @@ import inspectionImage from "./../../../../public/image/checked.png";
 const { Text } = Typography;
 
 const SearchForm: React.FC = () => {
-    const [options, setOptions] = useState([]);
+    const [options, setOptions] = useState([] as any);
 
     useEffect(() => {
         // Fetch data from the API
@@ -40,7 +40,7 @@ const SearchForm: React.FC = () => {
         fetchData();
     }, []);
 
-    const [selectedValues, setSelectedValues] = useState<string[]>([]);
+    const [selectedValues, setSelectedValues] = useState([] as any);
     const [searchStatus, setSearchStatus] = useState<string>("Start");
 
     const handleSearch = (value) => {
@@ -122,7 +122,12 @@ const SearchForm: React.FC = () => {
                     renderItem={(item) => (
                         <List.Item
                             actions={[
-                                <a href={`/inspection/${item.inspection_id}`}>
+                                <a
+                                    href={`/inspection/${
+                                        (item as { inspection_id: string })
+                                            .inspection_id
+                                    }`}
+                                >
                                     Xem chi tiết
                                 </a>,
                             ]}
@@ -135,8 +140,8 @@ const SearchForm: React.FC = () => {
                                         width={30}
                                     />
                                 }
-                                title={item.value}
-                                description={item.name}
+                                title={(item as { value: string }).value}
+                                description={(item as { name: string }).name}
                             />
                         </List.Item>
                     )}
