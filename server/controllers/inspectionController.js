@@ -217,7 +217,7 @@ exports.getInspection = (req, res) => {
 
 exports.searchInspection = (req, res) => {
     connection.query(
-        `SELECT * FROM inspections WHERE inspection_number LIKE('${req.query.inspection_number}%')`,
+        `SELECT * FROM inspections WHERE inspection_number LIKE('${req.query.inspection_number}%') ${req.query.limit ? `LIMIT ${req.query.limit}`: ""}`,
         (err, result, fields) => {
             if (err) {
                 return res.status(500).json({
