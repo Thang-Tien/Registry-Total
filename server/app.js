@@ -23,13 +23,18 @@ app.use(function(req, res, next) {
   
 app.use(morgan("dev"));
 app.use(bodyParser());
-app.use('/', express.static('../apps/out'))
+app.use('/', express.static('../apps/out')) 
+// /settings/profile
+app.use('/settings/profile', express.static('../apps/out')) 
 
 app.use("/api/v1/cars", carRouter);
 app.use("/api/v1/inspections", inspectionRoute);
 app.use("/api/v1/centres", centreRoute);
 app.use("/api/v1/users", userRoute);
 app.use("/api/v1/search", searchRoute);
+app.use("/test", (req, res) => {
+    res.send("helooooooo")
+})
 app.use(express.json());
 
 module.exports = app;

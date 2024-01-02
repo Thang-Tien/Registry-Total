@@ -5,7 +5,7 @@ const userController = require('../controllers/userController')
 const router = express.Router()
 
 router.post('/login', authController.login)
-router.post('/change-password',  authController.changePassword)
+router.post('/change-password', authController.authenticateToken, authController.changePassword)
 router.post('/forgot-password', authController.handleForgotPassword)
 
 router.post('/check-otp', authController.checkOTP)
