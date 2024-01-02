@@ -50,6 +50,8 @@ router.get(
     inspectionController.predictAboutToInspect
 );
 
+router.get('/', inspectionController.getInspection)
+
 router.get("/search", inspectionController.searchInspection);
 
 // đếm tổng số lượng đăng kiểm của centre mà staff đang làm việc
