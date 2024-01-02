@@ -131,16 +131,15 @@ exports.countInspectionEachCenterLastTwelveMonths = async (req, res) => {
 		req.query,
 		"inspection_date"
 	);
+
 	connection.query(
 		`SELECT
- 			CONCAT( EXTRACT(MONTH FROM inspection_date),"/",EXTRACT(YEAR FROM inspection_date) ) as monthYear,
-  			COUNT(*) AS count
-		FROM inspections
-  		Where ${queryString ? queryString : 1} AND centre_id = ?
-		GROUP BY EXTRACT(MONTH FROM inspection_date),EXTRACT(YEAR FROM inspection_date)
-		ORDER BY
-  			EXTRACT(YEAR FROM inspection_date) DESC, EXTRACT(MONTH FROM inspection_date) DESC
-  		Limit 12;`,
+            EXTRACT(MONTH FROM inspection_date) AS month,
+            EXTRACT(YEAR FROM inspection_date) AS year
+        FROM inspections
+        WHERE ${queryString ? queryString : "1"} AND centre_id = ?
+        ORDER BY inspection_date DESC
+        LIMIT 12;`,
 		[req.user.centre_id],
 		(err, result, fields) => {
 			if (err) {
@@ -149,14 +148,30 @@ exports.countInspectionEachCenterLastTwelveMonths = async (req, res) => {
 					error: err,
 				});
 			} else {
+				// Process the raw result to calculate counts per monthYear
+				const counts = result.reduce((acc, row) => {
+					const monthYear = `${row.month}/${row.year}`;
+					acc[monthYear] = (acc[monthYear] || 0) + 1;
+					return acc;
+				}, {});
+
+				// Convert the counts object to an array of objects
+				const data = Object.entries(counts).map(
+					([monthYear, count]) => ({
+						monthYear,
+						count,
+					})
+				);
+
 				return res.status(200).json({
 					status: "Success",
-					data: result,
+					data,
 				});
 			}
 		}
 	);
 };
+
 // DONE nhưng không liên quan
 // đếm tổng số lượng đăng kiểm đã hết hạn của trung tâm mà staff đang làm việc
 exports.countTotalExpiredInspectionsOfEachCentre = async (req, res) => {
