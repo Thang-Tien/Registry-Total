@@ -12,7 +12,7 @@ router.get(
 
 router.get(
     "/stat/:centre_id/count/",
-    inspectionController.countInspectionOfACentre
+    inspectionController.countInspectionsOfACentre
 );
 
 router.get(
