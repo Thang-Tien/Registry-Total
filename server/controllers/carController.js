@@ -167,7 +167,7 @@ exports.upload = (req, res) => {
 
 
 exports.searchCar = (req, res) => {
-    connection.query(`SELECT * FROM cars WHERE number_plate LIKE('${req.query.number_plate}%')`, (err, result, fields) => {
+    connection.query(`SELECT * FROM cars WHERE number_plate LIKE('${req.query.number_plate}%') ${req.query.inspected ? `AND inspected = ${req.query.inspected}`: ""}`, (err, result, fields) => {
         if (err) {
             return res.status(500).json({
                 status: "Failed",
