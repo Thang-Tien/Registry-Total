@@ -152,7 +152,7 @@ const Profile = () => {
   };
 
   return (
-    <ConfigProvider
+      <ConfigProvider
       theme={{
         token: {
           paddingLG: 3,
@@ -468,7 +468,7 @@ const Profile = () => {
           </Form.Item>
         </Form>
       </Modal>
-    </ConfigProvider>
+    </ConfigProvider> 
   );
 };
 
