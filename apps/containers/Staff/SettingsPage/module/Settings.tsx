@@ -13,9 +13,8 @@ const Settings = (props) => {
       tabPosition="left"
       tabBarGutter={16}
       tabBarStyle={{
-        margin: "undefined",
         marginTop: "2rem",
-        width: "15rem",
+        width: "12rem",
       }}
       centered={true}
       items={[
@@ -37,7 +36,7 @@ const Settings = (props) => {
       style={{
         width: "80%",
         backgroundColor: "#fff",
-        margin: "3rem auto",
+        margin: "1rem auto",
         border: "1px solid var(--color-grey-dark-1)",
         borderRadius: "8px",
       }}

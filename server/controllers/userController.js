@@ -19,7 +19,7 @@ exports.getUser = (req, res) => {
         } else {
             return res.status(200).json({
                 status: "Success",
-                data: result[0]
+                data: result
             })
         }
     })
@@ -69,7 +69,7 @@ exports.createUser = (req, res) => {
                                     error: err
                                 })
                             } else {
-                                
+
                                 return res.status(200).json({
                                     status: "Success",
                                     message: `Successfully created new account with ${utils.generateErrorQueryValue(req.body)}`,
@@ -111,14 +111,14 @@ exports.deleteUser = (req, res) => {
                 status: "Failed",
                 error: err
             })
-        } 
+        }
         if (result.length == 0) {
             return res.status(400).json({
                 status: "Failed",
                 message: `Cannot find user with ${utils.generateErrorQueryValue(req.body)}`
             })
-        } 
-        
+        }
+
         connection.query(`DELETE from users WHERE user_id = ${req.body.user_id}`, (err, result, fields) => {
             if (err) {
                 return res.status(500).json({
@@ -136,20 +136,26 @@ exports.deleteUser = (req, res) => {
 }
 
 exports.changeUserInfo = (req, res) => {
-    const splited = req.body.date_of_birth.split('/')
-    const formatedDOB = `${splited[2]}/${splited[1]}/${splited[0]}`
-    connection.query(`UPDATE users SET name = ?, date_of_birth = ?, phone = ? WHERE user_id = ${req.user.user_id}`, 
-    [req.body.name, formatedDOB, req.body.phone], (err, result, fields) => {
-        if (err) {
-            return res.status(500).json({
-                status: "Failed",
-                error: err
-            })
-        } else {
-            return res.status(200).json({
-                status: "Success",
-                message: `Successfully update user with user_id = ${req.user.user_id} ${utils.generateErrorQueryValue(req.body)}`
-            })
-        }
-    })
+    let formatedDOB = ""
+    if (req.body.date_of_birth.includes('-')) {
+        formatedDOB = req.body.date_of_birth.replace('-', '/')
+    } else {
+        const splited = req.body.date_of_birth.split('/')
+        formatedDOB = `${splited[2]}/${splited[1]}/${splited[0]}`
+    }
+
+    connection.query(`UPDATE users SET name = ?, date_of_birth = ?, phone = ? WHERE user_id = ${req.user.user_id}`,
+        [req.body.name, formatedDOB, req.body.phone], (err, result, fields) => {
+            if (err) {
+                return res.status(500).json({
+                    status: "Failed",
+                    error: err
+                })
+            } else {
+                return res.status(200).json({
+                    status: "Success",
+                    message: `Successfully update user with user_id = ${req.user.user_id} ${utils.generateErrorQueryValue(req.body)}`
+                })
+            }
+        })
 }

@@ -31,7 +31,7 @@ exports.countInspectionsOfAllCentre = async (req, res) => {
 
 exports.countTotalExpiredInspectionsOfAllCentre = async (req, res) => {
     connection.query(
-        `SELECT COUNT(*) FROM inspections WHERE expired_date < NOW()`,
+        `SELECT COUNT(*) as total FROM inspections WHERE expired_date < NOW()`,
         (err, result, fields) => {
             if (err) {
                 return res.status(500).json({
@@ -69,7 +69,7 @@ exports.countTotalAboutToExpiredInspectionsOfAllCentre = async (req, res) => {
 
 exports.predictAboutToInspect = async (req, res) => {
     connection.query(
-        `SELECT COUNT(*) FROM cars WHERE inspected = false`,
+        `SELECT COUNT(*) as total FROM cars WHERE inspected = false`,
         (err, result, fields) => {
             if (err) {
                 return res.status(500).json({
@@ -86,7 +86,7 @@ exports.predictAboutToInspect = async (req, res) => {
     );
 };
 
-exports.countInspectionOfACentre = (req, res) => {
+exports.countInspectionsOfACentre = (req, res) => {
     let queryString = utils.generateQueryStringWithDate(
         req.query,
         "inspection_date"
@@ -104,6 +104,83 @@ exports.countInspectionOfACentre = (req, res) => {
                 return res.status(200).json({
                     status: "Success",
                     total: result[0],
+                });
+            }
+        }
+    );
+};
+
+exports.countInspectionsOfACentreEveryMonth = (req, res) => {
+    let queryString = utils.generateQueryStringWithDate(
+        req.query,
+        "inspection_date"
+    );
+    connection.query(
+        `SELECT COUNT(*) AS total, MONTH(inspection_date) AS month FROM inspections WHERE centre_id = ${
+            req.params.centre_id
+        } AND ${queryString ? queryString : 1} GROUP BY month`,
+        utils.getQueryValue(req.query),
+        (err, result, fields) => {
+            if (err) {
+                return res.status(500).json({
+                    status: "Failed",
+                    error: err,
+                });
+            } else {
+                return res.status(200).json({
+                    status: "Success",
+                    data: result,
+                });
+            }
+        }
+    );
+};
+
+exports.countInspectionsOfAllCentreEveryMonth = (req, res) => {
+    let queryString = utils.generateQueryStringForInspectionsAndCentre(
+        req.query
+    );
+    connection.query(
+        `SELECT COUNT(*) AS total, MONTH(i.inspection_date) as month FROM inspections i INNER JOIN registration_centres r ON i.centre_id = r.centre_id WHERE ${
+            queryString ? queryString : 1
+        } GROUP BY month`,
+        utils.getQueryValue(req.query),
+        (err, result, fields) => {
+            if (err) {
+                return res.status(500).json({
+                    status: "Failed",
+                    error: err,
+                });
+            } else {
+                return res.status(200).json({
+                    status: "Success",
+                    data: result,
+                });
+            }
+        }
+    );
+};
+
+exports.countInspectionsOfAllCentreByYear = async (req, res) => {
+    let queryString = utils.generateQueryStringWithDate(
+        req.query,
+        "inspection_date"
+    );
+    connection.query(
+        `SELECT MONTH(inspection_date) AS month, COUNT(*) AS total FROM inspections WHERE ${
+            queryString ? queryString : 1
+        } GROUP BY MONTH(inspection_date)`,
+        utils.getQueryValue(req.query),
+        (err, result, fields) => {
+            if (err) {
+                return res.status(500).json({
+                    status: "Failed",
+                    error: err,
+                });
+            } else {
+                return res.status(200).json({
+                    status: "Success",
+                    data: result,
                 });
             }
         }
@@ -132,6 +209,40 @@ exports.getInspection = (req, res) => {
                 return res.status(200).json({
                     status: "Success",
                     data: result,
+                });
+            }
+        }
+    );
+};
+
+exports.searchInspection = (req, res) => {
+    connection.query(
+        `SELECT * FROM inspections WHERE inspection_number LIKE('${req.query.inspection_number}%')`,
+        (err, result, fields) => {
+            if (err) {
+                return res.status(500).json({
+                    status: "Failed",
+                    error: err,
+                });
+            } else if (result.length == 0) {
+                return res.status(404).json({
+                    status: "Failed",
+                    message: `Can't find inspection with inspection_number = ${req.query.inspection_number}`,
+                });
+            } else {
+                return res.status(200).json({
+                    status: "Success",
+                    data: result.sort((a, b) => {
+                        let i = a.inspection_number.indexOf(
+                            req.query.inspection_number
+                        );
+                        let j = b.inspection_number.indexOf(
+                            req.query.inspection_number
+                        );
+                        if (i < j) return -1;
+                        else if (i > j) return 1;
+                        else return 0;
+                    }),
                 });
             }
         }

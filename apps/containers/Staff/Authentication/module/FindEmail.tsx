@@ -20,7 +20,7 @@ const FindEmail = (props: FindEmailProps) => {
         setIsSubmitting(true);
         try {
             const response = await fetch(
-                `http://localhost:8000/api/v1/users/forgot-password`,
+                `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/users/forgot-password`,
                 {
                     method: "POST",
                     headers: {

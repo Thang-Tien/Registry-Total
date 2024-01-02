@@ -7,7 +7,7 @@ import {
   message,
   notification,
 } from "antd";
-import classes from "./../styles/ChangePassword.module.css";
+import classes from "../styles/ChangePassword.module.css";
 import { useEffect, useState } from "react";
 
 
@@ -53,7 +53,7 @@ const ChangePassword = () => {
       setIsChanging(true);
 
       const response = await fetch(
-        `http://localhost:8000/api/v1/users/change-password`,
+        `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/users/change-password`,
         {
           method: "POST",
           headers: {
@@ -93,11 +93,11 @@ const ChangePassword = () => {
     >
       {notificationContextHolder}
       {messageContextHolder}
-      <h1 className={classes.title}>Thay đổi mật khẩu</h1>
+      <h1 style={{padding: "0rem 3rem 0 2rem",fontSize:"1,4rem",fontWeight:"700"}}>Thay đổi mật khẩu</h1>
       <Form
         name="change-password-form"
         form={form}
-        className={classes.form}
+        style={{width:"90%",margin:"auto"}}
         labelCol={{
           span: 8,
         }}

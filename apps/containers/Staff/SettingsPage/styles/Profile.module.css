@@ -1,64 +1,23 @@
-.name {
+/* .name {
   font-size: 16px;
   font-weight: 600;
-}
-.black-border {
-  border: 1px solid black;
-}
-.role {
+} */
+/* .role {
   font-weight: 500;
   font-size: 15px;
   color: var(--color-grey-dark-2);
-}
+} */
 
-.address {
+/* .address {
   font-weight: 400;
   font-size: 14px;
   color: var(--color-grey-dark-3);
-}
+} */
 
-.title {
+/* .title {
   font-size: 1.4rem;
   font-weight: 700;
-  padding: 0rem 3rem 0 3rem;
-}
-.ant-menu-item,
-.ant-menu-submenu-title {
-  gap: 1.2rem;
-}
+  padding: 0rem 3rem 0 2rem;
+} */
 
-.ant-menu-title-content {
-  margin-inline-start: 0 !important;
-}
-
-.ant-menu-inline-collapsed-tooltip {
-  display: none;
-}
-
-.ant-form-item-explain-error {
-  margin-left: 2.8rem;
-  font-size: 12px;
-}
-
-.ant-input::placeholder {
-  font-weight: 500;
-  font-size: 1.4rem;
-}
-
-.ant-table-title {
-  font-weight: 600;
-  margin-left: 2rem;
-  font-size: 16px;
-}
-
-.ant-descriptions-item-container,
-.ant-descriptions-item-label {
-  align-items: center !important;
-}
-
-@media (max-width: 62em) {
-  .ant-menu-title-content {
-    margin-inline-start: 0 !important;
-  }
-}
 

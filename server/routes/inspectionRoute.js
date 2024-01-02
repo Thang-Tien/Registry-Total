@@ -16,6 +16,26 @@ router.get(
 );
 
 router.get(
+    "/stat/all_centre/count/every_month/",
+    inspectionController.countInspectionsOfAllCentreEveryMonth
+);
+
+router.get(
+    "/stat/:centre_id/count/",
+    inspectionController.countInspectionsOfACentre
+);
+
+router.get(
+    "/stat/:centre_id/count/every_month",
+    inspectionController.countInspectionsOfACentreEveryMonth
+);
+
+router.get(
+    "/stat/all_centre/count/by_year",
+    inspectionController.countInspectionsOfAllCentreByYear
+);
+
+router.get(
     "/stat/all_centre/count/expired",
     inspectionController.countTotalExpiredInspectionsOfAllCentre
 );
@@ -30,9 +50,7 @@ router.get(
     inspectionController.predictAboutToInspect
 );
 
-// // add queries to filter inspection
-// router.get('/',
-//     inspectionController.getInspection)
+router.get("/search", inspectionController.searchInspection);
 
 // đếm tổng số lượng đăng kiểm của centre mà staff đang làm việc
 router.get(
