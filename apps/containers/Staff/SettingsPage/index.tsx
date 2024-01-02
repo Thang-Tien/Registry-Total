@@ -43,7 +43,7 @@ export default function SettingsPage({ className, style, mode}: Props) {
                         style={{
                             width: "90%",
                             marginTop: 30,
-                            // alignSelf: "center",
+                            alignSelf: "center",
                         }}
                     >
                         <Settings mode={mode} />
