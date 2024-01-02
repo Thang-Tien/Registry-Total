@@ -354,49 +354,51 @@ exports.countInspectionsOfMine = async (req, res) => {
 };
 // Lấy ra tổng số lượng đăng kiểm của 12 tháng gần nhất CÓ ĐĂNG KIỂM của centre mà staff đang làm việc
 exports.countInspectionEachCenterLastTwelveMonths = async (req, res) => {
-    let queryString = utils.generateQueryStringWithDate(
-        req.query,
-        "inspection_date"
-    );
+	let queryString = utils.generateQueryStringWithDate(
+		req.query,
+		"inspection_date"
+	);
 
-    connection.query(
-        `SELECT
+	connection.query(
+		`SELECT
             EXTRACT(MONTH FROM inspection_date) AS month,
             EXTRACT(YEAR FROM inspection_date) AS year
         FROM inspections
         WHERE ${queryString ? queryString : "1"} AND centre_id = ?
-        ORDER BY inspection_date DESC
-        LIMIT 12;`,
-        [req.params.centre_id],
-        (err, result, fields) => {
-            if (err) {
-                return res.status(500).json({
-                    status: "Failed",
-                    error: err,
-                });
-            } else {
-                // Process the raw result to calculate counts per monthYear
-                const counts = result.reduce((acc, row) => {
-                    const monthYear = `${row.month}/${row.year}`;
-                    acc[monthYear] = (acc[monthYear] || 0) + 1;
-                    return acc;
-                }, {});
+        ORDER BY inspection_date DESC;`,
+		[req.user.centre_id],
+		(err, result, fields) => {
+			if (err) {
+				return res.status(500).json({
+					status: "Failed",
+					error: err,
+				});
+			} else {
+				// Process the raw result to calculate counts per monthYear
+				const counts = result.reduce((acc, row) => {
+					const monthYear = `${row.month}/${row.year}`;
+					acc[monthYear] = (acc[monthYear] || 0) + 1;
+					return acc;
+				}, {});
 
-                // Convert the counts object to an array of objects
-                const data = Object.entries(counts).map(
-                    ([monthYear, count]) => ({
-                        monthYear,
-                        count,
-                    })
-                );
+				// Convert the counts object to an array of objects
+				const data = Object.entries(counts).map(
+					([monthYear, count]) => ({
+						monthYear,
+						count,
+					})
+				);
 
-                return res.status(200).json({
-                    status: "Success",
-                    data,
-                });
-            }
-        }
-    );
+				// Retrieve the first 12 elements
+				const first12Data = data.slice(0, 12);
+
+				return res.status(200).json({
+					status: "Success",
+					data: first12Data,
+				});
+			}
+		}
+	);
 };
 
 // đếm số lượng đăng kiểm theo tháng của từng trung tâm
