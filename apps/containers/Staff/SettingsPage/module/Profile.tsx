@@ -100,6 +100,7 @@ const Profile = () => {
   const df = { name: "Thiện pờ rồ", age: 18 }
   useEffect(() => { console.log(me) }, [me])
   useEffect(() => { console.log(user) }, [user])
+  const delay = (ms) => new Promise((res) => setTimeout(res,ms));
   // 
   useEffect(() => {
     document.title = "Hồ sơ cá nhân";
@@ -107,6 +108,7 @@ const Profile = () => {
     if (data != null) setMe(JSON.parse(data));
     
     const fetchData = async () => {
+      await delay(1000);
       try {
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/centres?centre_id=${me.centre_id}`,
@@ -163,7 +165,7 @@ const Profile = () => {
     >
       {notificationContextHolder}
       {messageContextHolder}
-      <h1 style={{padding: "0rem 3rem 0 2rem",fontSize:"1,4rem",fontWeight:"700"}}>Hồ sơ của tôi</h1>
+      <h1 style={{padding: "0rem 3rem 0rem 2rem",fontSize:"1,4rem",fontWeight:"700"}}>Hồ sơ của tôi</h1>
       <Skeleton
         loading={loading}
         style={{ padding: "3rem" }}
