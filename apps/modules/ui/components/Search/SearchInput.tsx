@@ -14,9 +14,8 @@ const SearchInput = (props) => {
   };
 
   useEffect(() => {
-    
     const getData = async () => {
-      await delay(200)
+      await delay(100);
       try {
         const response = await fetch(
           `http://fall2324w3g10.int3306.freeddns.org/api/v1/${
@@ -40,6 +39,7 @@ const SearchInput = (props) => {
 
         setOptions(tmpData.slice(0, 5));
       } catch (error) {
+        setOptions([]);
         console.log(error);
       }
     };
@@ -61,7 +61,10 @@ const SearchInput = (props) => {
         }`}
         onSearch={async () => {
           props.setSearchText(inputValue);
-          if (!inputValue) return;
+          if (!inputValue) {
+            setOptions([]);
+            return;
+          }
           props.setLoading(true);
 
           try {
@@ -78,6 +81,7 @@ const SearchInput = (props) => {
             props.setData(tmp.data);
             props.setLoading(false);
           } catch (error) {
+            props.setData([]);
             props.setLoading(false);
             console.log(error);
           }

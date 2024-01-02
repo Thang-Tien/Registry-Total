@@ -37,9 +37,12 @@ const InspectionTable = (props) => {
     setSearchedColumn(dataIndex);
   };
 
-  const handleReset = (clearFilters) => {
+  const handleReset = (clearFilters, confirm) => {
     clearFilters();
     setSearchText("");
+    confirm();
+    setSearchText("");
+    setSearchedColumn("");
   };
 
   const handleTimeRangeSearch = (selectedKeys, confirm, dataIndex) => {
@@ -48,9 +51,12 @@ const InspectionTable = (props) => {
     setSearchedColumn(dataIndex);
   };
 
-  const handleTimeRangeReset = (clearFilters) => {
+  const handleTimeRangeReset = (clearFilters, confirm) => {
     clearFilters();
     setSearchText("");
+    confirm();
+    setSearchText("");
+    setSearchedColumn("");
   };
 
   const getColumnDateFilterProps = (dataIndex) => ({
@@ -82,7 +88,7 @@ const InspectionTable = (props) => {
           <Space size="middle" style={{ margin: "auto" }}>
             <Button
               role="reset"
-              onClick={() => handleTimeRangeReset(clearFilters)}
+              onClick={() => handleTimeRangeReset(clearFilters,confirm)}
             >
               Đặt lại
             </Button>
@@ -136,7 +142,7 @@ const InspectionTable = (props) => {
         <Space size="middle">
           <Button
             role="reset"
-            onClick={() => clearFilters && handleReset(clearFilters)}
+            onClick={() => clearFilters && handleReset(clearFilters,confirm)}
             size="middle"
             style={{
               width: 90,

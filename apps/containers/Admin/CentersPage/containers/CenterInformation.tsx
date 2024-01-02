@@ -32,7 +32,7 @@ const CentreInformation = (props) => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
-  const [addressList, setAddressList] = useState([]);
+  const [addressList, setAddressList] = useState([] as any);
   const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
   const openMessage = (type, content) => {
@@ -167,9 +167,9 @@ const CentreInformation = (props) => {
                 let tmpData = await response.json();
                 tmpData = tmpData.data;
 
-                let data = [];
+                let data: any[] = [];
                 tmpData.forEach((e) => {
-                  //data.push(e.address);
+                  data.push(e.address);
                 });
                 data = Array.from(new Set(data));
                 setAddressList(data);

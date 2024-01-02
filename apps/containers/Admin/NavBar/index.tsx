@@ -35,7 +35,7 @@ function getItem(
 }
 
 export type Props = {
-  active: "" | "centers" | "cars" | "inspection" | "statistics" | "account",
+  active: "" | "centers" | "cars" | "inspections" | "statistics" | "account",
   openMenu: "" | "carOpen" | "accountOpen" | string
 };
 
@@ -47,7 +47,7 @@ export default function NavBar({ active, openMenu }: Props) {
       getItem("Tra cứu phương tiện", "cars"),
       getItem("Tải lên dữ liệu", "upload"),
     ]),
-    getItem("Tra cứu đăng kiểm", "inspection", <SearchOutlined />),
+    getItem("Tra cứu đăng kiểm", "inspections", <SearchOutlined />),
     getItem("Thống kê", "statistics", <LineChartOutlined />),
     getItem("Tài khoản", "accountOpen", <UserOutlined />, [
       getItem("Cài đặt", "settings"),

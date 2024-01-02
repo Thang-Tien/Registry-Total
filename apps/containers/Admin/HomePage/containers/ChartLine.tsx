@@ -16,7 +16,8 @@ export default function ChartLine() {
       try {
 
         const date = new Date();
-        const year = date.getFullYear();
+        let year = date.getFullYear();
+        year = 2023;
 
         const response = await fetch(
           `http://fall2324w3g10.int3306.freeddns.org/api/v1/inspections/stat/all_centre/count/by_year?year=${2023}`

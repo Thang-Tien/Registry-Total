@@ -32,11 +32,9 @@ const CarProfile = (props) => {
   });
   const [loading, setLoading] = useState(false);
   const [ownerId, setOwnerId] = useState(-1);
-  const [inspected, setInspected] = useState(1);
+  const [inspected, setInspected] = useState(0);
   const router = useRouter();
   const delay = (ms) => new Promise((res) => setTimeout(res, ms));
-
-  useEffect(() => console.log(data[0]), [data]);
 
   useEffect(() => {
     document.title = "Thông tin phương tiện";
@@ -52,7 +50,7 @@ const CarProfile = (props) => {
 
         const tmp = await response.json();
         setData(tmp.data[0]);
-        //setInspected(tmp.data[0].inspected);
+        setInspected(tmp.data[0].inspected);
         setOwnerId(tmp.data[0].owner_id);
         setLoading(false);
       } catch (error) {

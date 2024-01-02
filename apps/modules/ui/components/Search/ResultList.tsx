@@ -1,6 +1,6 @@
 import { Avatar, Image, List, Skeleton } from "antd";
-import searchImage1 from "./../../../../public/image/search-1.svg"
-import searchImage2 from "./../../../../public/image/search-3.svg"
+import searchImage1 from "./../../../../public/image/search-1.svg";
+import searchImage2 from "./../../../../public/image/search-3.svg";
 import notFoundImage from "./../../../../public/image/void.svg";
 import carImage from "./../../../../public/image/car.png";
 import inspectionImage from "./../../../../public/image/checked.png";
@@ -8,6 +8,8 @@ import Link from "next/link";
 
 const ResultList = (props) => {
   const searchCar = props.search === "car";
+
+  console.log(props.data.length);
 
   return props.searchText.trim().length !== 0 ? (
     props.data.length > 0 ? (
@@ -24,7 +26,9 @@ const ResultList = (props) => {
         renderItem={(item: any) => (
           <List.Item
             actions={[
-              <Link href={`/${searchCar ? "cars" : "inspections"}/${item.car_id}`}>
+              <Link
+                href={`/${searchCar ? "cars" : "inspections"}/${item.car_id}`}
+              >
                 Xem chi tiết
               </Link>,
             ]}
@@ -53,6 +57,7 @@ const ResultList = (props) => {
         title={false}
         paragraph={{ rows: 10, width: "100%" }}
         style={{ margin: "4rem 0" }}
+        loading={props.loading}
       >
         <Image
           src={notFoundImage}
