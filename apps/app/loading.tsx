@@ -1,7 +1,18 @@
-export default function Loading() {
+import { Spin } from "antd";
+
+const Loading = () => {
   return (
-      <div>
-        Loading
-      </div>
+    <div
+      style={{
+        height: "80vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Spin size="large" />
+    </div>
   );
-}
+};
+
+export default Loading;

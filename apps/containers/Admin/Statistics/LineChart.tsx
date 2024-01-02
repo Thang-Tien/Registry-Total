@@ -1,63 +1,49 @@
 import { Line } from "@ant-design/plots";
 import { Card } from "antd";
+import { useEffect, useState } from "react";
 
 const LineChart = () => {
-  const data = [
-    {
-      count: 897,
-      monthYear: "8/2022",
-    },
-    {
-      count: 942,
-      monthYear: "9/2022",
-    },
-    {
-      count: 1118,
-      monthYear: "10/2022",
-    },
-    {
-      count: 1266,
-      monthYear: "11/2022",
-    },
-    {
-      count: 1605,
-      monthYear: "12/2022",
-    },
-    {
-      count: 743,
-      monthYear: "1/2023",
-    },
-    {
-      count: 862,
-      monthYear: "2/2023",
-    },
-    {
-      count: 737,
-      monthYear: "3/2023",
-    },
-    {
-      count: 796,
-      monthYear: "4/2023",
-    },
-    {
-      count: 371,
-      monthYear: "5/2023",
-    },
-    {
-      count: 13,
-      monthYear: "6/2023",
-    },
-    {
-      count: 1,
-      monthYear: "9/2023",
-    },
-  ];
+  const [data, setData] = useState([] as any);
+  const [loading, setLoading] = useState(false);
+  const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+
+  useEffect(() => {
+    setLoading(true);
+
+    const getData = async () => {
+      await delay(1500);
+
+      try {
+        const response = await fetch(
+          "http://fall2324w3g10.int3306.freeddns.org/api/v1/inspections/stat/all_centre/count/by_year?year=2023"
+        );
+        if(!response.ok) throw new Error("Fail to get data");
+
+        const tmp = await response.json();
+        const tmpData: any[] = [];
+
+        tmp.data.forEach(e => {
+          tmpData.push({
+            count: e.total,
+            month: e.month.toString()
+          })
+        });
+
+        setData(tmpData);
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        console.log(error);
+      }
+    };
+    getData();
+  }, []);
 
   return (
     <Card title="Biểu đồ đăng kiểm">
       <Line
         data={data}
-        xField="monthYear"
+        xField="month"
         yField="count"
         height={300}
         xAxis={{

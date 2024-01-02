@@ -3,11 +3,11 @@ import styles from "./index.module.scss";
 
 import Count from "./Count";
 import LineChart from "./LineChart";
-import Predict from "./Predict";
 import { useEffect } from "react";
 import Flex from "@/modules/ui/components/Flex";
 import NavBar from "../NavBar";
-import ChartLine from "../HomePage/containers/ChartLine";
+import ChartPie from "../HomePage/containers/ChartPie";
+import ColumnChart from "./ColumnChart";
 
 export type Props = {
   className?: string;
@@ -22,7 +22,7 @@ const StatisticsPage = ({ className, style }: Props) => {
   return (
     <div className={cx(className, styles.container)} style={style}>
       <Flex.Row style={{ height: "100vh", width: "100vw" }} padding={"0"}>
-        <NavBar active="statistics" />"
+        <NavBar active="statistics" openMenu="" />"
         <div
           style={{
             background: "#e4e4e7",
@@ -32,16 +32,28 @@ const StatisticsPage = ({ className, style }: Props) => {
         >
           <Flex.Col
             justifyContent="center"
-            gap="20px"
-            style={{ height: "100vh", margin: "0 50px"}}
+            style={{ height: "100vh", margin: "0 50px" }}
           >
-            <Flex.Row gap="50px" justifyContent="center" style={{height: "50%"}}>
-              <Count />
-              <ChartLine />
+            <Flex.Row
+              gap="24px"
+              justifyContent="center"
+              style={{ height: "50%" }}
+            >
+              <Flex.Cell>
+                <Count />
+              </Flex.Cell>
+              <Flex.Cell style={{height: "458px", width: "20000px"}}>
+                <ColumnChart />
+              </Flex.Cell>
             </Flex.Row>
-
-            <LineChart />
-          {/* <Predict height={300} /> */}
+            <Flex.Row gap="24px" justifyContent="center">
+              <Flex.Cell style={{ width: "66%" }}>
+                <LineChart />
+              </Flex.Cell>
+              <Flex.Cell style={{ width: "38%" }}>
+                <ChartPie height={"405px"} />
+              </Flex.Cell>
+            </Flex.Row>
           </Flex.Col>
         </div>
       </Flex.Row>

@@ -2,9 +2,9 @@ import cx from "classnames";
 import styles from "./index.module.scss";
 import { useState, useEffect } from "react";
 import ResultList from "../../../modules/ui/components/Search/ResultList";
-import SearchInput from "../../../modules/ui/components/Search/SearchInput";
 import Flex from "@/modules/ui/components/Flex";
 import NavBar from "../NavBar";
+import SearchInput from "@/modules/ui/components/Search/SearchInput";
 
 export type Props = {
   className?: string;
@@ -25,7 +25,7 @@ const CarsPage = ({ className, style }: Props) => {
   return (
     <div className={cx(className, styles.container)} style={style}>
       <Flex.Row style={{ height: "100vh", width: "100vw" }} padding={"0"}>
-        <NavBar active="cars" />"
+        <NavBar active="cars" openMenu="carOpen" />"
         <div
           style={{
             background: "#e4e4e7",
@@ -35,12 +35,11 @@ const CarsPage = ({ className, style }: Props) => {
         >
           <div
             style={{
-              width: "50rem",
+              width: "800px",
               margin: "auto",
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              textAlign: "center",
             }}
           >
             <SearchInput
@@ -50,7 +49,7 @@ const CarsPage = ({ className, style }: Props) => {
               search="car"
             />
             <ResultList
-              listData={data}
+              data={data}
               searchText={searchText}
               loading={loading}
               search="car"

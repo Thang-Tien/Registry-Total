@@ -4,7 +4,7 @@ import { Card } from "antd";
 import { Pie } from "@ant-design/plots";
 import React, { useEffect, useState } from "react";
 
-export default function ChartPie() {
+export default function ChartPie(props) {
   const [data, setData] = useState([] as any);
   const [loading, setLoading] = useState(false);
   const delay = (ms) => new Promise((res) => setTimeout(res, ms));
@@ -28,7 +28,7 @@ export default function ChartPie() {
         let expired = 0,
           newly = 0,
           abExpired = 0;
-        
+
         tmp.data.forEach((e) => {
           if (e.month <= month) {
             console.log(e.count);
@@ -37,6 +37,7 @@ export default function ChartPie() {
             else if (month - e.month <= 2) abExpired += e.total;
           }
         });
+        console.log(newly);
 
         response = await fetch(
           `http://fall2324w3g10.int3306.freeddns.org/api/v1/inspections/stat/all_centre/prediction/about_to_inspect`
@@ -46,6 +47,7 @@ export default function ChartPie() {
 
         newly += Math.round(tmp.data.total / 100);
         const tmpData: any[] = [];
+
         tmpData.push({
           type: "Đã hết hạn",
           value: expired,
@@ -60,6 +62,7 @@ export default function ChartPie() {
         });
         setData(tmpData);
         setLoading(false);
+        console.log(tmpData);
       } catch (error) {
         setLoading(false);
         console.log(error);
@@ -69,10 +72,10 @@ export default function ChartPie() {
   }, []);
 
   return (
-    <div style={{ width: "calc((100vw - 256px - 64px - 100px) /3 * 2)" }}>
+    <div style={{ width: "29vw" }}>
       <Card
         title="Trong tháng này"
-        style={{ width: "calc((100vw - 256px - 64px -100px)/3)" }}
+        style={{ width: "calc((100vw - 256px - 64px -100px)/3)", height: props.height ? `${props.height}` : "100%" }}
         loading={loading}
       >
         <Pie

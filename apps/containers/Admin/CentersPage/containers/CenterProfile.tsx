@@ -51,7 +51,7 @@ const CenterProfile = (props) => {
   return (
     <div>
       <Flex.Row style={{ height: "100vh", width: "100vw" }} padding={"0"}>
-        <NavBar active="centers" />"
+        <NavBar active="centers" openMenu="" />"
         <div
           style={{
             background: "#e4e4e7",

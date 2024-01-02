@@ -35,30 +35,31 @@ function getItem(
 }
 
 export type Props = {
-  active: "" | "centers" | "cars" | "inspection" | "statistics" | "account";
+  active: "" | "centers" | "cars" | "inspection" | "statistics" | "account",
+  openMenu: "" | "carOpen" | "accountOpen" | string
 };
 
-export default function NavBar({ active }: Props) {
+export default function NavBar({ active, openMenu }: Props) {
   const items: MenuItem[] = [
     getItem("Bảng điều khiển", "", <AppstoreOutlined />),
     getItem("Quản lý các trung tâm", "centers", <InboxOutlined />),
-    getItem("Quản lý phương tiện", "carsssss", <CarOutlined />, [
+    getItem("Quản lý phương tiện", "carOpen", <CarOutlined />, [
       getItem("Tra cứu phương tiện", "cars"),
       getItem("Tải lên dữ liệu", "upload"),
     ]),
     getItem("Tra cứu đăng kiểm", "inspection", <SearchOutlined />),
     getItem("Thống kê", "statistics", <LineChartOutlined />),
-    getItem("Tài khoản", "account", <UserOutlined />, [
+    getItem("Tài khoản", "accountOpen", <UserOutlined />, [
       getItem("Cài đặt", "settings"),
       getItem("Đăng xuất", "logout"),
     ]),
   ];
 
-  const rootSubmenuKeys = ["carsssss", "account"];
+  const rootSubmenuKeys = ["carOpen", "accountOpen"];
 
   const [open, setOpen] = useState(false);
 
-  const [openKeys, setOpenKeys] = useState([""]);
+  const [openKeys, setOpenKeys] = useState([openMenu]);
 
   const onOpenChange: MenuProps["onOpenChange"] = (keys) => {
     const latestOpenKey = keys.find((key) => openKeys.indexOf(key) === -1);

@@ -1,8 +1,12 @@
-import { Avatar, List, Select } from "antd";
+import { Column } from "@ant-design/plots";
+import { Card, Col, Row, Select, Skeleton, Space } from "antd";
 import { useEffect, useState } from "react";
-import image from "../../../../public/image/centre.png";
-import Link from "next/link";
-import Flex from "@/modules/ui/components/Flex";
+
+const now = new Date();
+const yearOptions: any[] = [];
+for (let i = now.getFullYear(); i >= 2014; i--) {
+  yearOptions.push(i);
+}
 
 const area1 = ["Đông Bắc Bộ", "Tây Bắc Bộ", "Đồng bằng Sông Hồng"];
 const area2 = ["Bắc Trung Bộ", "Duyên hải Nam Trung Bộ", "Tây Nguyên"];
@@ -13,9 +17,11 @@ map.set("Miền Bắc", area1);
 map.set("Miền Trung", area2);
 map.set("Miền Nam", area3);
 
-const CenterList = (props) => {
+const ColumnChart = () => {
+  const [year, setYear] = useState(now.getFullYear());
   const [loading, setLoading] = useState(false);
-  const [centres, setCentres] = useState([]);
+  const [filterByOption, setFilterByOption] = useState("month");
+  const [data, setData] = useState([] as any);
   const [side, setSide] = useState("all");
   const [area, setArea] = useState("all");
   const [address, setAddress] = useState("all");
@@ -25,38 +31,50 @@ const CenterList = (props) => {
 
   useEffect(() => {
     setLoading(true);
-    props.setLoading(true);
     const getData = async () => {
-      await delay(2000);
+      await delay(1500);
+
       try {
+        let url =`?year=${year}`;
+        if(side != "all") url += `&side=${side}`;
+        if(area != "all") url += `&area=${area}`;
+        if(address != "all") url += `&address=${address}`;
         const response = await fetch(
-          "http://fall2324w3g10.int3306.freeddns.org/api/v1/centres"
+          `http://fall2324w3g10.int3306.freeddns.org/api/v1/inspections/stat/all_centre/count/every_month${url}`
         );
         if(!response.ok) throw new Error("Fail to get data");
 
         const tmp = await response.json();
-        let tmpData: any[] = [];
-        tmp.data.forEach(e => {
-          tmpData.push(e.address);
+        const tmpData: any[] = [];
+        let value = [0, 0, 0, 0, 0];
+        let ok = 0;
+        tmp.data.forEach((e) => {
+          if (filterByOption === "month") {
+            tmpData.push({
+              count: e.total,
+              option: e.month.toString(),
+            });
+          } else (value[Math.ceil(e.month / 4)] += e.total), (ok = 1);
         });
-        tmpData = Array.from(new Set(tmpData));
-
-        setCentres(tmp.data);
-        props.setAddress(tmpData);
+        if (ok)
+          for (let index = 1; index < 5; index++)
+            tmpData.push({
+              count: value[index],
+              option: index.toString(),
+            });
+        console.log(tmpData);
+        setData(tmpData);
         setLoading(false);
-        props.setLoading(false);
       } catch (error) {
-        props.setLoading(false);
         setLoading(false);
         console.log(error);
       }
     };
     getData();
-  }, []);
+  }, [year, filterByOption, side, area, address]);
 
   useEffect(() => {
     setLoading(true);
-    props.setLoading(true);
     setAreaOptions(map.get(side));
     let url = "/api/v1/centres";
 
@@ -75,17 +93,14 @@ const CenterList = (props) => {
         const tmp = await response.json();
 
         let tmpData: any[] = [];
-        tmp.data.forEach(e => {
+        tmp.data.forEach((e) => {
           tmpData.push(e.address);
         });
         tmpData = Array.from(new Set(tmpData));
 
         setAddressOptions(tmpData);
-        setCentres(tmp.data);
         setLoading(false);
-        props.setLoading(false);
       } catch (error) {
-        props.setLoading(false);
         setLoading(false);
         console.log(error);
       }
@@ -95,9 +110,53 @@ const CenterList = (props) => {
   }, [side, area, address]);
 
   return (
-    <div>
-      <Flex.Row gap="20px" style={{ marginBottom: "20px" }}>
-        <Flex.Cell>
+    <Card
+      title="Số liệu thống kê"
+      style={{ height: "100%" }}
+      extra={
+        <Space size="middle">
+          <Select
+            disabled={loading}
+            defaultValue={year}
+            onChange={(value) => {
+              setYear(value);
+            }}
+            style={{
+              width: 100,
+            }}
+            listHeight={200}
+            options={[
+              ...yearOptions.map((year) => {
+                return { value: year, label: year };
+              }),
+            ]}
+          />
+          <Select
+            defaultValue={filterByOption}
+            onChange={(value) => {
+              setFilterByOption(value);
+            }}
+            style={{
+              width: 120,
+            }}
+            disabled={loading}
+            listHeight={200}
+            options={[
+              {
+                value: "month",
+                label: "Theo tháng",
+              },
+              {
+                value: "season",
+                label: "Theo quý",
+              },
+            ]}
+          />
+        </Space>
+      }
+    >
+      <Row gutter={[20, 20]} style={{ marginBottom: "2.4rem" }}>
+        <Col>
           <Select
             disabled={loading}
             value={side}
@@ -129,8 +188,8 @@ const CenterList = (props) => {
               },
             ]}
           />
-        </Flex.Cell>
-        <Flex.Cell>
+        </Col>
+        <Col>
           <Select
             value={area}
             disabled={side === "all" || loading}
@@ -152,16 +211,11 @@ const CenterList = (props) => {
               }),
             ]}
           />
-        </Flex.Cell>
-        <Flex.Cell>
+        </Col>
+        <Col>
           <Select
-            showSearch
-            optionFilterProp="children"
-            filterOption={(input, option) =>
-              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
-            }
             value={address}
-            disabled={side === "all" || area === "all" || loading}
+            disabled={area === "all" || loading}
             onChange={(value) => {
               setAddress(value);
             }}
@@ -179,32 +233,39 @@ const CenterList = (props) => {
               }),
             ]}
           />
-        </Flex.Cell>
-      </Flex.Row>
-      <List
-        pagination={{ align: "center" }}
-        dataSource={centres}
-        loading={loading}
-        style={{
-          backgroundColor: "white",
-          borderRadius: "6px",
-          padding: "16px 32px",
-        }}
-        renderItem={(item: any) => (
-          <List.Item
-            actions={[
-              <Link href={`/centers/${item.centre_id}`}>Xem chi tiết</Link>,
-            ]}
-          >
-            <List.Item.Meta
-              avatar={<Avatar src={image.src} />}
-              title={item.name}
-              description={`#${item.address}`}
-            />
-          </List.Item>
-        )}
-      />
-    </div>
+        </Col>
+      </Row>
+      <Skeleton loading={loading} active paragraph={{ rows: 5 }}>
+        <Column
+          data={data}
+          xField="option"
+          yField="count"
+          height={300}
+          label={{
+            position: "middle",
+            style: {
+              fill: "#FFFFFF",
+              opacity: 0.6,
+            },
+          }}
+          xAxis={{
+            label: {
+              autoHide: true,
+              autoRotate: false,
+            },
+          }}
+          meta={{
+            count: {
+              alias: "Số lượng",
+            },
+            month: {
+              alias: "Tháng",
+            },
+          }}
+        />
+      </Skeleton>
+    </Card>
   );
 };
-export default CenterList;
+
+export default ColumnChart;

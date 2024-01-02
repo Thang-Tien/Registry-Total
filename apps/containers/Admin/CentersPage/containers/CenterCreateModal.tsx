@@ -6,7 +6,6 @@ const CenterCreateModal = (props) => {
   const [form] = Form.useForm();
   const [submitting, setSubmitting] = useState(false);
   const [api, contextHolder] = notification.useNotification();
-  const router = useRouter();
   const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
   const openNotification = (type, message, description) => {

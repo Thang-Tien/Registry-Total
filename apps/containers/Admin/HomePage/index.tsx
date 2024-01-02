@@ -24,7 +24,7 @@ export default function HomePage({ className, style }: Props) {
   return (
     <div className={cx(className, styles.container)} style={style}>
       <Flex.Row style={{ height: "100vh", width: "100vw" }} padding={"0"}>
-        <NavBar active="" />"
+        <NavBar active="" openMenu="" />"
         <div
           style={{
             background: "#e4e4e7",

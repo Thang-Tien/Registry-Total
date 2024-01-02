@@ -10,21 +10,21 @@ const ResultList = (props) => {
   const searchCar = props.search === "car";
 
   return props.searchText.trim().length !== 0 ? (
-    props.listData.length > 0 ? (
+    props.data.length > 0 ? (
       <List
         itemLayout="horizontal"
         bordered
-        dataSource={props.listData}
+        dataSource={props.data}
         pagination={{ align: "center", showSizeChanger: false }}
         style={{
           width: "100%",
           margin: "3rem auto",
-          backgroundColor: "var(--color-white)",
+          backgroundColor: "white",
         }}
-        renderItem={(item) => (
+        renderItem={(item: any) => (
           <List.Item
             actions={[
-              <Link href={`/${searchCar ? "cars" : "inspections"}/${item.id}`}>
+              <Link href={`/${searchCar ? "cars" : "inspections"}/${item.car_id}`}>
                 Xem chi tiết
               </Link>,
             ]}
@@ -32,14 +32,14 @@ const ResultList = (props) => {
             <List.Item.Meta
               avatar={
                 <Avatar
-                  src={searchCar ? carImage : inspectionImage}
+                  src={searchCar ? carImage.src : inspectionImage.src}
                   size={20}
                 />
               }
-              title={searchCar ? item.numberPlate : item.inspectionNumber}
+              title={searchCar ? item.number_plate : item.inspection_number}
               description={
-                item.id !== "" &&
-                `#${searchCar ? item.registrationNumber : item.centre.name}`
+                item.car_id !== "" &&
+                `#${searchCar ? item.registration_number : item.inspection_id}`
               }
               style={{ textAlign: "left" }}
             />
