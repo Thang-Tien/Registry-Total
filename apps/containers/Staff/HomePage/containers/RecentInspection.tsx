@@ -64,6 +64,7 @@ const RecentInspection: React.FC = () => {
                 : localStorage.getItem("data");
         if (data != null) setUser(JSON.parse(data));
         const fetchData = async () => {
+            await delay(1000);
             try {
                 const response = await fetch(
                     `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/recently/${user.centre_id}`
@@ -98,7 +99,7 @@ const RecentInspection: React.FC = () => {
         };
 
         fetchData();
-    }, [user.user_id]); // centreID: dependency array to run the effect only once on mount
+    }, [user.centre_id]); // centreID: dependency array to run the effect only once on mount
 
     return (
         <Table

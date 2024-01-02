@@ -11,7 +11,7 @@ import ChartPie from "./containers/ChartPie";
 import MyRegistrations from "./containers/MyRegistrations";
 import RecentInspection from "./containers/RecentInspection";
 import { Breadcrumb } from "antd";
-import React, { useEffect } from "react";
+import React, { useEffect, Component } from "react";
 export type Props = {
     className?: string;
     style?: React.CSSProperties;

@@ -19,6 +19,7 @@ const ChartPie: React.FC = () => {
     const [countAboutToExpired, setCountAboutToExpired] = useState<
         number | null
     >(null);
+    const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
     useEffect(() => {
         const data =
@@ -27,6 +28,7 @@ const ChartPie: React.FC = () => {
                 : localStorage.getItem("data");
         if (data != null) setUser(JSON.parse(data));
         const fetchExpiredData = async () => {
+            await delay(1000);
             try {
                 const response = await fetch(
                     `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/stat/each_centre/count/expired/month/${user.centre_id}`
@@ -74,7 +76,7 @@ const ChartPie: React.FC = () => {
 
         fetchExpiredData();
         fetchAboutToExpiredData();
-    }, [user.user_id]); // user.centreID là biến phụ thuộc, thay đổi biến này thì chạy lại useEffect để fetch API
+    }, [user.centre_id]); // user.centreID là biến phụ thuộc, thay đổi biến này thì chạy lại useEffect để fetch API
 
     const chartData = [
         {

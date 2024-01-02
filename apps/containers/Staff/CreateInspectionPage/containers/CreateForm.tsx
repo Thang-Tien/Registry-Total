@@ -14,6 +14,7 @@ import {
     InputNumber,
     Checkbox,
     Result,
+    message,
 } from "antd";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -41,10 +42,13 @@ const CreateForm: React.FC = () => {
     const [current, setCurrent] = useState(0); // current step
     const [error, setError] = useState(false);
     const [found, setFound] = useState(false); // data found or not
-    const [isOpen, setIsOpen] = useState(false); // modal open or not
+    const [loading, setLoading] = useState(false); // loading search bar
+    const [submitting, setSubmitting] = useState(false); // loading submit button
+    const [messageApi, contextHolder] = message.useMessage(); // notification message
     const [options, setOptions] = useState([] as any);
     const [postData, setPostData] = useState({});
     const [totalInspection, setTotalInspection] = useState(null);
+    const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
     useEffect(() => {
         const data =
@@ -206,6 +210,13 @@ const CreateForm: React.FC = () => {
         { key: 2, title: "Hoàn tất đăng kiểm", icon: <CheckCircleOutlined /> },
     ];
 
+    const openMessage = (type, content) => {
+        messageApi.open({
+            type: type,
+            content: content,
+        });
+    };
+
     const nextStep = () => {
         setCurrent(current + 1);
     };
@@ -253,6 +264,7 @@ const CreateForm: React.FC = () => {
     };
 
     const onFinish = async (values) => {
+        setSubmitting(true);
         // Set checkbox values to 0 if they are undefined
         const updatedValues = {
             ...values,
@@ -290,21 +302,30 @@ const CreateForm: React.FC = () => {
 
             if (response.ok) {
                 console.log("Data posted successfully");
-                // You can do something after successful posting
                 setPostData({});
-                nextStep();
+                // You can do something after successful posting
+                setTimeout(() => {
+                    setSubmitting(false);
+                    nextStep();
+                }, 1000);
+
+                // nextStep();
             } else {
                 console.error("Failed to post data");
+                openMessage("error", "Có lỗi xảy ra");
+                setSubmitting(false);
                 // Handle the error as needed
             }
         } catch (error) {
             console.error("Error during API call:", error);
+            setSubmitting(false);
             // Handle the error as needed
         }
     };
 
     return (
         <div style={{ display: "flex", flexDirection: "column" }}>
+            {contextHolder}
             <Steps
                 current={current}
                 items={stepsData}
@@ -323,6 +344,7 @@ const CreateForm: React.FC = () => {
                 <>
                     <Input.Search
                         allowClear
+                        loading={loading}
                         enterButton
                         placeholder="Nhập biển số xe"
                         size="large"
@@ -339,24 +361,41 @@ const CreateForm: React.FC = () => {
 
                             // Trim the entered value to remove leading and trailing spaces
                             const trimmedValue = value.trim();
+                            setLoading(true);
 
                             // Check for an exact case-sensitive match in the options array
                             const exactMatch = options.some(
                                 (option) => option.value === trimmedValue
                             );
 
-                            setFound(exactMatch);
-                            if (exactMatch) {
-                                setPostData({
-                                    ...postData,
-                                    number_plate: trimmedValue,
-                                });
-                                console.log(postData);
-                            }
+                            // Set found state after 1 second
+                            setTimeout(() => {
+                                setFound(exactMatch);
 
-                            if (!exactMatch) {
-                                setError(true);
-                            }
+                                if (exactMatch) {
+                                    openMessage(
+                                        "success",
+                                        "Đã tìm thấy phương tiện"
+                                    );
+                                    setPostData({
+                                        ...postData,
+                                        number_plate: trimmedValue,
+                                    });
+                                    console.log(postData);
+
+                                    // Set loading to false after 1 second
+                                    setTimeout(() => {
+                                        setLoading(false);
+                                    }, 1000);
+                                } else {
+                                    setLoading(false);
+                                    setError(true);
+                                    openMessage(
+                                        "error",
+                                        "Không tìm thấy phương tiện"
+                                    );
+                                }
+                            }, 1000);
                         }}
                         status={error ? "error" : ""}
                     />
@@ -451,7 +490,11 @@ const CreateForm: React.FC = () => {
                                     size="large"
                                 >
                                     <Button htmlType="reset">Đặt lại</Button>
-                                    <Button type="primary" htmlType="submit">
+                                    <Button
+                                        type="primary"
+                                        htmlType="submit"
+                                        loading={submitting}
+                                    >
                                         Hoàn tất
                                     </Button>
                                 </Space>

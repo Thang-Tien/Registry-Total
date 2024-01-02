@@ -24,6 +24,7 @@ const InspectionTable: React.FC = () => {
     const [searchText, setSearchText] = useState("");
     const [searchedColumn, setSearchedColumn] = useState("");
     const searchInput = useRef(null);
+    const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
     useEffect(() => {
         const data =
@@ -31,23 +32,26 @@ const InspectionTable: React.FC = () => {
                 ? JSON.stringify(df)
                 : localStorage.getItem("data");
         if (data != null) setUser(JSON.parse(data));
-        const fetchCountAll = async () => {
-            try {
-                const response = await fetch(
-                    `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/stat/each_centre/count/mine/${user.user_id}`
-                );
-                const data = await response.json();
 
-                if (response.ok) {
-                    // Assuming the API response contains the count in the 'total' field
-                    setInspectionCount(data.data[0].total);
-                } else {
-                    console.error("Failed to fetch data from API:", data.error);
-                }
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
-        };
+        // const fetchCountAll = async () => {
+        //     await delay(1000);
+
+        //     try {
+        //         const response = await fetch(
+        //             `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/stat/each_centre/count/mine/${user.user_id}`
+        //         );
+        //         const data = await response.json();
+
+        //         if (response.ok) {
+        //             // Assuming the API response contains the count in the 'total' field
+        //             setInspectionCount(data.data[0].total);
+        //         } else {
+        //             console.error("Failed to fetch data from API:", data.error);
+        //         }
+        //     } catch (error) {
+        //         console.error("Error fetching data:", error);
+        //     }
+        // };
 
         const fetchDataSource = async () => {
             try {
@@ -77,6 +81,7 @@ const InspectionTable: React.FC = () => {
                 );
 
                 console.log("Updated data source:", dataSource);
+                setInspectionCount(data.data.length);
             } catch (error) {
                 console.error(
                     "There has been a problem with your fetch operation:",
@@ -84,9 +89,17 @@ const InspectionTable: React.FC = () => {
                 );
             }
         };
-        fetchCountAll();
+
+        // console.log("Centre_id: ", user.centre_id);
+        // console.log("User_id: ", user.user_id);
+        // fetchCountAll();
         fetchDataSource();
     }, [user.user_id]);
+
+    // setInspectionCount(dataSource.length);
+    useEffect(() => {
+        console.log("Inspection count:", inspectionCount);
+    }, [inspectionCount]);
 
     const handleSearch = (selectedKeys, confirm, dataIndex) => {
         confirm();
@@ -94,9 +107,12 @@ const InspectionTable: React.FC = () => {
         setSearchedColumn(dataIndex);
     };
 
-    const handleReset = (clearFilters) => {
+    const handleReset = (clearFilters, confirm) => {
         clearFilters();
         setSearchText("");
+        confirm();
+        setSearchText("");
+        setSearchedColumn("");
     };
 
     /*
@@ -142,7 +158,7 @@ const InspectionTable: React.FC = () => {
                     <Button
                         role="reset"
                         onClick={() =>
-                            clearFilters && handleReset(clearFilters)
+                            clearFilters && handleReset(clearFilters, confirm)
                         }
                         size="middle"
                         style={{
@@ -269,7 +285,7 @@ const InspectionTable: React.FC = () => {
                         padding: "0 10px",
                     }}
                 >
-                    Tổng số xe đã đăng kiểm: {inspectionCount || 0}
+                    Tổng số xe đã đăng kiểm: {inspectionCount}
                 </div>
             )}
             dataSource={dataSource}

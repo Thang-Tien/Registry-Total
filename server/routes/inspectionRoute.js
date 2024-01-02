@@ -3,6 +3,11 @@ const router = express.Router({ mergeParams: true });
 const inspectionController = require("../controllers/inspectionController");
 const authController = require("../controllers/authController");
 
+// đếm tổng số lượng đăng kiểm của centre mà staff đang làm việc
+router.get(
+    "/stat/each_centre/info/:centre_id",
+    inspectionController.countInspectionsOfEachCentre
+);
 //router.use(authController.authenticateToken)
 // add queries to filter inspections to count
 router.get(
@@ -20,10 +25,8 @@ router.get(
     inspectionController.countInspectionsOfAllCentreEveryMonth
 );
 
-router.get(
-    "/stat/:centre_id/count/",
-    inspectionController.countInspectionsOfACentre
-);
+// đưa ra thông tin đăng kiểm của trung tâm mà staff đang làm việc
+router.get("/info/:centre_id", inspectionController.getInspectionPerCentreID);
 
 router.get(
     "/stat/:centre_id/count/every_month",
@@ -117,8 +120,6 @@ router.get(
     "/inspection_number",
     inspectionController.getAllINspectionNumberAndCentreName
 );
-// đưa ra thông tin đăng kiểm của trung tâm mà staff đang làm việc
-router.get("/:centre_id", inspectionController.getInspectionPerCentreID);
 
 // đưa ra 5 đăng kiểm gần nhất của trung tâm mà staff đang làm việc
 router.get("/recently/:centre_id", inspectionController.getRecentlyInspection);

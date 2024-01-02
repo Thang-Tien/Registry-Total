@@ -11,6 +11,7 @@ const { Text } = Typography;
 
 const SearchForm: React.FC = () => {
     const [options, setOptions] = useState([] as any);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         // Fetch data from the API
@@ -44,6 +45,7 @@ const SearchForm: React.FC = () => {
     const [searchStatus, setSearchStatus] = useState<string>("Start");
 
     const handleSearch = (value) => {
+        setLoading(true);
         // Check if the search value is empty
         if (value.trim() === "") {
             // If it's empty, set the status to "Start"
@@ -56,11 +58,16 @@ const SearchForm: React.FC = () => {
             option.value.toUpperCase().includes(value.trim().toUpperCase())
         );
 
+        setTimeout(() => {
+            setLoading(false);
+            setSearchStatus(matchingOptions.length > 0 ? "List" : "Not Found");
+            setSelectedValues(matchingOptions);
+        }, 1000);
         // Set the status based on whether options were found
-        setSearchStatus(matchingOptions.length > 0 ? "List" : "Not Found");
+        // setSearchStatus(matchingOptions.length > 0 ? "List" : "Not Found");
 
         // Do something with the selected values, for example, store them in state
-        setSelectedValues(matchingOptions);
+        // setSelectedValues(matchingOptions);
 
         // // Log the selected values
         // console.log("Selected Values:", matchingOptions);
@@ -78,6 +85,7 @@ const SearchForm: React.FC = () => {
                 // }
             >
                 <Input.Search
+                    loading={loading}
                     size="large"
                     placeholder="Nhập số đăng kiểm"
                     enterButton

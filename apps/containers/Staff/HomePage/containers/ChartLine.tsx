@@ -26,6 +26,7 @@ const ChartLine: React.FC = () => {
         if (data != null) setUser(JSON.parse(data));
         // Fetch data from the API
         const fetchData = async () => {
+            await delay(1000);
             try {
                 const response = await fetch(
                     `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/stat/each_centre/count/last_twelve_months/${user.centre_id}`
@@ -33,7 +34,8 @@ const ChartLine: React.FC = () => {
                 const data = await response.json();
                 if (response.ok) {
                     // Assuming the API response contains the count in the 'total' field
-                    setData(data.data);
+                    const reversedData = data.data.reverse();
+                    setData(reversedData);
                 } else {
                     console.error("Failed to fetch data from API:", data.error);
                 }
@@ -42,7 +44,7 @@ const ChartLine: React.FC = () => {
             }
         };
         fetchData();
-    }, [user.user_id]); // user.centreID là biến phụ thuộc, thay đổi biến này thì chạy lại useEffect để fetch API
+    }, [user.centre_id]); // user.centreID là biến phụ thuộc, thay đổi biến này thì chạy lại useEffect để fetch API
 
     return (
         <div style={{ width: "calc((100vw - 256px - 64px - 20px) /3 *2)" }}>

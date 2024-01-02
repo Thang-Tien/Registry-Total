@@ -32,28 +32,31 @@ const InspectionTable: React.FC = () => {
                 ? JSON.stringify(df)
                 : localStorage.getItem("data");
         if (data != null) setUser(JSON.parse(data));
-        const fetchCountAll = async () => {
-            try {
-                const response = await fetch(
-                    `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/stat/each_centre/count/${user.centre_id}`
-                );
-                const data = await response.json();
+        // console.log("Centre_id: ", user.centre_id);
+        // console.log("User_id: ", user.user_id);
 
-                if (response.ok) {
-                    // Assuming the API response contains the count in the 'total' field
-                    setInspectionCount(data.data[0].total);
-                } else {
-                    console.error("Failed to fetch data from API:", data.error);
-                }
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
-        };
+        // const fetchCountAll = async () => {
+        //     try {
+        //         const response = await fetch(
+        //             `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/stat/each_centre/count/${user.centre_id}`
+        //         );
+        //         const data = await response.json();
+
+        //         if (response.ok) {
+        //             // Assuming the API response contains the count in the 'total' field
+        //             setInspectionCount(data.data[0].total);
+        //         } else {
+        //             console.error("Failed to fetch data from API:", data.error);
+        //         }
+        //     } catch (error) {
+        //         console.error("Error fetching data:", error);
+        //     }
+        // };
 
         const fetchDataSource = async () => {
             try {
                 const response = await fetch(
-                    `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/${user.centre_id}`
+                    `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/info/${user.centre_id}`
                 );
 
                 if (!response.ok) {
@@ -77,6 +80,7 @@ const InspectionTable: React.FC = () => {
                     }))
                 );
 
+                setInspectionCount(data.data.length);
                 console.log("Updated data source:", dataSource);
             } catch (error) {
                 console.error(
@@ -85,7 +89,7 @@ const InspectionTable: React.FC = () => {
                 );
             }
         };
-        fetchCountAll();
+        // fetchCountAll();
         fetchDataSource();
     }, [user.user_id]);
 
@@ -95,9 +99,12 @@ const InspectionTable: React.FC = () => {
         setSearchedColumn(dataIndex);
     };
 
-    const handleReset = (clearFilters) => {
+    const handleReset = (clearFilters, confirm) => {
         clearFilters();
         setSearchText("");
+        confirm();
+        setSearchText("");
+        setSearchedColumn("");
     };
 
     /*
@@ -143,7 +150,7 @@ const InspectionTable: React.FC = () => {
                     <Button
                         role="reset"
                         onClick={() =>
-                            clearFilters && handleReset(clearFilters)
+                            clearFilters && handleReset(clearFilters, confirm)
                         }
                         size="middle"
                         style={{

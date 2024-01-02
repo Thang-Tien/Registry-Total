@@ -18,6 +18,7 @@ interface CarItem {
 
 const SearchForm: React.FC = () => {
     const [options, setOptions] = useState([] as any);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -49,6 +50,7 @@ const SearchForm: React.FC = () => {
     const [searchStatus, setSearchStatus] = useState<string>("Start");
 
     const handleSearch = (value) => {
+        setLoading(true);
         // Check if the search value is empty
         if (value.trim() === "") {
             // If it's empty, set the status to "Start"
@@ -61,11 +63,16 @@ const SearchForm: React.FC = () => {
             option.value.toUpperCase().includes(value.trim().toUpperCase())
         );
 
-        // Set the status based on whether options were found
-        setSearchStatus(matchingOptions.length > 0 ? "List" : "Not Found");
+        setTimeout(() => {
+            setLoading(false);
+            setSearchStatus(matchingOptions.length > 0 ? "List" : "Not Found");
+            setSelectedValues(matchingOptions);
+        }, 1000);
+        // // Set the status based on whether options were found
+        // setSearchStatus(matchingOptions.length > 0 ? "List" : "Not Found");
 
-        // Do something with the selected values, for example, store them in state
-        setSelectedValues(matchingOptions);
+        // // Do something with the selected values, for example, store them in state
+        // setSelectedValues(matchingOptions);
 
         // // Log the selected values
         // console.log("Selected Values:", matchingOptions);
@@ -84,6 +91,7 @@ const SearchForm: React.FC = () => {
             >
                 <Input.Search
                     size="large"
+                    loading={loading}
                     placeholder="Nhập biển số xe"
                     enterButton
                     allowClear
