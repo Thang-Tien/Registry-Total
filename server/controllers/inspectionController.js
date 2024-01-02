@@ -190,7 +190,7 @@ exports.countInspectionsOfAllCentreByYear = async (req, res) => {
 exports.getInspection = (req, res) => {
     let queryString = utils.generateQueryString(req.query);
     connection.query(
-        `SELECT * FROM inspections WHERE ${queryString ? queryString : 1}`,
+        `SELECT *, (SELECT number_plate FROM cars c WHERE c.car_id = i.car_id) AS number_plate FROM inspections i WHERE ${queryString ? queryString : 1}`,
         utils.getQueryValue(req.query),
         (err, result, fields) => {
             if (err) {
