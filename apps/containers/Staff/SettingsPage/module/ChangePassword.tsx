@@ -93,7 +93,7 @@ const ChangePassword = () => {
     >
       {notificationContextHolder}
       {messageContextHolder}
-      <h1 style={{padding: "1rem",fontSize:"1,4rem",fontWeight:"700"}}>Thay đổi mật khẩu</h1>
+      <h1 style={{padding: "0rem 3rem 0 2rem",fontSize:"1,4rem",fontWeight:"700"}}>Thay đổi mật khẩu</h1>
       <Form
         name="change-password-form"
         form={form}

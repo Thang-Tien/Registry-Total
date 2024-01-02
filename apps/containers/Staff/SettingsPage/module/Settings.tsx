@@ -14,7 +14,7 @@ const Settings = (props) => {
       tabBarGutter={16}
       tabBarStyle={{
         marginTop: "2rem",
-        width: "20%",
+        width: "12rem",
       }}
       centered={true}
       items={[

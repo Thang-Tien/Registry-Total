@@ -59,6 +59,7 @@ export default function NavBar({ active }: Props) {
         getItem("Thống kê", "statistics", <LineChartOutlined />),
         getItem("Tài khoản", "settings", <UserOutlined />, [
             getItem("Cài đặt", "settings/profile"),
+            getItem("Cài đặt", "settings/password"),
             getItem("Đăng xuất", "auth"),
         ]),
     ];
@@ -97,6 +98,9 @@ export default function NavBar({ active }: Props) {
         // Check if the selected key is "auth" and call clearLocalStorage
         if (selectedKey === "auth") {
             clearLocalStorage();
+        }
+        if (selectedKey === "settings/profile") {
+            console.log("aaaaaaaaaaaaaaaaaaaaaaaaaa");
         }
     };
 
