@@ -20,7 +20,7 @@ exports.totalNumberOfCentre = (req, res) => {
 }
 
 exports.centresWithMostInspects = async (req, res) => {
-    connection.query(`SELECT r.centre_id, r.name, COUNT(i.centre_id) as total_inspection FROM inspections i INNER JOIN registration_centres r ON i.centre_id = r.centre_id  GROUP BY r.centre_id ORDER BY total_inspection DESC LIMIT ${req.query.limit ? req.query.limit : 5}`,
+    connection.query(`SELECT r.centre_id, r.name, COUNT(i.centre_id) as total_inspection FROM inspections i INNER JOIN registration_centres r ON i.centre_id = r.centre_id WHERE r.active = 1 GROUP BY r.centre_id ORDER BY total_inspection DESC LIMIT ${req.query.limit ? req.query.limit : 5}`,
         (err, result, fields) => {
             if (err) {
                 return res.status(500).json({
