@@ -366,7 +366,7 @@ exports.countInspectionEachCenterLastTwelveMonths = async (req, res) => {
         FROM inspections
         WHERE ${queryString ? queryString : "1"} AND centre_id = ?
         ORDER BY inspection_date DESC;`,
-		[req.user.centre_id],
+		[req.params.centre_id],
 		(err, result, fields) => {
 			if (err) {
 				return res.status(500).json({
