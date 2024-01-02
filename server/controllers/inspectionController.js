@@ -138,8 +138,7 @@ exports.countInspectionEachCenterLastTwelveMonths = async (req, res) => {
             EXTRACT(YEAR FROM inspection_date) AS year
         FROM inspections
         WHERE ${queryString ? queryString : "1"} AND centre_id = ?
-        ORDER BY inspection_date DESC
-        LIMIT 12;`,
+        ORDER BY inspection_date DESC;`,
 		[req.user.centre_id],
 		(err, result, fields) => {
 			if (err) {
@@ -163,9 +162,12 @@ exports.countInspectionEachCenterLastTwelveMonths = async (req, res) => {
 					})
 				);
 
+				// Retrieve the first 12 elements
+				const first12Data = data.slice(0, 12);
+
 				return res.status(200).json({
 					status: "Success",
-					data,
+					data: first12Data,
 				});
 			}
 		}
