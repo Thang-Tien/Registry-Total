@@ -7,7 +7,6 @@ import {
   message,
   notification,
 } from "antd";
-import classes from "../styles/ChangePassword.module.css";
 import { useEffect, useState } from "react";
 
 
@@ -180,7 +179,7 @@ const ChangePassword = () => {
             <Button
               type="primary"
               htmlType="submit"
-              className={classes.btn}
+              style={{}}
               disabled={isChanging}
               loading={isChanging}
             >
