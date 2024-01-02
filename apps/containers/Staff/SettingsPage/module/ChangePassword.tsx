@@ -53,7 +53,7 @@ const ChangePassword = () => {
       setIsChanging(true);
 
       const response = await fetch(
-        `http://localhost:8000/api/v1/users/change-password`,
+        `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/users/change-password`,
         {
           method: "POST",
           headers: {
