@@ -55,10 +55,8 @@ const RecentInspection: React.FC = () => {
         },
     ];
     const [dataSource, setDataSource] = useState([]);
+    const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
-    useEffect(() => {
-        console.log(user);
-    }, [user]);
     useEffect(() => {
         const data =
             localStorage.getItem("data") === null

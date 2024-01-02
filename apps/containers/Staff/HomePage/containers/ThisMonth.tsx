@@ -17,10 +17,8 @@ const ThisMonth: React.FC = () => {
         date_of_birth: "",
     });
     const [inspectionCount, setInspectionCount] = useState<number | null>(null);
+    const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
-    useEffect(() => {
-        console.log(user);
-    }, [user]);
     useEffect(() => {
         const data =
             localStorage.getItem("data") === null
@@ -28,6 +26,7 @@ const ThisMonth: React.FC = () => {
                 : localStorage.getItem("data");
         if (data != null) setUser(JSON.parse(data));
         const fetchData = async () => {
+            
             try {
                 const response = await fetch(
                     `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/stat/each_centre/count/month/${user.centre_id}`

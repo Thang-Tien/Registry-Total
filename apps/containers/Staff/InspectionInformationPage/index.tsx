@@ -1,9 +1,11 @@
+"use client";
 import cx from "classnames";
 import styles from "./index.module.scss";
 import Flex from "@/modules/ui/components/Flex";
 import NavBar from "../NavBar";
 import { Breadcrumb } from "antd";
 import InformationCard from "./containers/InformationCard";
+import React, { useEffect } from "react";
 export type Props = {
     className?: string;
     style?: React.CSSProperties;
@@ -15,6 +17,9 @@ export default function InspectionInformationPage({
     style,
     inspectionId,
 }: Props) {
+    useEffect(() => {
+        document.title = "Thông tin đăng kiểm";
+    }, []);
     return (
         <div className={cx(className, styles.container)} style={style}>
             <Flex.Row style={{ width: "100%", minHeight: "100vh" }}>

@@ -21,9 +21,6 @@ const ChartPie: React.FC = () => {
     >(null);
 
     useEffect(() => {
-        console.log(user);
-    }, [user]);
-    useEffect(() => {
         const data =
             localStorage.getItem("data") === null
                 ? JSON.stringify(df)
@@ -55,7 +52,7 @@ const ChartPie: React.FC = () => {
         const fetchAboutToExpiredData = async () => {
             try {
                 const response = await fetch(
-                    `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/stat/each_centre/count/about_to_expired/month/${user.user_id}`
+                    `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/stat/each_centre/count/about_to_expired/month/${user.centre_id}`
                 );
                 const data = await response.json();
                 if (

@@ -17,16 +17,16 @@ const ThisYear: React.FC = () => {
         date_of_birth: "",
     });
     const [inspectionCount, setInspectionCount] = useState<number | null>(null);
+    const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
-    useEffect(() => {
-        console.log(user);
-    }, [user]);
     useEffect(() => {
         const data =
             localStorage.getItem("data") === null
                 ? JSON.stringify(df)
                 : localStorage.getItem("data");
         if (data != null) setUser(JSON.parse(data));
+        console.log("Centre_id: ", user.centre_id);
+        console.log("User_id: ", user.user_id);
         const fetchData = async () => {
             try {
                 const response = await fetch(

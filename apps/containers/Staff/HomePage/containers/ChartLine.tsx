@@ -16,10 +16,8 @@ const ChartLine: React.FC = () => {
         date_of_birth: "",
     });
     const [data, setData] = useState([]);
+    const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
-    useEffect(() => {
-        console.log(user);
-    }, [user]);
     useEffect(() => {
         const data =
             localStorage.getItem("data") === null
@@ -27,19 +25,23 @@ const ChartLine: React.FC = () => {
                 : localStorage.getItem("data");
         if (data != null) setUser(JSON.parse(data));
         // Fetch data from the API
-        fetch(
-            `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/stat/each_centre/count/last_twelve_months/${user.centre_id}`
-        )
-            .then((response) => response.json())
-            .then((result) => {
-                if (result.status === "Success") {
-                    const reversedData = result.data.reverse();
-                    setData(reversedData);
+        const fetchData = async () => {
+            try {
+                const response = await fetch(
+                    `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/stat/each_centre/count/last_twelve_months/${user.centre_id}`
+                );
+                const data = await response.json();
+                if (response.ok) {
+                    // Assuming the API response contains the count in the 'total' field
+                    setData(data.data);
                 } else {
-                    console.error("Failed to fetch data from the API");
+                    console.error("Failed to fetch data from API:", data.error);
                 }
-            })
-            .catch((error) => console.error("Error fetching data:", error));
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+        fetchData();
     }, [user.user_id]); // user.centreID là biến phụ thuộc, thay đổi biến này thì chạy lại useEffect để fetch API
 
     return (

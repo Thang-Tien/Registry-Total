@@ -17,10 +17,8 @@ const MyRegistrations: React.FC = () => {
         date_of_birth: "",
     });
     const [inspectionCount, setInspectionCount] = useState<number | null>(null);
+    const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
-    useEffect(() => {
-        console.log(user);
-    }, [user]);
     useEffect(() => {
         const data =
             localStorage.getItem("data") === null

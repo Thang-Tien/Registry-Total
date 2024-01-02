@@ -244,15 +244,6 @@ const InformationCard: React.FC<InformationCardProps> = ({ carId }) => {
                 </Descriptions>
             ),
         },
-        {
-            key: "4",
-            label: (
-                <>
-                    <HistoryOutlined /> Lịch sử đăng kiểm
-                </>
-            ),
-            children: <InformationHistory />,
-        },
     ];
     return (
         <Card

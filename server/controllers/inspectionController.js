@@ -9,7 +9,8 @@ exports.countInspectionsOfAllCentre = async (req, res) => {
         "inspection_date"
     );
     connection.query(
-        `SELECT COUNT(*) as total FROM inspections i INNER JOIN registration_centres r ON i.centre_id = r.centre_id WHERE ${queryString ? queryString : 1
+        `SELECT COUNT(*) as total FROM inspections i INNER JOIN registration_centres r ON i.centre_id = r.centre_id WHERE ${
+            queryString ? queryString : 1
         }`,
         utils.getQueryValue(req.query),
         (err, result, fields) => {
@@ -90,7 +91,8 @@ exports.countInspectionOfACentre = (req, res) => {
         req.query,
         "inspection_date"
     );
-    connection.query(`SELECT COUNT(*) AS total FROM inspections WHERE centre_id = ${req.params.centre_id} AND ${queryString}`,
+    connection.query(
+        `SELECT COUNT(*) AS total FROM inspections WHERE centre_id = ${req.params.centre_id} AND ${queryString}`,
         utils.getQueryValue(req.query),
         (err, result, fields) => {
             if (err) {
@@ -101,11 +103,12 @@ exports.countInspectionOfACentre = (req, res) => {
             } else {
                 return res.status(200).json({
                     status: "Success",
-                    total: result[0]
-                })
+                    total: result[0],
+                });
             }
-        })
-}
+        }
+    );
+};
 
 exports.getInspection = (req, res) => {
     let queryString = utils.generateQueryString(req.query);
@@ -148,8 +151,9 @@ exports.countInspectionsOfEachCentre = async (req, res) => {
     connection.query(
         `SELECT COUNT(*) as total 
                      FROM inspections i 
-                     WHERE ${queryString ? queryString : 1
-        } AND i.centre_id = ?`,
+                     WHERE ${
+                         queryString ? queryString : 1
+                     } AND i.centre_id = ?`,
         [centreID],
         (err, result, fields) => {
             if (err) {
@@ -183,8 +187,9 @@ exports.countInspectionsOfEachCentreThisMonth = async (req, res) => {
     connection.query(
         `SELECT COUNT(*) as total 
                      FROM inspections i  
-                     WHERE ${queryString ? queryString : 1
-        } AND i.inspection_date <= LAST_DAY(NOW()) AND i.centre_id = ? AND i.inspection_date >= ?`,
+                     WHERE ${
+                         queryString ? queryString : 1
+                     } AND i.inspection_date <= LAST_DAY(NOW()) AND i.centre_id = ? AND i.inspection_date >= ?`,
         [centreID, firstDayOfMonth],
         (err, result, fields) => {
             if (err) {
@@ -218,8 +223,9 @@ exports.countInspectionsOfEachCentreThisYear = async (req, res) => {
     connection.query(
         `SELECT COUNT(*) as total 
                      FROM inspections i 
-                     WHERE ${queryString ? queryString : 1
-        } AND YEAR(i.inspection_date) = YEAR(NOW()) AND i.centre_id = ? `,
+                     WHERE ${
+                         queryString ? queryString : 1
+                     } AND YEAR(i.inspection_date) = YEAR(NOW()) AND i.centre_id = ? `,
         [centreID, firstDayOfMonth],
         (err, result, fields) => {
             if (err) {
@@ -265,23 +271,19 @@ exports.countInspectionsOfMine = async (req, res) => {
 };
 // Lấy ra tổng số lượng đăng kiểm của 12 tháng gần nhất CÓ ĐĂNG KIỂM của centre mà staff đang làm việc
 exports.countInspectionEachCenterLastTwelveMonths = async (req, res) => {
-    const centreID = req.params.centre_id;
     let queryString = utils.generateQueryStringWithDate(
         req.query,
         "inspection_date"
     );
+
     connection.query(
         `SELECT
-					COUNT(*) AS count,
- 					CONCAT( EXTRACT(MONTH FROM inspection_date),"/",EXTRACT(YEAR FROM inspection_date) ) as monthYear
-
-				FROM inspections
-  			Where ${queryString ? queryString : 1} AND centre_id = ?
-				GROUP BY EXTRACT(MONTH FROM inspection_date),EXTRACT(YEAR FROM inspection_date)
-				ORDER BY
-  					EXTRACT(YEAR FROM inspection_date) DESC, EXTRACT(MONTH FROM inspection_date) DESC
-  			Limit 12;`,
-        [centreID],
+            EXTRACT(MONTH FROM inspection_date) AS month,
+            EXTRACT(YEAR FROM inspection_date) AS year
+        FROM inspections
+        WHERE ${queryString ? queryString : "1"} AND centre_id = ?
+        ORDER BY inspection_date DESC;`,
+        [req.params.centre_id],
         (err, result, fields) => {
             if (err) {
                 return res.status(500).json({
@@ -289,9 +291,27 @@ exports.countInspectionEachCenterLastTwelveMonths = async (req, res) => {
                     error: err,
                 });
             } else {
+                // Process the raw result to calculate counts per monthYear
+                const counts = result.reduce((acc, row) => {
+                    const monthYear = `${row.month}/${row.year}`;
+                    acc[monthYear] = (acc[monthYear] || 0) + 1;
+                    return acc;
+                }, {});
+
+                // Convert the counts object to an array of objects
+                const data = Object.entries(counts).map(
+                    ([monthYear, count]) => ({
+                        monthYear,
+                        count,
+                    })
+                );
+
+                // Retrieve the first 12 elements
+                const first12Data = data.slice(0, 12);
+
                 return res.status(200).json({
                     status: "Success",
-                    data: result,
+                    data: first12Data,
                 });
             }
         }
@@ -300,22 +320,20 @@ exports.countInspectionEachCenterLastTwelveMonths = async (req, res) => {
 
 // đếm số lượng đăng kiểm theo tháng của từng trung tâm
 exports.countInspectionEachCenterPerMonth = async (req, res) => {
-    const centreID = req.params.centre_id;
+    const centre_id = req.params.centre_id;
     let queryString = utils.generateQueryStringWithDate(
         req.query,
         "inspection_date"
     );
+
     connection.query(
         `SELECT
-					COUNT(*) AS count,
- 					CONCAT( EXTRACT(MONTH FROM inspection_date),"/",EXTRACT(YEAR FROM inspection_date) ) as monthYear
-
-				FROM inspections
-  			Where ${queryString ? queryString : 1} AND centre_id = ?
-				GROUP BY EXTRACT(MONTH FROM inspection_date),EXTRACT(YEAR FROM inspection_date)
-				ORDER BY
-  					EXTRACT(YEAR FROM inspection_date) DESC, EXTRACT(MONTH FROM inspection_date) DESC;`,
-        [centreID],
+            EXTRACT(MONTH FROM inspection_date) AS month,
+            EXTRACT(YEAR FROM inspection_date) AS year
+        FROM inspections
+        WHERE ${queryString ? queryString : "1"} AND centre_id = ?
+        ORDER BY inspection_date DESC`,
+        [centre_id],
         (err, result, fields) => {
             if (err) {
                 return res.status(500).json({
@@ -323,9 +341,24 @@ exports.countInspectionEachCenterPerMonth = async (req, res) => {
                     error: err,
                 });
             } else {
+                // Process the raw result to calculate counts per monthYear
+                const counts = result.reduce((acc, row) => {
+                    const monthYear = `${row.month}/${row.year}`;
+                    acc[monthYear] = (acc[monthYear] || 0) + 1;
+                    return acc;
+                }, {});
+
+                // Convert the counts object to an array of objects
+                const data = Object.entries(counts).map(
+                    ([monthYear, count]) => ({
+                        monthYear,
+                        count,
+                    })
+                );
+
                 return res.status(200).json({
                     status: "Success",
-                    data: result,
+                    data,
                 });
             }
         }
@@ -679,8 +712,9 @@ exports.getInspectionAndOwnerPerID = (req, res) => {
                     INNER JOIN cars c ON c.car_id = i.car_id
                     INNER JOIN car_owners co ON co.owner_id = c.owner_id
                     INNER JOIN registration_centres r ON i.centre_id = r.centre_id
-                    WHERE ${queryString ? queryString : 1
-        } AND i.inspection_id = ?`,
+                    WHERE ${
+                        queryString ? queryString : 1
+                    } AND i.inspection_id = ?`,
         [inspectionID],
         (err, result, fields) => {
             if (err) {
@@ -938,9 +972,9 @@ exports.createInspection = (req, res) => {
                                     kerb_mass + " (kg)",
                                     designed_and_authorized_payload + " (kg)",
                                     designed_and_authorized_total_mass +
-                                    " (kg)",
+                                        " (kg)",
                                     designed_and_authorized_towed_mass +
-                                    " (kg)",
+                                        " (kg)",
                                     permissible_carry,
                                     engine_displacement + " (cm3)",
                                     maximum_output_to_rpm_ratio,

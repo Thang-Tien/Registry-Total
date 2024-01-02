@@ -24,6 +24,7 @@ const InspectionTable: React.FC = () => {
     const [searchText, setSearchText] = useState("");
     const [searchedColumn, setSearchedColumn] = useState("");
     const searchInput = useRef(null);
+    const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
     useEffect(() => {
         const data =
