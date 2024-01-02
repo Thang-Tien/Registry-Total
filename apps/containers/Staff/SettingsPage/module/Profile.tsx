@@ -24,7 +24,6 @@ import {
 } from "react-icons/io5";
 import { EditOutlined } from "@ant-design/icons";
 import avatar from "./../../../../public/image/avatar.png";
-import classes from "./../styles/Profile.module.css";
 import { useEffect, useState } from "react";
 import validateDate from "validate-date";
 import TextWithIcon from "./TextWithIcon";
@@ -164,7 +163,7 @@ const Profile = () => {
     >
       {notificationContextHolder}
       {messageContextHolder}
-      <h1 className={classes.title}>Hồ sơ của tôi</h1>
+      <h1 style={{padding: "0rem 3rem 0 2rem",fontSize:"1,4rem",fontWeight:"700"}}>Hồ sơ của tôi</h1>
       <Skeleton
         loading={loading}
         style={{ padding: "3rem" }}
@@ -213,11 +212,11 @@ const Profile = () => {
             >
               <Avatar src={avatar.src} size={100} style={{ marginRight: "10px" }}/>
               <Space direction="vertical" size="small">
-                <span className={classes.name}>{me.name}</span>
-                <span className={classes.role}>
+                <span style={{fontSize:"16px",fontWeight:"600"}}>{me.name}</span>
+                <span style={{color:"var(--color-grey-dark-2)",fontSize:"15px",fontWeight:"500"}}>
                   {me.role === "staff" ? "Nhân viên" : "Quản trị viên"}
                 </span>
-                <span className={classes.address}>
+                <span style={{color:"var(--color-grey-dark-3)",fontSize:"14px",fontWeight:"400"}}>
                   {user.address}, Việt Nam
                 </span>
               </Space>
