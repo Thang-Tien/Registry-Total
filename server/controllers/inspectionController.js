@@ -401,22 +401,19 @@ exports.countInspectionEachCenterLastTwelveMonths = async (req, res) => {
 
 // đếm số lượng đăng kiểm theo tháng của từng trung tâm
 exports.countInspectionEachCenterPerMonth = async (req, res) => {
-    const centreID = req.params.centre_id;
     let queryString = utils.generateQueryStringWithDate(
         req.query,
         "inspection_date"
     );
+
     connection.query(
         `SELECT
-					COUNT(*) AS count,
- 					CONCAT( EXTRACT(MONTH FROM inspection_date),"/",EXTRACT(YEAR FROM inspection_date) ) as monthYear
-
-				FROM inspections
-  			Where ${queryString ? queryString : 1} AND centre_id = ?
-				GROUP BY EXTRACT(MONTH FROM inspection_date),EXTRACT(YEAR FROM inspection_date)
-				ORDER BY
-  					EXTRACT(YEAR FROM inspection_date) DESC, EXTRACT(MONTH FROM inspection_date) DESC;`,
-        [centreID],
+            EXTRACT(MONTH FROM inspection_date) AS month,
+            EXTRACT(YEAR FROM inspection_date) AS year
+        FROM inspections
+        WHERE ${queryString ? queryString : "1"} AND centre_id = ?
+        ORDER BY inspection_date DESC;`,
+        [req.params.centre_id],
         (err, result, fields) => {
             if (err) {
                 return res.status(500).json({
@@ -424,9 +421,24 @@ exports.countInspectionEachCenterPerMonth = async (req, res) => {
                     error: err,
                 });
             } else {
+                // Process the raw result to calculate counts per monthYear
+                const counts = result.reduce((acc, row) => {
+                    const monthYear = `${row.month}/${row.year}`;
+                    acc[monthYear] = (acc[monthYear] || 0) + 1;
+                    return acc;
+                }, {});
+
+                // Convert the counts object to an array of objects
+                const data = Object.entries(counts).map(
+                    ([monthYear, count]) => ({
+                        monthYear,
+                        count,
+                    })
+                );
+
                 return res.status(200).json({
                     status: "Success",
-                    data: result,
+                    data,
                 });
             }
         }
