@@ -406,7 +406,7 @@ const Profile = () => {
               setSubmitting(false);
               throw new Error("An error occured");
             }
-
+            
             const newUser = me;
             newUser.name = datas.name;
             newUser.date_of_birth = datas.date_of_birth;
