@@ -51,7 +51,7 @@ export default function NavBar({ active, openMenu }: Props) {
     getItem("Thống kê", "statistic", <LineChartOutlined />),
     getItem("Tài khoản", "accountOpen", <UserOutlined />, [
       getItem("Cài đặt", "setting/profile"),
-      getItem("Đăng xuất", "logout"),
+      getItem("Đăng xuất", "/auth"),
     ]),
   ];
 

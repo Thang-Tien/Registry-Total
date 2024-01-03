@@ -38,7 +38,7 @@ export type Props = {
     active:
         | ""
         | "dashboards"
-        | "inspection"
+        | "inspections"
         | "inspections/create"
         | "cars/search"
         | "statistics"
