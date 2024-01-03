@@ -51,7 +51,7 @@ export default function NavBar({ active, openMenu }: Props) {
     getItem("Thống kê", "statistic", <LineChartOutlined />),
     getItem("Tài khoản", "setting", <UserOutlined />, [
       getItem("Cài đặt", "setting/profile"),
-      getItem("Đăng xuất", "/auth"),
+      getItem("Đăng xuất", "auth"),
     ]),
   ];
 
@@ -82,7 +82,7 @@ export default function NavBar({ active, openMenu }: Props) {
     router.prefetch(`/${e.keyPath[0]}`);
     router.push(`/${e.keyPath[0]}`);
     if (selectedKey === "auth") {
-      clearLocalStorage();
+      localStorage.clear();
     }
   };
   return (
