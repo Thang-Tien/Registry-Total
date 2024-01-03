@@ -37,9 +37,9 @@ function getItem(
 export type Props = {
     active:
         | ""
-        | "dashboard"
+        | "dashboards"
         | "inspection"
-        | "inspection/create"
+        | "inspections/create"
         | "cars/search"
         | "statistics"
         | "settings";
@@ -48,13 +48,13 @@ export type Props = {
 export default function NavBar({ active }: Props) {
     const items: MenuItem[] = [
         // <AppstoreOutlined />, <InboxOutlined />, <CarOutlined />, <SearchOutlined />, <LineChartOutlined />, <UserOutlined /> are icons
-        getItem("Bảng điều khiển", "dashboard", <AppstoreOutlined />),
-        getItem("Quản lý đăng kiểm", "inspection", <CarOutlined />, [
-            getItem("Tất cả đăng kiểm", "inspection/all"),
-            getItem("Đăng kiểm của tôi", "inspection/me"),
-            getItem("Tra cứu đăng kiểm", "inspection/search"),
+        getItem("Bảng điều khiển", "dashboards", <AppstoreOutlined />),
+        getItem("Quản lý đăng kiểm", "inspections", <CarOutlined />, [
+            getItem("Tất cả đăng kiểm", "inspections/all"),
+            getItem("Đăng kiểm của tôi", "inspections/me"),
+            getItem("Tra cứu đăng kiểm", "inspections/search"),
         ]),
-        getItem("Tạo đăng kiểm", "inspection/create", <PlusCircleOutlined />),
+        getItem("Tạo đăng kiểm", "inspections/create", <PlusCircleOutlined />),
         getItem("Tra cứu phương tiện", "cars/search", <SearchOutlined />),
         getItem("Thống kê", "statistics", <LineChartOutlined />),
         getItem("Tài khoản", "settings", <UserOutlined />, [

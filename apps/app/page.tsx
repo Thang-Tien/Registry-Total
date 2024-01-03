@@ -11,8 +11,6 @@ export default function RouteToHomePage() {
     useEffect(() => {
         if(localStorage.length === 0)
         router.push("/auth"); 
-        else 
-        router.push("/dashboard");
     }, []);
 
     return <div></div>;
