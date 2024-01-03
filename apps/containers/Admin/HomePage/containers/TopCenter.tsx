@@ -69,7 +69,7 @@ export default function TopCenter() {
         return (
           <Link
             style={{ color: "var(--color-black)", fontSize: "1.2rem" }}
-            href={`/centers/${key}`}
+            href={`/center/${key}`}
           >
             <DoubleRightOutlined />
           </Link>
@@ -85,7 +85,7 @@ export default function TopCenter() {
       loading={loading}
       footer={() => (
         <Link
-          href="/centers"
+          href="/center"
           style={{
             display: "flex",
             alignItems: "center",

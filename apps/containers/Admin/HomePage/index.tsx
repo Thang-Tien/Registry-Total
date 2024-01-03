@@ -1,3 +1,5 @@
+"use client";
+
 import cx from "classnames";
 import styles from "./index.module.scss";
 import Flex from "@/modules/ui/components/Flex";

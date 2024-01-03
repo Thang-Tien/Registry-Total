@@ -1,3 +1,5 @@
+"use client";
+
 import { Card, Tabs, Button } from "antd";
 import CenterInformation from "./CenterInformation";
 import StaffInformation from "./StaffInformation";
@@ -51,7 +53,7 @@ const CenterProfile = (props) => {
   return (
     <div>
       <Flex.Row style={{ height: "100vh", width: "100vw" }} padding={"0"}>
-        <NavBar active="centers" openMenu="" />"
+        <NavBar active="center" openMenu="" />"
         <div
           style={{
             background: "#e4e4e7",
