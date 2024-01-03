@@ -2,7 +2,7 @@
 
 import StatisticsPage from "../../containers/Admin/Statistics";
 
-export default function RouteToCStatisticsPage() {
+export default function RouteToStatisticsPage() {
   return (
     <div>
         <StatisticsPage />

@@ -47,7 +47,6 @@ exports.generateErrorQueryValue = (query) => {
     let errorValueString = ''
     for (let key in query) {
         if (key != 'limit') errorValueString += `${key} = ${query[key]}, `
-
     }
     errorValueString = errorValueString.substring(0, errorValueString.length - 2)
     return errorValueString
@@ -57,7 +56,7 @@ exports.getFieldsFromXlsx = (records) => {
     let fields = "("
     for (key in records) {
         if (key != "car_id")
-        fields += `${key},`
+            fields += `${key},`
     }
     fields = fields.substring(0, fields.length - 1)
     fields += ")"
@@ -76,4 +75,18 @@ exports.generateQueryFromXlsx = (json) => {
     }
     query = query.substring(0, query.length - 1)
     return query
+}
+
+exports.generateQueryStringForInspectionsAndCentre = (query) => {
+    let queryString = ''
+    for (key in query) {
+        if (key != 'year') {
+            queryString += `${key} = ? AND `
+        } else {
+            queryString += `YEAR(i.inspection_date) = ? AND `
+        }
+        
+    }
+    queryString = queryString.substring(0, queryString.length - 4)
+    return queryString;
 }

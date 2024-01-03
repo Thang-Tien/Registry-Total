@@ -1,12 +1,19 @@
 "use client";
-import AuthenticationPage from "../containers/Admin/Authentication";
-import HomePage from "../containers/Admin/HomePage";
-import "modules/ui/styles/page.css";
+
+import { use, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import AuthenticationPage from "../containers/Staff/Authentication";
+import HomePage from "../containers/Staff/HomePage";
 
 export default function RouteToHomePage() {
-  return (
-    <div>
-      <HomePage />
-    </div>
-  );
+    const router = useRouter();
+
+    useEffect(() => {
+        if(localStorage.length === 0)
+        router.push("/auth"); 
+        else 
+        router.push("/dashboard");
+    }, []);
+
+    return <div></div>;
 }

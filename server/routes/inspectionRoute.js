@@ -1,25 +1,140 @@
-const express = require('express')
-const router = express.Router({mergeParams: true})
-const inspectionController = require('../controllers/inspectionController')
-const authController = require('../controllers/authController')
+const express = require("express");
+const router = express.Router({ mergeParams: true });
+const inspectionController = require("../controllers/inspectionController");
+const authController = require("../controllers/authController");
 
-router.use(authController.authenticateToken)
+// đếm tổng số lượng đăng kiểm của centre mà staff đang làm việc
+router.get(
+    "/stat/each_centre/info/:centre_id",
+    inspectionController.countInspectionsOfEachCentre
+);
+//router.use(authController.authenticateToken)
 // add queries to filter inspections to count
-router.get('/stat/all_centre/count/', 
-    inspectionController.countInspectionsOfAllCentre)
+router.get(
+    "/stat/all_centre/count/",
+    inspectionController.countInspectionsOfAllCentre
+);
 
-router.get('/stat/all_centre/count/expired', 
-    inspectionController.countTotalExpiredInspectionsOfAllCentre)
+router.get(
+    "/stat/:centre_id/count/",
+    inspectionController.countInspectionsOfACentre
+);
 
-router.get('/stat/all_centre/count/about_to_expired', 
-    inspectionController.countTotalAboutToExpiredInspectionsOfAllCentre)
+router.get(
+    "/stat/all_centre/count/every_month/",
+    inspectionController.countInspectionsOfAllCentreEveryMonth
+);
 
-router.get('/stat/all_centre/prediction/about_to_inspect', 
-    inspectionController.predictAboutToInspect)
-    
-// add queries to filter inspection
-router.get('/', 
-    inspectionController.getInspection)
+// đưa ra thông tin đăng kiểm của trung tâm mà staff đang làm việc
+router.get("/info/:centre_id", inspectionController.getInspectionPerCentreID);
 
-module.exports = router
+router.get(
+    "/stat/:centre_id/count/every_month",
+    inspectionController.countInspectionsOfACentreEveryMonth
+);
 
+router.get(
+    "/stat/all_centre/count/by_year",
+    inspectionController.countInspectionsOfAllCentreByYear
+);
+
+router.get(
+    "/stat/all_centre/count/expired",
+    inspectionController.countTotalExpiredInspectionsOfAllCentre
+);
+
+router.get(
+    "/stat/all_centre/count/about_to_expired",
+    inspectionController.countTotalAboutToExpiredInspectionsOfAllCentre
+);
+
+router.get(
+    "/stat/all_centre/prediction/about_to_inspect",
+    inspectionController.predictAboutToInspect
+);
+
+router.get('/', inspectionController.getInspection)
+
+router.get("/search", inspectionController.searchInspection);
+
+// đếm tổng số lượng đăng kiểm của centre mà staff đang làm việc
+router.get(
+    "/stat/each_centre/count/:centre_id",
+    inspectionController.countInspectionsOfEachCentre
+);
+// đếm tổng số lượng đăng kiểm của centre mà staff đang làm việc trong tháng này
+router.get(
+    "/stat/each_centre/count/month/:centre_id",
+    inspectionController.countInspectionsOfEachCentreThisMonth
+);
+// đếm tổng số lượng đăng kiểm của centre mà staff đang làm việc trong năm này
+router.get(
+    "/stat/each_centre/count/year/:centre_id",
+    inspectionController.countInspectionsOfEachCentreThisYear
+);
+router.get(
+    "/stat/each_centre/count/mine/:user_id",
+    inspectionController.countInspectionsOfMine
+);
+// Lấy ra tổng số lượng đăng kiểm của 12 tháng gần nhất CÓ ĐĂNG KIỂM của centre mà staff đang làm việc
+router.get(
+    "/stat/each_centre/count/last_twelve_months/:centre_id",
+    inspectionController.countInspectionEachCenterLastTwelveMonths
+);
+
+router.get(
+    "/stat/each_centre/count/every_month/:centre_id",
+    inspectionController.countInspectionEachCenterPerMonth
+);
+// DONE nhưng không liên quan
+// đếm tổng số lượng đăng kiểm đã hết hạn của trung tâm mà staff đang làm việc
+router.get(
+    "/stat/each_centre/count/expired/",
+    inspectionController.countTotalExpiredInspectionsOfEachCentre
+);
+// DONE
+// đếm tổng số lượng đăng kiểm đã hết hạn của trung tâm mà staff đang làm việc trong tháng này
+router.get(
+    "/stat/each_centre/count/expired/month/:centre_id",
+    inspectionController.countTotalExpiredInspectionsOfEachCentreThisMonth
+);
+// DONE
+// đếm tổng số lượng đăng kiểm sắp hết hạn của các trung tâm staff đang làm việc (hiện tại <= ngày hết hạn <= hiện tại + 1 tháng)
+router.get(
+    "/stat/each_centre/count/about_to_expired/",
+    inspectionController.countTotalAboutToExpiredInspectionsOfEachCentre
+);
+// đếm tổng số lượng đăng kiểm sắp hết hạn của các trung tâm staff đang làm việc trong tháng này
+router.get(
+    "/stat/each_centre/count/about_to_expired/month/:centre_id",
+    inspectionController.countTotalAboutToExpiredInspectionsOfEachCentreThisMonth
+);
+// dự đoán số lượng xe đăng kiểm mới của mỗi trung tâm
+// (xe đăng ký dự đoán ở tỉnh nào thì dự đoán số lượng xe đăng kiểm mới của trung tâm ở tỉnh đó)
+router.get(
+    "/stat/all_centre/prediction/about_to_inspect_of_each_centre/",
+    inspectionController.predictAboutToInspectOfEachCentre
+);
+
+router.get("/stat/total/", inspectionController.countAllInspection);
+// đưa ra tất cả inspection number và tên trung tâm đăng kiểm để search
+router.get(
+    "/inspection_number",
+    inspectionController.getAllINspectionNumberAndCentreName
+);
+
+// đưa ra 5 đăng kiểm gần nhất của trung tâm mà staff đang làm việc
+router.get("/recently/:centre_id", inspectionController.getRecentlyInspection);
+
+// đưa ra thông tin đăng kiểm của người dùng
+router.get("/mine/:user_id", inspectionController.getMineInspection);
+// đưa ra thông tin đăng kiểm của trung tâm mà staff đang làm việc bao gồm thông tin chi tiết
+// tất cả thông tin chi tiết ( nối ba bảng gồm: inspections, cars, car_owners)
+router.get(
+    "/get_inspection_owner/:inspection_id",
+    inspectionController.getInspectionAndOwnerPerID
+);
+// Tạo đăng kiểm cho trung tâm mà staff đang làm việc
+router.post("/createInspection/", inspectionController.createInspection);
+
+module.exports = router;

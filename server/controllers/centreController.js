@@ -20,7 +20,7 @@ exports.totalNumberOfCentre = (req, res) => {
 }
 
 exports.centresWithMostInspects = async (req, res) => {
-    connection.query(`SELECT r.centre_id, r.name, COUNT(i.centre_id) as total_inspection FROM inspections i INNER JOIN registration_centres r ON i.centre_id = r.centre_id  GROUP BY r.centre_id ORDER BY total_inspection DESC LIMIT ${req.query.limit ? req.query.limit : 5}`,
+    connection.query(`SELECT r.centre_id, r.name, COUNT(i.centre_id) as total_inspection FROM inspections i INNER JOIN registration_centres r ON i.centre_id = r.centre_id WHERE r.active = 1 GROUP BY r.centre_id ORDER BY total_inspection DESC LIMIT ${req.query.limit ? req.query.limit : 5}`,
         (err, result, fields) => {
             if (err) {
                 return res.status(500).json({
@@ -37,7 +37,7 @@ exports.centresWithMostInspects = async (req, res) => {
 }
 
 exports.getCentre = (req, res) => {
-    connection.query(`SELECT * FROM registration_centres WHERE ${utils.generateQueryString(req.query) ? utils.generateQueryString(req.query) : 1}`, utils.getQueryValue(req.query),
+    connection.query(`SELECT * FROM registration_centres WHERE ${utils.generateQueryString(req.query) ? utils.generateQueryString(req.query) : 1} AND active = 1`, utils.getQueryValue(req.query),
         (err, result, fields) => {
             if (err) {
                 return res.status(500).json({
@@ -47,7 +47,7 @@ exports.getCentre = (req, res) => {
             } else if (result.length == 0) {
                 return res.status(500).json({
                     status: "Failed",
-                    error: `Can't find centre with ${utils.generateErrorQueryValue(req.query)}`
+                    error: `Can't find centre with ${utils.generateErrorQueryValue(req.query)} OR centre is inactive`
                 })
             } else {
                 return res.status(200).json({
@@ -150,4 +150,26 @@ exports.deactivateCentre = (req, res) => {
 }
 
 
+exports.getStaffByCentre = (req, res) => {
+    connection.query(`SELECT * FROM users WHERE centre_id = ${req.params.centre_id} AND active = true`, (err, result, fields) => {
 
+        if (err) {
+            return res.status(500).json({
+                status: "Failed",
+                error: err
+            })
+        } else if (result.length == 0) {
+            return res.status(400).json({
+                status: "Failed",
+                error: `Centre with centre_id = ${req.params.centre_id} doesn't exist or centre has no active user`
+            })
+        }
+        else {
+            return res.status(200).json({
+                status: "Success",
+                data: result
+            })
+        }
+
+    })
+}

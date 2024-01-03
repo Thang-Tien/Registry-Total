@@ -11,10 +11,10 @@ router.post('/forgot-password', authController.handleForgotPassword)
 router.post('/check-otp', authController.checkOTP)
 router.patch('/reset-password', authController.resetPassword)
 
-router.post('/create_account', authController.authenticateToken, authController.restrictAccessTo("admin"), userController.createUser)
-router.delete('/delete_account', authController.authenticateToken, authController.restrictAccessTo("admin"),  userController.deleteUser)
-router.post('/update_info', authController.authenticateToken, authController.restrictAccessTo("admin", "staff"), userController.changeUserInfo)
+router.post('/create_account', userController.createUser)
+router.post('/delete_account',  userController.deleteUser)
+router.post('/update_info', authController.authenticateToken, userController.changeUserInfo)
 
-router.get('/', authController.authenticateToken, authController.restrictAccessTo("admin"), userController.getUser)
+router.get('/', userController.getUser)
 
 module.exports = router
