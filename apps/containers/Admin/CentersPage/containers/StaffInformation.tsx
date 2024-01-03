@@ -101,6 +101,7 @@ const StaffInformation = (props) => {
                   method: "POST",
                   headers: {
                     "Content-Type": "application/json",
+                    Authorization: "Bearer " + localStorage.getItem("accessToken"),
                   },
                   body: JSON.stringify({ user_id: record.key }),
                 }
@@ -190,6 +191,7 @@ const StaffInformation = (props) => {
                   method: "POST",
                   headers: {
                     "Content-Type": "application/json",
+                    Authorization: "Bearer " + localStorage.getItem("accessToken"),
                   },
                   body: JSON.stringify(centerData),
                 }
