@@ -1,12 +1,12 @@
 import { Carousel, ConfigProvider, Image } from "antd";
 
-import logo from "public/logo.png";
+import logo from "../../../../public/logo.png";
 import classes from "./../styles/IntroCarousel.module.css";
 
-import carouselImg1 from "public/image/carousel-1.svg";
-import carouselImg2 from "public/image/carousel-2.svg";
-import carouselImg3 from "public/image/carousel-3.svg";
-import carouselImg4 from "public/image/carousel-4.svg";
+import carouselImg1 from "../../../../public/image/carousel-1.svg";
+import carouselImg2 from "../../../../public/image/carousel-2.svg";
+import carouselImg3 from "../../../../public/image/carousel-3.svg";
+import carouselImg4 from "../../../../public/image/carousel-4.svg";
 
 const IntroCarousel = () => {
     return (
