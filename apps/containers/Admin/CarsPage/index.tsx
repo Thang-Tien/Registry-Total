@@ -25,7 +25,7 @@ const CarsPage = ({ className, style }: Props) => {
   return (
     <div className={cx(className, styles.container)} style={style}>
       <Flex.Row style={{ height: "100vh", width: "100vw" }} padding={"0"}>
-        <NavBar active="cars" openMenu="carOpen" />"
+        <NavBar active="car" openMenu="carOpen" />"
         <div
           style={{
             background: "#e4e4e7",

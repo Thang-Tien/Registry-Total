@@ -185,7 +185,13 @@ const CentreInformation = (props) => {
                 setDeleting(true);
                 try {
                   const response = await fetch(
-                    `http://fall2324w3g10.int3306.freeddns.org/api/v1/centres/deactivate/${props.centerId}`
+                    `http://fall2324w3g10.int3306.freeddns.org/api/v1/centres/deactivate/${props.centerId}`,
+                    {
+                      method: "POST",
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                    }
                   );
                   if (!response.ok) throw new Error("Fail to delete center");
                   openMessage("success", "Xóa trung tâm thành công");

@@ -1,3 +1,5 @@
+"use client";
+
 import {
   IoArrowBackOutline,
   IoBuildOutline,
@@ -101,7 +103,7 @@ const CarProfile = (props) => {
   return (
     <div>
       <Flex.Row style={{ height: "100vh", width: "100vw" }} padding={"0"}>
-        <NavBar active="cars" openMenu="carOpen" />"
+        <NavBar active="car" openMenu="carOpen" />"
         <div
           style={{
             background: "#e4e4e7",

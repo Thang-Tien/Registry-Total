@@ -1,3 +1,5 @@
+"use client";
+
 import { Avatar, List, Select } from "antd";
 import { useEffect, useState } from "react";
 import image from "../../../../public/image/centre.png";
@@ -193,7 +195,7 @@ const CenterList = (props) => {
         renderItem={(item: any) => (
           <List.Item
             actions={[
-              <Link href={`/centers/${item.centre_id}`}>Xem chi tiết</Link>,
+              <Link href={`/center/${item.centre_id}`}>Xem chi tiết</Link>,
             ]}
           >
             <List.Item.Meta

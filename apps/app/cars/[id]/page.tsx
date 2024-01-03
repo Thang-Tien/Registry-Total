@@ -1,7 +1,5 @@
-"use client";
 // cars/[...id]/page.tsx
 
-import { usePathname } from "next/navigation";
 import React from "react";
 import CarInformationPage from "../../../containers/Staff/CarInformationPage";
 
