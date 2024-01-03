@@ -38,6 +38,18 @@
       "static/chunks/main-app.js",
       "static/css/app/center/page.css",
       "static/chunks/app/center/page.js"
+    ],
+    "/settings/profile/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/settings/profile/page.css",
+      "static/chunks/app/settings/profile/page.js"
+    ],
+    "/settings/password/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/settings/password/page.css",
+      "static/chunks/app/settings/password/page.js"
     ]
   }
 }

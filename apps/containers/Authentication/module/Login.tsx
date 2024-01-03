@@ -32,7 +32,7 @@ const LoginForm = (props: LoginFormProps) => {
             description: "Thông tin đăng nhập không chính xác.",
         });
     };
-
+    useEffect(()=>{user.role ==="staff" ? router.push("/dashboards") : router.push("/dashboard");},[user]);
     const onFinish = async (values: { email: string; password: string }) => {
         setIsSubmitting(true);
 
@@ -64,7 +64,7 @@ const LoginForm = (props: LoginFormProps) => {
             setUser(res.user[0]);
 
             if (res.token) {
-                user.role ==="staff" ? router.push("/dashboards") : router.push("/dashboard");
+                console.log(user.role);
             } else {
                 setIsSubmitting(false);
                 throw new Error("Failed to authenticate.");
