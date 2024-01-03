@@ -1,7 +1,10 @@
 {
+  "/not-found": "app/not-found.js",
+  "/inspection/page": "app/inspection/page.js",
+  "/statistic/page": "app/statistic/page.js",
   "/setting/profile/page": "app/setting/profile/page.js",
   "/setting/password/page": "app/setting/password/page.js",
-  "/dashboards/page": "app/dashboards/page.js",
-  "/auth/page": "app/auth/page.js",
-  "/dashboard/page": "app/dashboard/page.js"
+  "/car/page": "app/car/page.js",
+  "/page": "app/page.js",
+  "/dashboards/page": "app/dashboards/page.js"
 }

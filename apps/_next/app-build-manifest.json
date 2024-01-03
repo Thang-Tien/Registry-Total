@@ -74,6 +74,23 @@
       "static/chunks/main-app.js",
       "static/css/app/setting/password/page.css",
       "static/chunks/app/setting/password/page.js"
+    ],
+    "/inspections/all/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/inspections/all/page.css",
+      "static/chunks/app/inspections/all/page.js"
+    ],
+    "/inspection/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/inspection/page.css",
+      "static/chunks/app/inspection/page.js"
+    ],
+    "/not-found": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/not-found.js"
     ]
   }
 }

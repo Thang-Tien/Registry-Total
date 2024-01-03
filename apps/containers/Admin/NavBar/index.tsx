@@ -41,7 +41,7 @@ export type Props = {
 
 export default function NavBar({ active, openMenu }: Props) {
   const items: MenuItem[] = [
-    getItem("Bảng điều khiển", "", <AppstoreOutlined />),
+    getItem("Bảng điều khiển", "dashboard", <AppstoreOutlined />),
     getItem("Quản lý các trung tâm", "center", <InboxOutlined />),
     getItem("Quản lý phương tiện", "carOpen", <CarOutlined />, [
       getItem("Tra cứu phương tiện", "car"),
