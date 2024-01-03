@@ -111,7 +111,7 @@ const Profile = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8000/api/v1/centres?centre_id=${me.centre_id}`,
+          `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/centres?centre_id=${me.centre_id}`,
           {
             headers: {
               "Content-Type": "application/json",
