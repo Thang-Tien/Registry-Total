@@ -4,7 +4,7 @@ import { Col, Row } from "antd";
 import { useEffect } from "react";
 import IntroCarousel from "./module/IntroCarousel";
 import AuthenticationForm from "./module/AuthenticationForm";
-import "./../../../modules/ui/styles/page.css"
+import "./../../modules/ui/styles/page.css";
 
 
 const AuthenticationPage = () => {
