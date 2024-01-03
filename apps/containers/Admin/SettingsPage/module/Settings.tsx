@@ -1,3 +1,5 @@
+"use client";
+
 import { Tabs } from "antd";
 import { useRouter } from "next/navigation";
 import Profile from "./Profile";
@@ -41,7 +43,7 @@ const Settings = (props) => {
         borderRadius: "8px",
       }}
       onChange={(key) => {
-        router.push(`/settings/${key}`);
+        router.push(`/setting/${key}`);
       }}
       defaultActiveKey={props.mode}
     />

@@ -1,3 +1,5 @@
+"use client";
+
 import cx from "classnames";
 import styles from "./index.module.scss";
 
@@ -22,7 +24,7 @@ const StatisticsPage = ({ className, style }: Props) => {
   return (
     <div className={cx(className, styles.container)} style={style}>
       <Flex.Row style={{ height: "100vh", width: "100vw" }} padding={"0"}>
-        <NavBar active="statistics" openMenu="" />"
+        <NavBar active="statistic" openMenu="" />"
         <div
           style={{
             background: "#e4e4e7",

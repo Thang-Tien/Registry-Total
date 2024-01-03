@@ -1,6 +1,0 @@
-{
-  "/not-found": "app/not-found.js",
-  "/dashboard/page": "app/dashboard/page.js",
-  "/car/page": "app/car/page.js",
-  "/cars/[id]/page": "app/cars/[id]/page.js"
-}
