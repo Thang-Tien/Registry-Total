@@ -272,7 +272,7 @@ const InspectionTable = (props) => {
       align: "center",
       render: (_, { key }) => {
         return (
-          <Link className={classes.more} href={`/inspections/${key}`}>
+          <Link className={classes.more} href={`/inspection/${key}`}>
             <DoubleRightOutlined />
           </Link>
         );

@@ -10,7 +10,7 @@ const SearchInput = (props) => {
   const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
   const onSelect = (_, options) => {
-    router.push(`/${searchCar ? "cars" : "inspections"}/${options.id}`);
+    router.push(`/${searchCar ? "car" : "inspection"}/${options.id}`);
   };
 
   useEffect(() => {
@@ -61,8 +61,8 @@ const SearchInput = (props) => {
         }`}
         onSearch={async () => {
           props.setSearchText(inputValue);
+          setOptions([]);
           if (!inputValue) {
-            setOptions([]);
             return;
           }
           props.setLoading(true);

@@ -37,7 +37,7 @@ export default function InspectionView(props) {
   return (
     <div>
       <Flex.Row style={{ height: "100vh", width: "100vw" }} padding={"0"}>
-        <NavBar active="inspections" openMenu="" />"
+        <NavBar active="inspection" openMenu="" />"
         <div
           style={{
             background: "#e4e4e7",
@@ -48,7 +48,7 @@ export default function InspectionView(props) {
             padding: "50px 0",
           }}
         >
-          <Flex.Cell style={{ marginBottom: "500px", maxWidth: "800px" }}>
+          <Flex.Cell style={{ marginBottom: "500px", width: "800px" }}>
             <Card
               loading={loading}
               title={
