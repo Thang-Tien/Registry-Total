@@ -32,7 +32,10 @@ const LoginForm = (props: LoginFormProps) => {
             description: "Thông tin đăng nhập không chính xác.",
         });
     };
-    useEffect(()=>{user.role ==="staff" ? router.push("/dashboards") : router.push("/dashboard");},[user]);
+    useEffect(()=>{
+        if(user.role ==="staff") router.push("/dashboards") 
+        if(user.role === "admin") router.push("/dashboard");
+    },[user]);
     const onFinish = async (values: { email: string; password: string }) => {
         setIsSubmitting(true);
 
