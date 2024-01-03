@@ -41,10 +41,18 @@ const ResetForm = (props: ResetFormProps) => {
     const [api, contextHolder] = notification.useNotification();
 
     const openNotification = (message: string, description: string) => {
-        api.error({
-            message: message,
-            description: description,
-        });
+        if(message === 'Lỗi') {
+            api.error({
+                message: message,
+                description: description,
+            });
+        } 
+        else {
+            api.success({
+                message: message,
+                description: description,
+            });
+        }
     };
 
     const next = () => {
@@ -125,6 +133,7 @@ const ResetForm = (props: ResetFormProps) => {
                         <NewPassword
                             turnOffForgotMode={turnOffForgotMode}
                             tokenReset={tokenReset}
+                            openNotification={openNotification}
                             email={email}
                         />
                     )}

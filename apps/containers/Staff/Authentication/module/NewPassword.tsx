@@ -7,12 +7,14 @@ interface NewPasswordProps {
     tokenReset: string;
     turnOffForgotMode: () => void;
     email: string;
+    openNotification: (title: string, message: string) => void;
 }
 
 const NewPassword = (props: NewPasswordProps) => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const { error } = notification;
     const router = useRouter();
+    const delay = (ms) => new Promise((res) => setTimeout(res,ms));
 
     const onFinish = async (values: {
         password: string;
@@ -39,13 +41,19 @@ const NewPassword = (props: NewPasswordProps) => {
             if (!response.ok) {
                 setIsSubmitting(false);
                 throw new Error("Could not authenticate.");
+                props.openNotification("Lỗi", "Không thể đổi mật khẩu.");  
+            } 
+            else {
+                props.openNotification("Thành công", "Đổi mật khẩu thành công.");
+                await delay(1000);
             }
-
             const res = await response.json();
 
-            localStorage.setItem("accessToken", res.token);
+        
 
-            if (res.status == "Success") router.push("/Login");
+            if (res.status == "Success") {
+                router.push("/");
+            }
         } catch (err) {
             setIsSubmitting(false);
             console.error(err);

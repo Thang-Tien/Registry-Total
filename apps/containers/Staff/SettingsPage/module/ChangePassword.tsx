@@ -31,7 +31,7 @@ const ChangePassword = () => {
   };
 
   const openMessage = () => {
-    messageApi.open({
+    messageApi["success"]({
       type: "success",
       content: "Đổi mật khẩu thành công.",
     });
@@ -71,10 +71,11 @@ const ChangePassword = () => {
         openErrorNotification();
         throw new Error("Can not change password");
       }
-
+      else 
+      openMessage();
       const res = await response.json();
 
-      openMessage();
+      
     } catch (err) {
        console.error(err);
     }
