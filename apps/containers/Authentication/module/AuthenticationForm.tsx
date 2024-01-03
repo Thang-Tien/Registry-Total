@@ -6,30 +6,32 @@ import ResetForm from "./Reset";
 const currentYear = new Date().getFullYear();
 
 const AuthenticationForm = () => {
-  const [forgotMode, setForgotMode] = useState(false);
+    const [forgotMode, setForgotMode] = useState(false);
 
-  const turnOnForgotMode = () => {
-    setForgotMode(true);
-  };
+    const turnOnForgotMode = () => {
+        setForgotMode(true);
+    };
 
-  const turnOffForgotMode = () => {
-    setForgotMode(false);
-  };
+    const turnOffForgotMode = () => {
+        setForgotMode(false);
+    };
 
-  return (
-    <div
-      style={{
-        height: "100vh",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
-      {!forgotMode && <LoginForm turnOnForgotMode={turnOnForgotMode} />}
-      {forgotMode && <ResetForm turnOffForgotMode={turnOffForgotMode} />}
+    return (
+        <div
+            style={{
+                height: "100vh",
+                display: "flex",
+                flexDirection: "column",
+            }}
+        >
+            {!forgotMode && <LoginForm turnOnForgotMode={turnOnForgotMode} />}
+            {forgotMode && <ResetForm turnOffForgotMode={turnOffForgotMode} />}
 
-      <div className={classes.copy}>&copy; {currentYear} all right reserved</div>
-    </div>
-  );
+            <div className={classes.copy}>
+                &copy; {currentYear} all right reserved
+            </div>
+        </div>
+    );
 };
 
 export default AuthenticationForm;

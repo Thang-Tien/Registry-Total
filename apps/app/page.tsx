@@ -8,6 +8,8 @@ export default function RouteToHomePage() {
     useEffect(() => {
         if(localStorage.length === 0)
         router.push("/auth"); 
+      else 
+      router.push("/dashboards"); 
     }, []);
 
   return <div></div>;

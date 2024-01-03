@@ -6,125 +6,141 @@ import Verify from "./Verify";
 import NewPassword from "./NewPassword";
 
 interface ResetFormProps {
-  turnOffForgotMode: () => void;
+    turnOffForgotMode: () => void;
 }
 
 interface StepItem {
-  key: string;
-  title: string;
+    key: string;
+    title: string;
 }
 
 const steps: StepItem[] = [
-  {
-    title: "Tìm kiếm",
-    key: "find",
-  },
-  {
-    title: "Xác thực",
-    key: "authenticate",
-  },
-  {
-    title: "Đặt lại mật khẩu",
-    key: "reset",
-  },
+    {
+        title: "Tìm kiếm",
+        key: "find",
+    },
+    {
+        title: "Xác thực",
+        key: "authenticate",
+    },
+    {
+        title: "Đặt lại mật khẩu",
+        key: "reset",
+    },
 ];
 
 const ResetForm = (props: ResetFormProps) => {
-  const [findingEmail, setFindingEmail] = useState(true);
-  const [verifying, setVerifying] = useState(false);
-  const [resetting, setResetting] = useState(false);
-  const [tokenReset, setTokenReset] = useState("");
-  const [email, setEmail] = useState("");
-  const [current, setCurrent] = useState(0);
-  const [status, setStatus] = useState("process");
+    const [findingEmail, setFindingEmail] = useState(true);
+    const [verifying, setVerifying] = useState(false);
+    const [resetting, setResetting] = useState(false);
+    const [tokenReset, setTokenReset] = useState("");
+    const [email, setEmail] = useState("");
+    const [current, setCurrent] = useState(0);
+    const [status, setStatus] = useState("process");
 
-  const [api, contextHolder] = notification.useNotification();
+    const [api, contextHolder] = notification.useNotification();
 
-  const openNotification = (message: string, description: string) => {
-    api.error({
-      message: message,
-      description: description,
-    });
-  };
+    const openNotification = (message: string, description: string) => {
+        if(message === 'Lỗi') {
+            api.error({
+                message: message,
+                description: description,
+            });
+        } 
+        else {
+            api.success({
+                message: message,
+                description: description,
+            });
+        }
+    };
 
-  const next = () => {
-    setCurrent((current) => current + 1);
-  };
+    const next = () => {
+        setCurrent((current) => current + 1);
+    };
 
-  const turnOffForgotMode = () => {
-    props.turnOffForgotMode();
-  };
+    const turnOffForgotMode = () => {
+        props.turnOffForgotMode();
+    };
 
-  const items = steps.map((item) => ({
-    key: item.key,
-    title: item.title,
-  }));
+    const items = steps.map((item) => ({
+        key: item.key,
+        title: item.title,
+    }));
 
-  return (
-    <div className={classes.reset}>
-      {contextHolder}
-      <Steps
-        status={status === "process" || status === "finish" ||  status ==="wait"|| status === "error" ? status : "process"}
-        progressDot
-        size="small"
-        current={current}
-        items={items}
-      />
-      <h1 className={classes.title}>
-        {findingEmail && "Hãy bắt đầu bằng cách tìm kiếm email của bạn"}
-        {verifying && "Hãy kiểm tra hòm thư của bạn nhé"}
-        {resetting && "Thiết lập lại mật khẩu"}
-      </h1>
-      <ConfigProvider
-        theme={{
-          token: {
-            colorBgContainer: "#F1F6F5",
-            borderRadius: 10,
-            controlHeight: 34,
-            colorBgContainerDisabled: "#4096ff",
-            colorTextDisabled: "#fff",
-            colorErrorOutline: "none",
-            controlOutline: "none",
-          },
-        }}
-      >
-        <div style={{ width: "70%" }}>
-          {findingEmail && (
-            <FindEmail
-              turnOffForgotMode={turnOffForgotMode}
-              setFindingEmail={setFindingEmail}
-              setVerifying={setVerifying}
-              next={next}
-              openNotification={openNotification}
-              setStatus={setStatus}
-              setEmail={setEmail}
+    return (
+        <div className={classes.reset}>
+            {contextHolder}
+            <Steps
+                status={
+                    status === "process" ||
+                    status === "finish" ||
+                    status === "wait" ||
+                    status === "error"
+                        ? status
+                        : "process"
+                }
+                progressDot
+                size="small"
+                current={current}
+                items={items}
             />
-          )}
+            <h1 className={classes.title}>
+                {findingEmail && "Hãy bắt đầu bằng cách tìm kiếm email của bạn"}
+                {verifying && "Hãy kiểm tra hòm thư của bạn nhé"}
+                {resetting && "Thiết lập lại mật khẩu"}
+            </h1>
+            <ConfigProvider
+                theme={{
+                    token: {
+                        colorBgContainer: "#F1F6F5",
+                        borderRadius: 10,
+                        controlHeight: 34,
+                        colorBgContainerDisabled: "#4096ff",
+                        colorTextDisabled: "#fff",
+                        colorErrorOutline: "none",
+                        controlOutline: "none",
+                    },
+                }}
+            >
+                <div style={{ width: "70%" }}>
+                    {findingEmail && (
+                        <FindEmail
+                            turnOffForgotMode={turnOffForgotMode}
+                            setFindingEmail={setFindingEmail}
+                            setVerifying={setVerifying}
+                            next={next}
+                            openNotification={openNotification}
+                            setStatus={setStatus}
+                            setEmail={setEmail}
+                        />
+                    )}
 
-          {verifying && (
-            <Verify
-              turnOffForgotMode={turnOffForgotMode}
-              setVerifying={setVerifying}
-              setResetting={setResetting}
-              next={next}
-              openNotification={openNotification}
-              setTokenReset={setTokenReset}
-              setStatus={setStatus}
-              email={email}
-            />
-          )}
+                    {verifying && (
+                        <Verify
+                            turnOffForgotMode={turnOffForgotMode}
+                            setVerifying={setVerifying}
+                            setResetting={setResetting}
+                            next={next}
+                            openNotification={openNotification}
+                            setTokenReset={setTokenReset}
+                            setStatus={setStatus}
+                            email={email}
+                        />
+                    )}
 
-          {resetting && (
-            <NewPassword
-              turnOffForgotMode={turnOffForgotMode}
-              tokenReset={tokenReset}
-              email={email}
-            />
-          )}
+                    {resetting && (
+                        <NewPassword
+                            turnOffForgotMode={turnOffForgotMode}
+                            tokenReset={tokenReset}
+                            openNotification={openNotification}
+                            email={email}
+                        />
+                    )}
+                </div>
+            </ConfigProvider>
         </div>
-      </ConfigProvider>
-    </div>
-  );
+    );
 };
 
 export default ResetForm;
