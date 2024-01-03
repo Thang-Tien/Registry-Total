@@ -2,7 +2,7 @@ import cx from "classnames";
 import styles from "./index.module.scss";
 import React, { useEffect, useState } from "react";
 import { Card, Statistic } from "antd";
-import imge from "../../../../public/image/grow-2.svg";
+import imge from "../../../../public/image/grow-1.svg";
 import Image from "next/image";
 
 export type Props = {
@@ -10,7 +10,7 @@ export type Props = {
   style?: React.CSSProperties;
 };
 
-export default function ThisYear({ className, style }: Props) {
+export default function Total({ className, style }: Props) {
   const [data, setData] = useState(0 as any);
   const [loading, setLoading] = useState(false);
   const delay = (ms) => new Promise((res) => setTimeout(res, ms));
@@ -19,23 +19,23 @@ export default function ThisYear({ className, style }: Props) {
     setLoading(true);
 
     const getData = async () => {
-      await delay(1700);
+      await delay(2000);
+
       try {
-        const date = new Date();
-        const year = date.getFullYear();
         const response = await fetch(
-          `http://fall2324w3g10.int3306.freeddns.org/api/v1/inspections/stat/all_centre/count?year=${2023}`
+          "http://fall2324w3g10.int3306.freeddns.org/api/v1/inspections/stat/all_centre/count/"
         );
         if (!response.ok) throw new Error("Fail to get data");
 
-        const tmp = await response.json();
-        setData(tmp.data);
+        const data = await response.json();
+        setData(data.data);
         setLoading(false);
       } catch (error) {
         setLoading(false);
         console.log(error);
       }
     };
+
     getData();
   }, []);
 
@@ -45,7 +45,7 @@ export default function ThisYear({ className, style }: Props) {
         style={{ width: "calc((100vw - 256px - 64px - 60px) / 4)" }}
         loading={loading}
       >
-        <Statistic title={"Đăng kiểm trong năm nay"} value={data.total} />
+        <Statistic title={"Tổng số lượng đăng kiểm"} value={data.total} />
         <div
           style={{
             display: "flex",

@@ -1,3 +1,4 @@
+"use client";
 // cars/[...id]/page.tsx
 
 import { usePathname } from "next/navigation";

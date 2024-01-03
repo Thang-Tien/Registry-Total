@@ -36,7 +36,7 @@
     "**/*.tsx",
     "next.config.js",
     ".next/types/**/*.ts"
-  ],
+, "modules/ui/components/Search/ResultList.tsx", "modules/ui/components/Search/SearchInput.jsx", "containers/Admin/Inspection/InspectionTable.tsx"  ],
   "exclude": [
     "node_modules"
   ]

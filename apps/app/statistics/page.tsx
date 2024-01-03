@@ -1,6 +1,11 @@
-import React from "react";
-import StatisticPage from "../../containers/Staff/StatisticPage";
+"use client";
 
-export default function RouteToStatisticPage() {
-    return <StatisticPage />;
+import StatisticsPage from "../../containers/Admin/Statistics";
+
+export default function RouteToStatisticsPage() {
+  return (
+    <div>
+        <StatisticsPage />
+    </div>
+  );
 }
