@@ -19,7 +19,7 @@ const CenterCreate = (props) => {
       <Button.Float
         onClick={() => setOpenModal(true)}
         style={{ border: "0.3px dashed", borderRadius: "20px", height: "30px" }}
-        disabled = {props.loading}
+        disabled={props.loading}
       >
         <Flex.Row alignItems="center" gap="6px">
           <IoAddCircleOutline />

@@ -45,10 +45,7 @@ export default function ThisYear({ className, style }: Props) {
         style={{ width: "calc((100vw - 256px - 64px - 60px) / 4)" }}
         loading={loading}
       >
-        <Statistic
-          title={"Đăng kiểm trong năm nay"}
-          value={data.total}
-        />
+        <Statistic title={"Đăng kiểm trong năm nay"} value={data.total} />
         <div
           style={{
             display: "flex",

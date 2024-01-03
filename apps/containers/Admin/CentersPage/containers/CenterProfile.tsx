@@ -62,9 +62,9 @@ const CenterProfile = (props) => {
             padding: "100px 0",
           }}
         >
-          <Flex.Cell style={{marginBottom: "100px"}}>
+          <Flex.Cell style={{ marginBottom: "100px" }}>
             <Card
-              style={{  width: "1200px"}}
+              style={{ width: "1200px" }}
               title={
                 <Button
                   type="text"

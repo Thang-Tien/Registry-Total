@@ -9,7 +9,6 @@ for (let i = now.getFullYear(); i >= 2014; i--) {
   yearOptions.push(i);
 }
 
-
 const ColumnChartAdmin = (props) => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([] as any);

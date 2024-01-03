@@ -15,7 +15,6 @@ import Specification from "../CarsPage/containers/Specification";
 import Flex from "@/modules/ui/components/Flex";
 import Typography from "@/modules/ui/components/Text";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 
 const { Item } = Descriptions;
 
@@ -222,7 +221,6 @@ const InspectionProfile = (props) => {
         accordion
         style={{ width: "100%" }}
       />
-      {/* <PDFDownloader car={car} specification={specification} data={data} /> */}
     </div>
   );
 };

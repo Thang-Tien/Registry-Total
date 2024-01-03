@@ -88,7 +88,7 @@ const InspectionTable = (props) => {
           <Space size="middle" style={{ margin: "auto" }}>
             <Button
               role="reset"
-              onClick={() => handleTimeRangeReset(clearFilters,confirm)}
+              onClick={() => handleTimeRangeReset(clearFilters, confirm)}
             >
               Đặt lại
             </Button>
@@ -142,7 +142,7 @@ const InspectionTable = (props) => {
         <Space size="middle">
           <Button
             role="reset"
-            onClick={() => clearFilters && handleReset(clearFilters,confirm)}
+            onClick={() => clearFilters && handleReset(clearFilters, confirm)}
             size="middle"
             style={{
               width: 90,
@@ -209,7 +209,7 @@ const InspectionTable = (props) => {
           tmpData.push({
             key: e.inspection_id,
             inspectionNumber: e.inspection_number,
-            numberPlate: `15A6-${e.inspection_id}`,
+            numberPlate: `${e.number_plate}`,
             inspectionDate: formatDate(e.inspection_date),
             expiredDate: formatDate(e.expired_date),
           });
@@ -249,7 +249,7 @@ const InspectionTable = (props) => {
       key: "inspectionDate",
       align: "center",
       render: (text) => text,
-      sorter: (a, b) => compareDates(a.inspectionDate,b.inspectionDate),
+      sorter: (a, b) => compareDates(a.inspectionDate, b.inspectionDate),
       sortDirections: ["ascend"],
       showSorterTooltip: false,
       ...getColumnDateFilterProps("inspectionDate"),
@@ -260,7 +260,7 @@ const InspectionTable = (props) => {
       key: "expiredDate",
       align: "center",
       render: (text) => text,
-      sorter: (a, b) => compareDates(a.expiredDate,b.expiredDate),
+      sorter: (a, b) => compareDates(a.expiredDate, b.expiredDate),
       sortDirections: ["descend", "ascend"],
       showSorterTooltip: false,
       ...getColumnDateFilterProps("expiredDate"),

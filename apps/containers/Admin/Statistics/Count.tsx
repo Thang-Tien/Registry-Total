@@ -5,8 +5,8 @@ import Flex from "@/modules/ui/components/Flex";
 const Count = () => {
   return (
     <Flex.Col gap="20px">
-        <Total />
-        <ThisYear/>
+      <Total />
+      <ThisYear />
     </Flex.Col>
   );
 };

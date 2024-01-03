@@ -14,11 +14,12 @@ const CenterPredict = (props) => {
       await delay(1500);
 
       let year = new Date().getFullYear();
+      year = 2023;
       let month = new Date().getMonth();
       month = 12;
       try {
         const response = await fetch(
-          `http://fall2324w3g10.int3306.freeddns.org/api/v1/inspections/stat/${props.centerId}/count/every_month?year=${2023}`
+          `http://fall2324w3g10.int3306.freeddns.org/api/v1/inspections/stat/${props.centerId}/count/every_month?year=${year}`
         );
         if (!response.ok) throw new Error("Fail to get data");
         let tmp = await response.json();

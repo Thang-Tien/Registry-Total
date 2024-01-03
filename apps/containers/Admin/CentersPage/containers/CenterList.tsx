@@ -32,11 +32,11 @@ const CenterList = (props) => {
         const response = await fetch(
           "http://fall2324w3g10.int3306.freeddns.org/api/v1/centres"
         );
-        if(!response.ok) throw new Error("Fail to get data");
+        if (!response.ok) throw new Error("Fail to get data");
 
         const tmp = await response.json();
         let tmpData: any[] = [];
-        tmp.data.forEach(e => {
+        tmp.data.forEach((e) => {
           tmpData.push(e.address);
         });
         tmpData = Array.from(new Set(tmpData));
@@ -75,7 +75,7 @@ const CenterList = (props) => {
         const tmp = await response.json();
 
         let tmpData: any[] = [];
-        tmp.data.forEach(e => {
+        tmp.data.forEach((e) => {
           tmpData.push(e.address);
         });
         tmpData = Array.from(new Set(tmpData));

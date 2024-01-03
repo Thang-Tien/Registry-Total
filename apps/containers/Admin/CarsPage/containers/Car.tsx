@@ -1,5 +1,4 @@
 import { Descriptions } from "antd";
-import { useEffect, useState } from "react";
 import { IoCheckmark, IoClose } from "react-icons/io5";
 
 const { Item } = Descriptions;

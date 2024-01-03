@@ -35,14 +35,14 @@ const ColumnChart = () => {
       await delay(1500);
 
       try {
-        let url =`?year=${year}`;
-        if(side != "all") url += `&side=${side}`;
-        if(area != "all") url += `&area=${area}`;
-        if(address != "all") url += `&address=${address}`;
+        let url = `?year=${year}`;
+        if (side != "all") url += `&side=${side}`;
+        if (area != "all") url += `&area=${area}`;
+        if (address != "all") url += `&address=${address}`;
         const response = await fetch(
           `http://fall2324w3g10.int3306.freeddns.org/api/v1/inspections/stat/all_centre/count/every_month${url}`
         );
-        if(!response.ok) throw new Error("Fail to get data");
+        if (!response.ok) throw new Error("Fail to get data");
 
         const tmp = await response.json();
         const tmpData: any[] = [];

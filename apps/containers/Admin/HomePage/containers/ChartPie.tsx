@@ -75,7 +75,10 @@ export default function ChartPie(props) {
     <div style={{ width: "29vw" }}>
       <Card
         title="Trong tháng này"
-        style={{ width: "calc((100vw - 256px - 64px -100px)/3)", height: props.height ? `${props.height}` : "100%" }}
+        style={{
+          width: "calc((100vw - 256px - 64px -100px)/3)",
+          height: props.height ? `${props.height}` : "100%",
+        }}
         loading={loading}
       >
         <Pie

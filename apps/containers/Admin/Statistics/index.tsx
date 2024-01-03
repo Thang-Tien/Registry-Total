@@ -42,7 +42,7 @@ const StatisticsPage = ({ className, style }: Props) => {
               <Flex.Cell>
                 <Count />
               </Flex.Cell>
-              <Flex.Cell style={{height: "458px", width: "20000px"}}>
+              <Flex.Cell style={{ height: "458px", width: "20000px" }}>
                 <ColumnChart />
               </Flex.Cell>
             </Flex.Row>

@@ -46,12 +46,12 @@ const StaffInformation = (props) => {
     return `${day}/${value[1]}/${value[0]}`;
   }
 
-  function validateDate(s:string) {
+  function validateDate(s: string) {
     let data = s.split("/");
     let valid = new Date(`${data[2]}/${data[1]}/${data[0]}`);
-    return !(valid.toString()==="Invalid Date");
+    return !(valid.toString() === "Invalid Date");
   }
-  
+
   const columns: ColumnType<DataType>[] = [
     {
       title: "Họ và tên",

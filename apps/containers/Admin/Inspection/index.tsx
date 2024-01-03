@@ -25,7 +25,7 @@ const InspectionPage = ({ className, style }: Props) => {
   return (
     <div className={cx(className, styles.container)} style={style}>
       <Flex.Row style={{ height: "100vh", width: "100vw" }} padding={"0"}>
-        <NavBar active="inspections" openMenu=""/>"
+        <NavBar active="inspections" openMenu="" />"
         <div
           style={{
             background: "#e4e4e7",
@@ -48,11 +48,7 @@ const InspectionPage = ({ className, style }: Props) => {
               setSearchText={setSearchText}
               setLoading={setLoading}
             />
-            <ResultList
-              data={data}
-              searchText={searchText}
-              loading={loading}
-            />
+            <ResultList data={data} searchText={searchText} loading={loading} />
           </div>
         </div>
       </Flex.Row>

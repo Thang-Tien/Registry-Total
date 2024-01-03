@@ -45,10 +45,7 @@ export default function Total({ className, style }: Props) {
         style={{ width: "calc((100vw - 256px - 64px - 60px) / 4)" }}
         loading={loading}
       >
-        <Statistic
-          title={"Tổng số lượng đăng kiểm"}
-          value={data.total}
-        />
+        <Statistic title={"Tổng số lượng đăng kiểm"} value={data.total} />
         <div
           style={{
             display: "flex",

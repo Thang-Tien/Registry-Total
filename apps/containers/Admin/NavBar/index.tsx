@@ -35,8 +35,8 @@ function getItem(
 }
 
 export type Props = {
-  active: "" | "centers" | "cars" | "inspections" | "statistics" | "account",
-  openMenu: "" | "carOpen" | "accountOpen" | string
+  active: "" | "centers" | "cars" | "inspections" | "statistics" | "account";
+  openMenu: "" | "carOpen" | "accountOpen" | string;
 };
 
 export default function NavBar({ active, openMenu }: Props) {
@@ -76,7 +76,7 @@ export default function NavBar({ active, openMenu }: Props) {
   const onClick: MenuProps["onClick"] = (e) => {
     if (e.keyPath[0] === "upload") {
       setOpen(true);
-      return
+      return;
     }
     router.prefetch(`/${e.keyPath[0]}`);
     router.push(`/${e.keyPath[0]}`);

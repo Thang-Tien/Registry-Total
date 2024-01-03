@@ -10,7 +10,6 @@ import { useEffect, useState } from "react";
 import {
   IoCallOutline,
   IoConstructOutline,
-  IoDocumentTextOutline,
   IoLocationOutline,
   IoMailOutline,
   IoPersonOutline,

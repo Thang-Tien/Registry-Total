@@ -6,18 +6,18 @@ import Image from "next/image";
 export default function Centers() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const delay = ms => new Promise(res => setTimeout(res, ms));
+  const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
   useEffect(() => {
     setLoading(true);
 
     const getData = async () => {
-      await delay(2400)
+      await delay(2400);
       try {
         const response = await fetch(
           `http://fall2324w3g10.int3306.freeddns.org/api/v1/centres/`
         );
-        if(!response.ok) throw new Error("Fail to get data");
+        if (!response.ok) throw new Error("Fail to get data");
 
         const tmp = await response.json();
         setData(tmp.data);

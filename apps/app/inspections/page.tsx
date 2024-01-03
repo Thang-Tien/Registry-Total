@@ -2,7 +2,7 @@
 
 import InspectionPage from "../../containers/Admin/Inspection";
 
-export default function RouteToSearchCars() {
+export default function RouteToSearchInspection() {
   return (
     <div>
         <InspectionPage />
