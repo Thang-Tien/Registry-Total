@@ -49,7 +49,7 @@ export default function NavBar({ active, openMenu }: Props) {
     ]),
     getItem("Tra cứu đăng kiểm", "inspection", <SearchOutlined />),
     getItem("Thống kê", "statistic", <LineChartOutlined />),
-    getItem("Tài khoản", "accountOpen", <UserOutlined />, [
+    getItem("Tài khoản", "setting", <UserOutlined />, [
       getItem("Cài đặt", "setting/profile"),
       getItem("Đăng xuất", "/auth"),
     ]),
@@ -74,12 +74,16 @@ export default function NavBar({ active, openMenu }: Props) {
   const router = useRouter();
 
   const onClick: MenuProps["onClick"] = (e) => {
+    const selectedKey = e.keyPath[0];
     if (e.keyPath[0] === "upload") {
       setOpen(true);
       return;
     }
     router.prefetch(`/${e.keyPath[0]}`);
     router.push(`/${e.keyPath[0]}`);
+    if (selectedKey === "auth") {
+      clearLocalStorage();
+    }
   };
   return (
     <div>

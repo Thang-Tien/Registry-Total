@@ -50,6 +50,30 @@
       "static/chunks/main-app.js",
       "static/css/app/settings/password/page.css",
       "static/chunks/app/settings/password/page.js"
+    ],
+    "/car/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/car/page.css",
+      "static/chunks/app/car/page.js"
+    ],
+    "/statistic/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/statistic/page.css",
+      "static/chunks/app/statistic/page.js"
+    ],
+    "/setting/profile/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/setting/profile/page.css",
+      "static/chunks/app/setting/profile/page.js"
+    ],
+    "/setting/password/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/setting/password/page.css",
+      "static/chunks/app/setting/password/page.js"
     ]
   }
 }
