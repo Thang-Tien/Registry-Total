@@ -101,6 +101,7 @@ exports.authenticateToken = async (req, res, next) => {
 
 
             req.user = currentUser[0]
+            console.log("auth success")
             next()
         })
     } catch (e) {
