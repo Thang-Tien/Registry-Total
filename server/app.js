@@ -23,7 +23,18 @@ app.use(function(req, res, next) {
   
 app.use(morgan("dev"));
 app.use(bodyParser());
+
 app.use('/', express.static('../apps/out')) 
+app.use('/dashboard', express.static('../apps/out')) 
+app.use('/dashboards', express.static('../apps/out')) 
+app.use('/inspection/*', express.static('../apps/out')) 
+app.use('/inspections/*', express.static('../apps/out')) 
+app.use('/statistic', express.static('../apps/out')) 
+app.use('/statistics', express.static('../apps/out')) 
+app.use('/setting', express.static('../apps/out')) 
+app.use('/settings', express.static('../apps/out')) 
+
+
 // /settings/profile
 app.use('/settings/profile', express.static('../apps/out')) 
 

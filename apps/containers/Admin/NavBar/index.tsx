@@ -49,7 +49,7 @@ export default function NavBar({ active, openMenu }: Props) {
     ]),
     getItem("Tra cứu đăng kiểm", "inspection", <SearchOutlined />),
     getItem("Thống kê", "statistic", <LineChartOutlined />),
-    getItem("Tài khoản", "setting", <UserOutlined />, [
+    getItem("Tài khoản", "accountOpen", <UserOutlined />, [
       getItem("Cài đặt", "setting/profile"),
       getItem("Đăng xuất", "auth"),
     ]),
