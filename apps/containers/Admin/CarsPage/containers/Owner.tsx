@@ -19,7 +19,13 @@ const Owner = (props) => {
     const getData = async () => {
       try {
         const response = await fetch(
-          `http://fall2324w3g10.int3306.freeddns.org/api/v1/cars/owner?owner_id=${props.ownerId}`
+          `http://fall2324w3g10.int3306.freeddns.org/api/v1/cars/owner?owner_id=${props.ownerId}`,
+          {  
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + localStorage.getItem("accessToken"),
+            },
+          }
         );
         if (!response.ok) throw new Error("Fail to get data");
 

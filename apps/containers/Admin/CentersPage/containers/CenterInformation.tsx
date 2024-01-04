@@ -47,7 +47,13 @@ const CentreInformation = (props) => {
       await delay(1500);
       try {
         let response = await fetch(
-          `http://fall2324w3g10.int3306.freeddns.org/api/v1/centres?centre_id=${props.centerId}`
+          `http://fall2324w3g10.int3306.freeddns.org/api/v1/centres?centre_id=${props.centerId}`,
+          {  
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + localStorage.getItem("accessToken"),
+            },
+          }
         );
         if (!response.ok) throw new Error("Fail to get data");
 
@@ -58,7 +64,13 @@ const CentreInformation = (props) => {
         setCenterEmail(tmp.data[0].email);
         setCenterPhone(tmp.data[0].phone);
         response = await fetch(
-          `http://fall2324w3g10.int3306.freeddns.org/api/v1/centres/staff/${props.centerId}`
+          `http://fall2324w3g10.int3306.freeddns.org/api/v1/centres/staff/${props.centerId}`,
+          {  
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + localStorage.getItem("accessToken"),
+            },
+          }
         );
         if (!response.ok) throw new Error("Fail to get data");
 
@@ -161,7 +173,13 @@ const CentreInformation = (props) => {
               onClick={async () => {
                 setOpen(true);
                 const response = await fetch(
-                  "http://fall2324w3g10.int3306.freeddns.org/api/v1/centres"
+                  "http://fall2324w3g10.int3306.freeddns.org/api/v1/centres",
+                  {  
+                    headers: {
+                      "Content-Type": "application/json",
+                      Authorization: "Bearer " + localStorage.getItem("accessToken"),
+                    },
+                  }
                 );
                 let tmpData = await response.json();
                 tmpData = tmpData.data;

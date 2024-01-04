@@ -32,7 +32,13 @@ const CenterList = (props) => {
       await delay(2000);
       try {
         const response = await fetch(
-          "http://fall2324w3g10.int3306.freeddns.org/api/v1/centres"
+          "http://fall2324w3g10.int3306.freeddns.org/api/v1/centres",
+          {  
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + localStorage.getItem("accessToken"),
+            },
+          }
         );
         if (!response.ok) throw new Error("Fail to get data");
 
@@ -70,7 +76,13 @@ const CenterList = (props) => {
       await delay(1000);
       try {
         const response = await fetch(
-          `http://fall2324w3g10.int3306.freeddns.org${url}`
+          `http://fall2324w3g10.int3306.freeddns.org${url}`,
+          {  
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + localStorage.getItem("accessToken"),
+            },
+          }
         );
         if (!response.ok) throw new Error("Fail to get data");
 
