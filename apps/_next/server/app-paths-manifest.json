@@ -3,5 +3,6 @@
   "/auth/page": "app/auth/page.js",
   "/setting/profile/page": "app/setting/profile/page.js",
   "/dashboards/page": "app/dashboards/page.js",
-  "/settings/password/page": "app/settings/password/page.js"
+  "/settings/password/page": "app/settings/password/page.js",
+  "/dashboard/page": "app/dashboard/page.js"
 }
