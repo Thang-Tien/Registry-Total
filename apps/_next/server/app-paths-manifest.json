@@ -1,9 +1,8 @@
 {
-  "/not-found": "app/not-found.js",
-  "/dashboard/page": "app/dashboard/page.js",
-  "/car/page": "app/car/page.js",
-  "/car/[id]/page": "app/car/[id]/page.js",
-  "/inspection/page": "app/inspection/page.js",
-  "/statistic/page": "app/statistic/page.js",
-  "/setting/profile/page": "app/setting/profile/page.js"
+  "/settings/profile/page": "app/settings/profile/page.js",
+  "/inspections/all/page": "app/inspections/all/page.js",
+  "/auth/page": "app/auth/page.js",
+  "/cars/search/page": "app/cars/search/page.js",
+  "/inspections/create/page": "app/inspections/create/page.js",
+  "/inspections/[id]/page": "app/inspections/[id]/page.js"
 }

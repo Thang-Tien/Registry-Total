@@ -259,7 +259,7 @@ const InspectionTable: React.FC = () => {
             key: "action",
             align: "center" as AlignType,
             render: (text, record) => (
-                <Link href={`/inspection/${record.inspection_id}`}>
+                <Link href={`/inspections/${record.inspection_id}`}>
                     <DoubleRightOutlined style={{ color: "black" }} />
                 </Link>
             ),

@@ -131,7 +131,7 @@ const SearchForm: React.FC = () => {
                         <List.Item
                             actions={[
                                 <a
-                                    href={`/inspection/${
+                                    href={`/inspections/${
                                         (item as { inspection_id: string })
                                             .inspection_id
                                     }`}

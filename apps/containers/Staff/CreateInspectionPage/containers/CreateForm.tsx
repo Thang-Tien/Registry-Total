@@ -519,7 +519,7 @@ const CreateForm: React.FC = () => {
                             >
                                 Quay về
                             </Button>
-                            <Link href={`/inspection/${totalInspection}`}>
+                            <Link href={`/inspections/${totalInspection}`}>
                                 <Button type="primary" size="large">
                                     Xem đăng kiểm
                                 </Button>
