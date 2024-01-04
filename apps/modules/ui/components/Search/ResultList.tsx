@@ -80,7 +80,7 @@ const ResultList = (props) => {
         preview={false}
       />
       <br />
-      <span>
+      <span style={{size: "20px"}}>
         Bắt đầu tìm kiếm {searchCar ? "phương tiện" : "đăng kiểm"} nào!
       </span>
     </>
