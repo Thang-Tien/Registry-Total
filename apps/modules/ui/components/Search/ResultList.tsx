@@ -1,6 +1,6 @@
 import { Avatar, Image, List, Skeleton } from "antd";
-import searchImage1 from "./../../../../public/image/search-1.svg";
-import searchImage2 from "./../../../../public/image/search-3.svg";
+import searchImage1 from "./../../../../public/image/search1.png";
+import searchImage2 from "./../../../../public/image/search3.png";
 import notFoundImage from "./../../../../public/image/void.svg";
 import carImage from "./../../../../public/image/car.png";
 import inspectionImage from "./../../../../public/image/checked.png";
@@ -73,7 +73,8 @@ const ResultList = (props) => {
     <>
       <br />
       <Image
-        src={searchCar ? searchImage1 : searchImage2}
+      
+        src={searchCar ? searchImage1.src : searchImage2.src}
         width={250}
         style={{ margin: "4rem 0" }}
         preview={false}
