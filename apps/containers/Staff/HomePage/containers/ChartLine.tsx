@@ -29,7 +29,13 @@ const ChartLine: React.FC = () => {
             delay(2000); // Assuming delay is a function that returns a promise
             try {
                 const response = await fetch(
-                    `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/stat/each_centre/count/last_twelve_months/${user.centre_id}`
+                    `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/stat/each_centre/count/last_twelve_months/${user.centre_id}`,
+                    {  
+                        headers: {
+                          "Content-Type": "application/json",
+                          Authorization: "Bearer " + localStorage.getItem("accessToken"),
+                        },
+                      }
                 );
 
                 const data = await response.json();

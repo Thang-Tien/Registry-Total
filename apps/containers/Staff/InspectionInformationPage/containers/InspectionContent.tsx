@@ -42,7 +42,13 @@ const InspectionContent: React.FC<Props> = ({ inspectionId }) => {
         const fetchData = async () => {
             try {
                 const response = await fetch(
-                    `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/get_inspection_owner/${inspectionId}`
+                    `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/get_inspection_owner/${inspectionId}`,
+                    {  
+                        headers: {
+                          "Content-Type": "application/json",
+                          Authorization: "Bearer " + localStorage.getItem("accessToken"),
+                        },
+                      }
                 );
                 const data = await response.json();
                 setInspectionData(data.data[0]);

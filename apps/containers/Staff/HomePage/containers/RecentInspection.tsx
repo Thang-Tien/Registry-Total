@@ -67,7 +67,13 @@ const RecentInspection: React.FC = () => {
             await delay(1000);
             try {
                 const response = await fetch(
-                    `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/recently/${user.centre_id}`
+                    `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/recently/${user.centre_id}`,
+                    {  
+                        headers: {
+                          "Content-Type": "application/json",
+                          Authorization: "Bearer " + localStorage.getItem("accessToken"),
+                        },
+                      }
                 );
 
                 if (!response.ok) {

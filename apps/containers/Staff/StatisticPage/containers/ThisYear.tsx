@@ -34,7 +34,13 @@ const ThisYear: React.FC = () => {
         const fetchData = async () => {
             try {
                 const response = await fetch(
-                    `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/stat/each_centre/count/year/${user.centre_id}`
+                    `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/stat/each_centre/count/year/${user.centre_id}`,
+                    {  
+                        headers: {
+                          "Content-Type": "application/json",
+                          Authorization: "Bearer " + localStorage.getItem("accessToken"),
+                        },
+                      }
                 );
                 const data = await response.json();
                 if (response.ok) {

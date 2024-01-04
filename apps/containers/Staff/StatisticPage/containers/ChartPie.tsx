@@ -29,7 +29,13 @@ const ChartPie: React.FC = () => {
         const fetchExpiredData = async () => {
             try {
                 const response = await fetch(
-                    `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/stat/each_centre/count/expired/month/${user.centre_id}`
+                    `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/stat/each_centre/count/expired/month/${user.centre_id}`,
+                    {  
+                        headers: {
+                          "Content-Type": "application/json",
+                          Authorization: "Bearer " + localStorage.getItem("accessToken"),
+                        },
+                      }
                 );
                 const data = await response.json();
                 if (
@@ -52,7 +58,13 @@ const ChartPie: React.FC = () => {
         const fetchAboutToExpiredData = async () => {
             try {
                 const response = await fetch(
-                    `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/stat/each_centre/count/about_to_expired/month/${user.centre_id}`
+                    `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/stat/each_centre/count/about_to_expired/month/${user.centre_id}`,
+                    {  
+                        headers: {
+                          "Content-Type": "application/json",
+                          Authorization: "Bearer " + localStorage.getItem("accessToken"),
+                        },
+                      }
                 );
                 const data = await response.json();
                 if (

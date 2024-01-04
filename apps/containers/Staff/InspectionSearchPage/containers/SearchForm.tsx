@@ -18,7 +18,13 @@ const SearchForm: React.FC = () => {
         const fetchData = async () => {
             try {
                 const response = await fetch(
-                    `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/inspection_number`
+                    `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/inspection_number`,
+                    {  
+                        headers: {
+                          "Content-Type": "application/json",
+                          Authorization: "Bearer " + localStorage.getItem("accessToken"),
+                        },
+                      }
                 );
                 const data = await response.json();
 

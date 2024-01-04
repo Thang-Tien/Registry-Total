@@ -34,7 +34,13 @@ const ThisYear: React.FC = () => {
 
                 // Fetch data from the API
                 const response = await fetch(
-                    `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/stat/each_centre/count/year/${user.centre_id}`
+                    `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/stat/each_centre/count/year/${user.centre_id}`,
+                    {  
+                        headers: {
+                          "Content-Type": "application/json",
+                          Authorization: "Bearer " + localStorage.getItem("accessToken"),
+                        },
+                      }
                 );
 
                 // Check if the component is still mounted

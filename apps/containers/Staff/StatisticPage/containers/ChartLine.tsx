@@ -25,7 +25,13 @@ const ChartLine: React.FC = () => {
         if (data != null) setUser(JSON.parse(data));
         // Fetch data from the API
         fetch(
-            `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/stat/each_centre/count/every_month/${user.centre_id}`
+            `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/stat/each_centre/count/every_month/${user.centre_id}`,
+            {  
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: "Bearer " + localStorage.getItem("accessToken"),
+                },
+              }
         )
             .then((response) => response.json())
             .then((result) => {

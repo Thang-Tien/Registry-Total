@@ -59,7 +59,13 @@ const CreateForm: React.FC = () => {
         const fetchNumberPlateData = async () => {
             try {
                 const response = await fetch(
-                    `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/cars/number_plate`
+                    `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/cars/number_plate`,
+                    {  
+                        headers: {
+                          "Content-Type": "application/json",
+                          Authorization: "Bearer " + localStorage.getItem("accessToken"),
+                        },
+                      }
                 );
                 const data = await response.json();
 
@@ -79,7 +85,13 @@ const CreateForm: React.FC = () => {
         const fetchData = async () => {
             try {
                 const response = await fetch(
-                    `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/stat/total`
+                    `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/stat/total`,
+                    {  
+                        headers: {
+                          "Content-Type": "application/json",
+                          Authorization: "Bearer " + localStorage.getItem("accessToken"),
+                        },
+                      }
                 );
                 const data = await response.json();
 
@@ -295,6 +307,7 @@ const CreateForm: React.FC = () => {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
+                        Authorization: "Bearer " + localStorage.getItem("accessToken"),
                     },
                     body: JSON.stringify(updatedPostData),
                 }
