@@ -173,7 +173,7 @@ const CentreInformation = (props) => {
               onClick={async () => {
                 setOpen(true);
                 const response = await fetch(
-                  "${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/centres",
+                  `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/centres`,
                   {  
                     headers: {
                       "Content-Type": "application/json",

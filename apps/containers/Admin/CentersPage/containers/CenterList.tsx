@@ -32,7 +32,7 @@ const CenterList = (props) => {
       await delay(2000);
       try {
         const response = await fetch(
-          "${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/centres",
+          `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/centres`,
           {  
             headers: {
               "Content-Type": "application/json",
