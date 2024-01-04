@@ -19,6 +19,6 @@ router.get(
   carController.getAllNumberPlateAndRegistrationNumber
 );
 
-router.get("/:car_id", authController.restrictAccessTo("admin"), carController.getCarAndOwnerPerID);
+router.get("/:car_id", authController.restrictAccessTo("staff"), carController.getCarAndOwnerPerID);
 
 module.exports = router;
