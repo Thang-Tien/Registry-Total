@@ -1,7 +1,6 @@
 {
   "/settings/profile/page": "app/settings/profile/page.js",
   "/auth/page": "app/auth/page.js",
-  "/dashboard/page": "app/dashboard/page.js",
   "/setting/profile/page": "app/setting/profile/page.js",
   "/dashboards/page": "app/dashboards/page.js",
   "/settings/password/page": "app/settings/password/page.js"
