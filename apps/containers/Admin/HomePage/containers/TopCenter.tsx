@@ -24,7 +24,7 @@ export default function TopCenter() {
 
       try {
         const response = await fetch(
-          `http://fall2324w3g10.int3306.freeddns.org/api/v1/centres/most_inspects`,
+          `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/centres/most_inspects`,
           {  
             headers: {
               "Content-Type": "application/json",

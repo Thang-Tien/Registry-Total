@@ -96,7 +96,7 @@ const StaffInformation = (props) => {
             setDeleting(true);
             try {
               const response = await fetch(
-                `http://fall2324w3g10.int3306.freeddns.org/api/v1/users/delete_account`,
+                `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/users/delete_account`,
                 {
                   method: "POST",
                   headers: {
@@ -134,7 +134,7 @@ const StaffInformation = (props) => {
       await delay(1500);
       try {
         const response = await fetch(
-          `http://fall2324w3g10.int3306.freeddns.org/api/v1/centres/staff/${props.centerId}`,
+          `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/centres/staff/${props.centerId}`,
           {  
             headers: {
               "Content-Type": "application/json",
@@ -192,7 +192,7 @@ const StaffInformation = (props) => {
 
               console.log(centerData);
               const response = await fetch(
-                `http://fall2324w3g10.int3306.freeddns.org/api/v1/users/create_account`,
+                `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/users/create_account`,
                 {
                   method: "POST",
                   headers: {

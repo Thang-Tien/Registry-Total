@@ -58,7 +58,7 @@ const CenterCreateModal = (props) => {
             };
             let centerData = JSON.stringify(newCenter);
             const response = await fetch(
-              `http://fall2324w3g10.int3306.freeddns.org/api/v1/centres/${
+              `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/centres/${
                 props.mode === "edit" ? "update" : "add"
               }_centre${props.mode === "edit" ? `/${props.centerId}` : ""}`,
               {

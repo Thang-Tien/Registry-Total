@@ -15,7 +15,7 @@ export default function Centers() {
       await delay(2400);
       try {
         const response = await fetch(
-          `http://fall2324w3g10.int3306.freeddns.org/api/v1/centres/`,
+          `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/centres/`,
           {  
             headers: {
               "Content-Type": "application/json",

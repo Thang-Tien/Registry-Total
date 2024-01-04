@@ -47,7 +47,7 @@ const CentreInformation = (props) => {
       await delay(1500);
       try {
         let response = await fetch(
-          `http://fall2324w3g10.int3306.freeddns.org/api/v1/centres?centre_id=${props.centerId}`,
+          `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/centres?centre_id=${props.centerId}`,
           {  
             headers: {
               "Content-Type": "application/json",
@@ -64,7 +64,7 @@ const CentreInformation = (props) => {
         setCenterEmail(tmp.data[0].email);
         setCenterPhone(tmp.data[0].phone);
         response = await fetch(
-          `http://fall2324w3g10.int3306.freeddns.org/api/v1/centres/staff/${props.centerId}`,
+          `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/centres/staff/${props.centerId}`,
           {  
             headers: {
               "Content-Type": "application/json",
@@ -173,7 +173,7 @@ const CentreInformation = (props) => {
               onClick={async () => {
                 setOpen(true);
                 const response = await fetch(
-                  "http://fall2324w3g10.int3306.freeddns.org/api/v1/centres",
+                  "${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/centres",
                   {  
                     headers: {
                       "Content-Type": "application/json",
@@ -203,7 +203,7 @@ const CentreInformation = (props) => {
                 setDeleting(true);
                 try {
                   const response = await fetch(
-                    `http://fall2324w3g10.int3306.freeddns.org/api/v1/centres/deactivate/${props.centerId}`,
+                    `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/centres/deactivate/${props.centerId}`,
                     {
                       method: "POST",
                       headers: {
