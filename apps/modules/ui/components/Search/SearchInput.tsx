@@ -18,12 +18,15 @@ const SearchInput = (props) => {
       await delay(100);
       try {
         const response = await fetch(
-          `http://fall2324w3g10.int3306.freeddns.org/api/v1/${
-            searchCar ? "cars" : "inspections"
-          }/search?${
-            searchCar ? "number_plate" : "inspection_number"
-          }=${inputValue}`
-        );
+          `http://fall2324w3g10.int3306.freeddns.org/api/v1/${searchCar ? "cars" : "inspections"
+          }/search?${searchCar ? "number_plate" : "inspection_number"
+          }=${inputValue}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + localStorage.getItem("accessToken"),
+            },
+          });
         if (!response.ok) throw new Error("Fail to get data");
 
         const tmp = await response.json();
@@ -56,9 +59,8 @@ const SearchInput = (props) => {
     >
       <Input.Search
         size="large"
-        placeholder={`Nhập ${
-          props.search === "car" ? "biển số xe" : "số đăng kiểm"
-        }`}
+        placeholder={`Nhập ${props.search === "car" ? "biển số xe" : "số đăng kiểm"
+          }`}
         onSearch={async () => {
           props.setSearchText(inputValue);
           setOptions([]);
@@ -69,11 +71,15 @@ const SearchInput = (props) => {
 
           try {
             const response = await fetch(
-              `http://fall2324w3g10.int3306.freeddns.org/api/v1/${
-                searchCar ? "cars" : "inspections"
-              }/search?${
-                searchCar ? "number_plate" : "inspection_number"
-              }=${inputValue}`
+              `http://fall2324w3g10.int3306.freeddns.org/api/v1/${searchCar ? "cars" : "inspections"
+              }/search?${searchCar ? "number_plate" : "inspection_number"
+              }=${inputValue}`, 
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: "Bearer " + localStorage.getItem("accessToken"),
+                },
+              }
             );
             if (!response.ok) throw new Error("Fail to fetch data to result");
 

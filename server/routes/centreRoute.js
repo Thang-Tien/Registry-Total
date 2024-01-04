@@ -5,16 +5,16 @@ const authController = require('../controllers/authController')
 
 router.use(authController.authenticateToken)
 
-router.get('/count/total_centres',  centreController.totalNumberOfCentre)
+router.get('/count/total_centres', authController.restrictAccessTo("admin"), centreController.totalNumberOfCentre)
 
-router.get('/most_inspects', centreController.centresWithMostInspects)
+router.get('/most_inspects', authController.restrictAccessTo("admin"), centreController.centresWithMostInspects)
 
 // get centre, add queries ()
-router.get('/', centreController.getCentre)
-router.get('/staff/:centre_id', centreController.getStaffByCentre)
+router.get('/', authController.restrictAccessTo("admin"), centreController.getCentre)
+router.get('/staff/:centre_id', authController.restrictAccessTo("admin"), centreController.getStaffByCentre)
 
-router.post('/add_centre', centreController.addCentre)
-router.post('/update_centre/:centre_id', centreController.updateCentre)
-router.post('/deactivate/:centre_id', centreController.deactivateCentre)
+router.post('/add_centre', authController.restrictAccessTo("admin"), centreController.addCentre)
+router.post('/update_centre/:centre_id', authController.restrictAccessTo("admin"), centreController.updateCentre)
+router.post('/deactivate/:centre_id', authController.restrictAccessTo("admin"), centreController.deactivateCentre)
 
 module.exports = router;
