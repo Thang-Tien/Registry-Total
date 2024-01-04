@@ -33,18 +33,19 @@ const StatisticsPage = ({ className, style }: Props) => {
           }}
         >
           <Flex.Col
+            gap="20px"
             justifyContent="center"
-            style={{ height: "100vh", margin: "0 50px" }}
+            style={{ margin: "50px 50px" }}
           >
             <Flex.Row
               gap="24px"
               justifyContent="center"
-              style={{ height: "50%" }}
+              style={{}}
             >
-              <Flex.Cell>
+              <Flex.Cell style={{width: "25%"}}>
                 <Count />
               </Flex.Cell>
-              <Flex.Cell style={{ height: "458px", width: "20000px" }}>
+              <Flex.Cell style={{width: "80%"}}>
                 <ColumnChart />
               </Flex.Cell>
             </Flex.Row>

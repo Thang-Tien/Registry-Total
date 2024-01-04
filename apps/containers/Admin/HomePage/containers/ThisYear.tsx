@@ -42,7 +42,7 @@ export default function ThisYear({ className, style }: Props) {
   return (
     <div className={cx(className, styles.container)} style={style}>
       <Card
-        style={{ width: "calc((100vw - 256px - 64px - 60px) / 4)" }}
+        style={{ width: "calc((100vw - 256px - 64px - 60px) / 4)" , height: "100%"}}
         loading={loading}
       >
         <Statistic title={"Đăng kiểm trong năm nay"} value={data.total} />
