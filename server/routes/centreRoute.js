@@ -10,7 +10,7 @@ router.get('/count/total_centres', authController.restrictAccessTo("admin"), cen
 router.get('/most_inspects', authController.restrictAccessTo("admin"), centreController.centresWithMostInspects)
 
 // get centre, add queries ()
-router.get('/', authController.restrictAccessTo("admin"), centreController.getCentre)
+router.get('/', centreController.getCentre)
 router.get('/staff/:centre_id', authController.restrictAccessTo("admin"), centreController.getStaffByCentre)
 
 router.post('/add_centre', authController.restrictAccessTo("admin"), centreController.addCentre)
