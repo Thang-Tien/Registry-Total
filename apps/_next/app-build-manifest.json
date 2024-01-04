@@ -1,10 +1,5 @@
 {
   "pages": {
-    "/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/page.js"
-    ],
     "/layout": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
@@ -15,41 +10,10 @@
       "static/chunks/main-app.js",
       "static/chunks/app/loading.js"
     ],
-    "/auth/page": [
+    "/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/css/app/auth/page.css",
-      "static/chunks/app/auth/page.js"
-    ],
-    "/dashboard/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/dashboard/page.css",
-      "static/chunks/app/dashboard/page.js"
-    ],
-    "/center/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/center/page.css",
-      "static/chunks/app/center/page.js"
-    ],
-    "/statistic/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/statistic/page.css",
-      "static/chunks/app/statistic/page.js"
-    ],
-    "/setting/profile/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/setting/profile/page.css",
-      "static/chunks/app/setting/profile/page.js"
-    ],
-    "/setting/password/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/setting/password/page.css",
-      "static/chunks/app/setting/password/page.js"
+      "static/chunks/app/page.js"
     ],
     "/dashboards/page": [
       "static/chunks/webpack.js",
@@ -57,17 +21,11 @@
       "static/css/app/dashboards/page.css",
       "static/chunks/app/dashboards/page.js"
     ],
-    "/inspections/all/page": [
+    "/auth/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/css/app/inspections/all/page.css",
-      "static/chunks/app/inspections/all/page.js"
-    ],
-    "/cars/search/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/cars/search/page.css",
-      "static/chunks/app/cars/search/page.js"
+      "static/css/app/auth/page.css",
+      "static/chunks/app/auth/page.js"
     ],
     "/statistics/page": [
       "static/chunks/webpack.js",
@@ -75,23 +33,11 @@
       "static/css/app/statistics/page.css",
       "static/chunks/app/statistics/page.js"
     ],
-    "/settings/profile/page": [
+    "/inspections/all/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/css/app/settings/profile/page.css",
-      "static/chunks/app/settings/profile/page.js"
-    ],
-    "/settings/password/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/settings/password/page.css",
-      "static/chunks/app/settings/password/page.js"
-    ],
-    "/inspections/create/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/inspections/create/page.css",
-      "static/chunks/app/inspections/create/page.js"
+      "static/css/app/inspections/all/page.css",
+      "static/chunks/app/inspections/all/page.js"
     ],
     "/inspections/me/page": [
       "static/chunks/webpack.js",
@@ -105,23 +51,41 @@
       "static/css/app/inspections/search/page.css",
       "static/chunks/app/inspections/search/page.js"
     ],
-    "/inspection/[id]/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/inspection/[id]/page.css",
-      "static/chunks/app/inspection/[id]/page.js"
-    ],
-    "/inspection/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/inspection/page.css",
-      "static/chunks/app/inspection/page.js"
-    ],
     "/inspections/[id]/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/css/app/inspections/[id]/page.css",
       "static/chunks/app/inspections/[id]/page.js"
+    ],
+    "/cars/search/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/cars/search/page.css",
+      "static/chunks/app/cars/search/page.js"
+    ],
+    "/cars/[id]/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/cars/[id]/page.css",
+      "static/chunks/app/cars/[id]/page.js"
+    ],
+    "/inspections/create/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/inspections/create/page.css",
+      "static/chunks/app/inspections/create/page.js"
+    ],
+    "/settings/profile/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/settings/profile/page.css",
+      "static/chunks/app/settings/profile/page.js"
+    ],
+    "/settings/password/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/settings/password/page.css",
+      "static/chunks/app/settings/password/page.js"
     ]
   }
 }

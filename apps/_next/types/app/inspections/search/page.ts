@@ -1,4 +1,4 @@
-// File: D:\Code\Registry-Total\apps\app\inspections\search\page.tsx
+// File: D:\Workspace\JS\Registry-Total\apps\app\inspections\search\page.tsx
 import * as entry from '../../../../../app/inspections/search/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

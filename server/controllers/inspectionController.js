@@ -190,7 +190,9 @@ exports.countInspectionsOfAllCentreByYear = async (req, res) => {
 exports.getInspection = (req, res) => {
     let queryString = utils.generateQueryString(req.query);
     connection.query(
-        `SELECT *, (SELECT number_plate FROM cars c WHERE c.car_id = i.car_id) AS number_plate FROM inspections i WHERE ${queryString ? queryString : 1}`,
+        `SELECT *, (SELECT number_plate FROM cars c WHERE c.car_id = i.car_id) AS number_plate FROM inspections i WHERE ${
+            queryString ? queryString : 1
+        }`,
         utils.getQueryValue(req.query),
         (err, result, fields) => {
             if (err) {
@@ -217,7 +219,9 @@ exports.getInspection = (req, res) => {
 
 exports.searchInspection = (req, res) => {
     connection.query(
-        `SELECT * FROM inspections WHERE inspection_number LIKE('${req.query.inspection_number}%') ${req.query.limit ? `LIMIT ${req.query.limit}`: ""}`,
+        `SELECT * FROM inspections WHERE inspection_number LIKE('${
+            req.query.inspection_number
+        }%') ${req.query.limit ? `LIMIT ${req.query.limit}` : ""}`,
         (err, result, fields) => {
             if (err) {
                 return res.status(500).json({
@@ -854,7 +858,7 @@ exports.getInspectionAndOwnerPerID = (req, res) => {
 exports.countAllInspection = (req, res) => {
     let queryString = utils.generateQueryString(req.query);
     connection.query(
-        `SELECT     COUNT(*) AS value
+        `SELECT     MAX(inspection_id) AS value
                     FROM inspections i 
                     WHERE ${queryString ? queryString : 1}`,
         (err, result, fields) => {

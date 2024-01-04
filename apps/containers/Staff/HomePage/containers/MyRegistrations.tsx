@@ -47,7 +47,7 @@ const MyRegistrations: React.FC = () => {
         //         console.error("Error fetching data:", error);
         //     }
         // };
-
+        delay(1000);
         const fetchDataSource = async () => {
             try {
                 const response = await fetch(

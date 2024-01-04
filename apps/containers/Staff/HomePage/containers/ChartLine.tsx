@@ -16,34 +16,64 @@ const ChartLine: React.FC = () => {
         date_of_birth: "",
     });
     const [data, setData] = useState([]);
-    const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+    const delay = (ms) =>
+        new Promise((res) => {
+            setTimeout(res, ms);
+            console.log("delayed");
+        });
 
     useEffect(() => {
-        const data =
-            localStorage.getItem("data") === null
-                ? JSON.stringify(df)
-                : localStorage.getItem("data");
-        if (data != null) setUser(JSON.parse(data));
-        // Fetch data from the API
+        let isMounted = true;
+
         const fetchData = async () => {
-            await delay(1000);
+            delay(2000); // Assuming delay is a function that returns a promise
             try {
                 const response = await fetch(
                     `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/stat/each_centre/count/last_twelve_months/${user.centre_id}`
                 );
+
                 const data = await response.json();
-                if (response.ok) {
+
+                if (isMounted && response.ok) {
                     // Assuming the API response contains the count in the 'total' field
                     const reversedData = data.data.reverse();
                     setData(reversedData);
+                    console.log("data: ", data.data);
+                } else if (!isMounted) {
+                    console.log(
+                        "Component is unmounted, so skipping state update."
+                    );
                 } else {
                     console.error("Failed to fetch data from API:", data.error);
                 }
             } catch (error) {
-                console.error("Error fetching data:", error);
+                if (isMounted) {
+                    console.error("Error fetching data:", error);
+                } else {
+                    console.log(
+                        "Component is unmounted, so skipping error handling."
+                    );
+                }
             }
         };
+
+        const dataFromLocalStorage =
+            localStorage.getItem("data") === null
+                ? JSON.stringify(df)
+                : localStorage.getItem("data");
+
+        if (dataFromLocalStorage !== null) {
+            setUser(JSON.parse(dataFromLocalStorage));
+        }
+
+        console.log("Centre_id: ", user.centre_id);
+        console.log("User_id: ", user.user_id);
+
         fetchData();
+
+        return () => {
+            isMounted = false;
+        };
     }, [user.centre_id]); // user.centreID là biến phụ thuộc, thay đổi biến này thì chạy lại useEffect để fetch API
 
     return (

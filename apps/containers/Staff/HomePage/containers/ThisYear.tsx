@@ -18,38 +18,78 @@ const ThisYear: React.FC = () => {
     });
     const [inspectionCount, setInspectionCount] = useState<number | null>(null);
     const [loading, setLoading] = useState(true);
-    const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+    const delay = (ms) =>
+        new Promise((res) => {
+            setTimeout(res, ms);
+        });
 
     useEffect(() => {
-        const data =
-            localStorage.getItem("data") === null
-                ? JSON.stringify(df)
-                : localStorage.getItem("data");
-        if (data != null) setUser(JSON.parse(data));
-        console.log("Centre_id: ", user.centre_id);
-        console.log("User_id: ", user.user_id);
+        // Variable to track component mount status
+        let isMounted = true;
+
         const fetchData = async () => {
-            await delay(1000);
             try {
+                // Delay for 1000ms (1 second)
+                await delay(1000);
+
+                // Fetch data from the API
                 const response = await fetch(
                     `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/stat/each_centre/count/year/${user.centre_id}`
                 );
-                const data = await response.json();
-                if (response.ok) {
-                    // Assuming the API response contains the count in the 'total' field
-                    setInspectionCount(data.data[0].total);
-                    setLoading(false);
-                } else {
-                    console.error("Failed to fetch data from API:", data.error);
+
+                // Check if the component is still mounted
+                if (isMounted) {
+                    const data = await response.json();
+
+                    if (response.ok) {
+                        // Assuming the API response contains the count in the 'total' field
+                        setInspectionCount(data.data[0].total);
+                        setLoading(false);
+                    } else {
+                        console.error(
+                            "Failed to fetch data from API:",
+                            data.error
+                        );
+                        setLoading(false);
+                    }
                 }
             } catch (error) {
-                console.error("Error fetching data:", error);
-                setLoading(false);
+                // Check if the component is still mounted
+                if (isMounted) {
+                    console.error("Error fetching data:", error);
+                    setLoading(false);
+                }
             }
         };
 
-        fetchData();
-    }, [user.centre_id]); // user.centreID là biến phụ thuộc, thay đổi biến này thì chạy lại useEffect để fetch API
+        const loadData = () => {
+            // Get data from local storage or use default value (df)
+            const storedData =
+                localStorage.getItem("data") === null
+                    ? JSON.stringify(df)
+                    : localStorage.getItem("data");
+
+            // Parse and set user data
+            if (storedData != null) {
+                setUser(JSON.parse(storedData));
+            }
+
+            console.log("Centre_id: ", user.centre_id);
+            console.log("User_id: ", user.user_id);
+
+            // Fetch data from the API
+            fetchData();
+        };
+
+        // Load initial data
+        loadData();
+
+        // Cleanup function to update the isMounted variable when the component is unmounted
+        return () => {
+            isMounted = false;
+        };
+    }, [user.centre_id]);
+    // user.centreID là biến phụ thuộc, thay đổi biến này thì chạy lại useEffect để fetch API
     return (
         <Card style={{ width: "calc((100vw - 256px - 64px - 60px) / 4)" }}>
             <Skeleton loading={loading} active round paragraph={{ rows: 4 }} />
