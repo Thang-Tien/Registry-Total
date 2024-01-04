@@ -8,7 +8,7 @@ const upload = multer({dest: 'uploads/xlsx/'});
 router.use(authController.authenticateToken)
 
 // add queries to filter car (id, model, number_plate)
-router.get('/', authController.restrictAccessTo("admin"), carController.getCar)
+router.get('/', authController.restrictAccessTo("admin", "staff"), carController.getCar)
 router.get('/search', authController.restrictAccessTo("admin"), carController.searchCar)
 router.get('/owner', authController.restrictAccessTo("admin"), carController.getOwner)
 
