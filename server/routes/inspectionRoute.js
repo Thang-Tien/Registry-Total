@@ -3,6 +3,7 @@ const router = express.Router({ mergeParams: true });
 const inspectionController = require("../controllers/inspectionController");
 const authController = require("../controllers/authController");
 
+router.use(authController.authenticateToken)
 // đếm tổng số lượng đăng kiểm của centre mà staff đang làm việc
 router.get(
     "/stat/each_centre/info/:centre_id",
