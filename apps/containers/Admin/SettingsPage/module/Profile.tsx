@@ -1,5 +1,3 @@
-"use client";
-
 import {
   Avatar,
   Button,
@@ -25,8 +23,7 @@ import {
   IoConstructOutline,
 } from "react-icons/io5";
 import { EditOutlined } from "@ant-design/icons";
-import avatar from "./../../../../public/image/avatar.svg";
-import classes from "./../styles/Profile.module.css";
+import avatar from "./../../../../public/image/avatar.png";
 import { useEffect, useState } from "react";
 import validateDate from "validate-date";
 import TextWithIcon from "./TextWithIcon";
@@ -42,6 +39,7 @@ const processBirthDate = (birthDate) => {
 const marginSmall = {
   padding: "2px",
 };
+
 
 const setRule = (name) => {
   return [
@@ -100,8 +98,9 @@ const Profile = () => {
     name: '', address: '', phone: 0, email: '', date_of_birth: '', role: '', ssn: '', centre_id: 0,
   });
   const df = { name: "Thiện pờ rồ", age: 18 }
-  useEffect(() => { console.log(me.date_of_birth) }, [me])
-  
+  useEffect(() => { console.log(me) }, [me])
+  useEffect(() => { console.log(user) }, [user])
+  const delay = (ms) => new Promise((res) => setTimeout(res,ms));
   // 
   useEffect(() => {
     document.title = "Hồ sơ cá nhân";
@@ -109,6 +108,7 @@ const Profile = () => {
     if (data != null) setMe(JSON.parse(data));
     
     const fetchData = async () => {
+      await delay(1000);
       try {
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/centres?centre_id=${me.centre_id}`,
@@ -152,10 +152,10 @@ const Profile = () => {
   };
 
   return (
-    <ConfigProvider
+      <ConfigProvider
       theme={{
         token: {
-          paddingLG: 22,
+          paddingLG: 3,
           colorBorderSecondary: "var(--color-grey-dark-1)",
           colorPrimary: "#1677ff",
           colorBgContainerDisabled: "#4096ff",
@@ -165,7 +165,7 @@ const Profile = () => {
     >
       {notificationContextHolder}
       {messageContextHolder}
-      <h1 className={classes.title}>Hồ sơ của tôi</h1>
+      <h1 style={{padding: "0rem 3rem 0rem 2rem",fontSize:"1,4rem",fontWeight:"700"}}>Hồ sơ của tôi</h1>
       <Skeleton
         loading={loading}
         style={{ padding: "3rem" }}
@@ -202,30 +202,31 @@ const Profile = () => {
           size="large"
           style={{
             display: "flex",
-            padding: "3rem",
+            margin: "0rem 2rem 1rem 1rem"
           }}
         >
-          <Card>
+          <Card style={{ marginBottom: "10px"}}>
             <Space
               direction="horizontal"
               size="large"
               align="center"
-              style={{ width: "100%" }}
+              style={{ width: "100%" ,padding: "1rem"}}
             >
-              <Avatar src={avatar} size={100} />
+              <Avatar src={avatar.src} size={100} style={{ marginRight: "10px" }}/>
               <Space direction="vertical" size="small">
-                <span className={classes.name}>{me.name}</span>
-                <span className={classes.role}>
+                <span style={{fontSize:"16px",fontWeight:"600"}}>{me.name}</span>
+                <span style={{color:"var(--color-grey-dark-2)",fontSize:"15px",fontWeight:"500"}}>
                   {me.role === "staff" ? "Nhân viên" : "Quản trị viên"}
                 </span>
-                <span className={classes.address}>
+                <span style={{color:"var(--color-grey-dark-3)",fontSize:"14px",fontWeight:"400"}}>
                   {user.address}, Việt Nam
                 </span>
               </Space>
             </Space>
           </Card>
           <Card
-            title="Thông tin cá nhân"
+            title="Thông tin cá nhân" 
+            style={{ marginBottom: "10px" ,backgroundColor: "#fcf7f7", padding:"0.5rem"}}
             extra={
               <Button
                 size="middle"
@@ -273,28 +274,30 @@ const Profile = () => {
               </Descriptions.Item>
               <Descriptions.Item
                 label={
-                  <TextWithIcon
-                    Icon={IoCardOutline}
-                    text="Số căn cước công dân"
-                  />
+                  <div style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+        <TextWithIcon Icon={IoCardOutline} text="Số căn cước công dân" />
+      </div>
                 }
                 style={marginSmall}
               >
                 {me.ssn}
               </Descriptions.Item>
+              
               <Descriptions.Item
-                label={<TextWithIcon Icon={IoMailOutline} text="Email" />}
+                label={
+                  <div style={{ marginLeft: "2rem"}}><TextWithIcon Icon={IoMailOutline} text="Email" /></div>}
                 style={marginSmall}
               >
-                {me.email}
+                <div style={{ marginLeft: "2rem"}}>{me.email}</div>
+        
               </Descriptions.Item>
             </Descriptions>
           </Card>
-          <Card title="Địa chỉ làm việc">
+          <Card title="Địa chỉ làm việc" style={{ marginBottom: "10px" ,backgroundColor: "#fcf7f7" ,padding:"0.5rem"}}>
             <Descriptions
               layout="vertical"
               labelStyle={{
-                color: "var(--color-grey-dark-3)",
+                color: "black",
               }}
               contentStyle={{ paddingBottom: "16px", fontWeight: "500" }}
               colon={false}
@@ -329,14 +332,19 @@ const Profile = () => {
                 +84 {user.phone}
               </Descriptions.Item>
               <Descriptions.Item
-                label={<TextWithIcon Icon={IoMailOutline} text="Email" />}
+                label={
+                  <div style={{overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                    <TextWithIcon Icon={IoMailOutline} text="Email" />
+                  </div>
+                }
                 style={marginSmall}
               >
                 {user.email}
               </Descriptions.Item>
               <Descriptions.Item
                 label={
-                  <TextWithIcon
+                  <div style={{ marginLeft: "2rem",overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                    <TextWithIcon
                     Icon={IoConstructOutline}
                     text={
                       me.role === "staff"
@@ -344,11 +352,15 @@ const Profile = () => {
                         : "Cục đăng kiểm"
                     }
                   />
+                  </div>
+    
                 }
                 style={marginSmall}
               >
-                {user.name}
+                <div style={{ marginLeft: "2rem"}}>{user.name}</div>
+                
               </Descriptions.Item>
+              
             </Descriptions>
           </Card>
         </Space>
@@ -376,9 +388,9 @@ const Profile = () => {
             };
 
             const response = await fetch(
-              `/api/v1/users/updateMe`,
+              `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/users/update_info`,
               {
-                method: "PATCH",
+                method: "POST",
                 headers: {
                   "Content-Type": "application/json",
                   Authorization: "Bearer " + localStorage.getItem("accessToken"),
@@ -394,7 +406,7 @@ const Profile = () => {
               setSubmitting(false);
               throw new Error("An error occured");
             }
-
+            
             const newUser = me;
             newUser.name = datas.name;
             newUser.date_of_birth = datas.date_of_birth;
@@ -456,7 +468,7 @@ const Profile = () => {
           </Form.Item>
         </Form>
       </Modal>
-    </ConfigProvider>
+    </ConfigProvider> 
   );
 };
 

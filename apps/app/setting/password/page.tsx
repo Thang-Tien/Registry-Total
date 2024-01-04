@@ -1,7 +1,7 @@
 import React from "react";
 import SettingsPage from "../../../containers/Admin/SettingsPage";
 
- function RouteToPassword() {
+ function RouteToPasswordAdmin() {
     return <SettingsPage mode ="password"/>
 }
-export default RouteToPassword;
+export default RouteToPasswordAdmin;

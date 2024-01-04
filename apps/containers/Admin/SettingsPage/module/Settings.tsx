@@ -1,5 +1,3 @@
-"use client";
-
 import { Tabs } from "antd";
 import { useRouter } from "next/navigation";
 import Profile from "./Profile";
@@ -16,7 +14,7 @@ const Settings = (props) => {
       tabBarGutter={16}
       tabBarStyle={{
         marginTop: "2rem",
-        width: "25rem",
+        // width: "15rem",
       }}
       centered={true}
       items={[
@@ -38,7 +36,7 @@ const Settings = (props) => {
       style={{
         width: "80%",
         backgroundColor: "#fff",
-        margin: "3rem auto",
+        margin: "1rem auto",
         border: "1px solid var(--color-grey-dark-1)",
         borderRadius: "8px",
       }}

@@ -1,29 +1,55 @@
-import Flex from "@/modules/ui/components/Flex";
+"use client"
 import Settings from "./module/Settings";
+import cx from "classnames";
+import styles from "./styles/index.module.scss";
+import Flex from "@/modules/ui/components/Flex";
 import NavBar from "../NavBar";
 
-const SettingsPage = (props) => {
-  return (
-    <div>
-      <Flex.Row style={{ height: "100vh", width: "100vw" }} padding={"0"}>
-        <NavBar active="setting/profile" openMenu="accountOpen" />"
-        <div
-          style={{
-            background: "#e4e4e7",
-            width: "calc(100vw - 256px - 8px)",
-            overflow: "auto",
-            display: "flex",
-            justifyContent: "center",
-            padding: "100px 0",
-          }}
-        >
-          <Flex.Cell style={{ marginBottom: "100px", width:"1700px" }}>
-            <Settings mode={props.mode} />
-          </Flex.Cell>
-        </div>
-      </Flex.Row>
-    </div>
-  );
+import { Breadcrumb } from "antd";
+
+
+export type Props = {
+  mode: string,
+    className?: string;
+    style?: React.CSSProperties;
 };
 
-export default SettingsPage;
+export default function SettingsPage({ className, style, mode}: Props) {
+    return (
+        <div className={cx(className, styles.container)} style={style}>
+            <Flex.Row style={{ width: "100%", minHeight: "100vh" }}>
+                <NavBar active="setting/profile" openMenu=""/>
+                <div
+                    style={{
+                        flex: "1",
+                        display: "flex",
+                        flexDirection: "column",
+                        background: "#e4e4e7",
+                    }}
+                >
+                    <Breadcrumb
+                        separator=">"
+                        items={[
+                            {
+                                title: "Nhà của tôi",
+                            },
+                            {
+                                title: "Cài đặt",
+                            },
+                        ]}
+                        style={{ marginLeft: 30, marginTop: 30 }}
+                    />
+                    <div
+                        style={{
+                            width: "90%",
+                            marginTop: 30,
+                            alignSelf: "center",
+                        }}
+                    >
+                        <Settings mode={mode} />
+                    </div>
+                </div>
+            </Flex.Row>
+        </div>
+    );
+}

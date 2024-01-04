@@ -1,5 +1,3 @@
-"use client";
-
 import {
   Button,
   ConfigProvider,
@@ -9,7 +7,6 @@ import {
   message,
   notification,
 } from "antd";
-import classes from "./../styles/ChangePassword.module.css";
 import { useEffect, useState } from "react";
 
 
@@ -19,7 +16,7 @@ const ChangePassword = () => {
     notification.useNotification();
   const [messageApi, messageContextHolder] = message.useMessage();
   const [isChanging, setIsChanging] = useState(false);
- 
+  
 
   useEffect(() => {
     document.title = "Thay đổi mật khẩu";
@@ -34,7 +31,7 @@ const ChangePassword = () => {
   };
 
   const openMessage = () => {
-    messageApi.open({
+    messageApi["success"]({
       type: "success",
       content: "Đổi mật khẩu thành công.",
     });
@@ -42,18 +39,22 @@ const ChangePassword = () => {
 
   const onFinish = async (values) => {
     try {
+      if (values.newpassword != values.confirm) {
+        openErrorNotification();
+        throw new Error("Password confirm doesn't match ....");
+      }
+
       const data = {
-        passwordCurrent: values.password,
-        password: values.newpassword,
-        passwordConfirm: values.confirm,
+        currentPassword: values.password,
+        newPassword: values.confirm,
       };
 
       setIsChanging(true);
 
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/users/updatePassword`,
+        `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/users/change-password`,
         {
-          method: "PATCH",
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: "Bearer " + localStorage.getItem("accessToken"),
@@ -61,17 +62,20 @@ const ChangePassword = () => {
           body: JSON.stringify(data),
         }
       );
-
+      
+      const tmp = await response.json();
+      console.log(tmp)
       setIsChanging(false);
 
       if (!response.ok) {
         openErrorNotification();
         throw new Error("Can not change password");
       }
-
+      else 
+      openMessage();
       const res = await response.json();
 
-      openMessage();
+      
     } catch (err) {
        console.error(err);
     }
@@ -89,11 +93,11 @@ const ChangePassword = () => {
     >
       {notificationContextHolder}
       {messageContextHolder}
-      <h1 className={classes.title}>Thay đổi mật khẩu</h1>
+      <h1 style={{padding: "0rem 3rem 0 2rem",fontSize:"1,4rem",fontWeight:"700"}}>Thay đổi mật khẩu</h1>
       <Form
         name="change-password-form"
         form={form}
-        className={classes.form}
+        style={{width:"90%",margin:"auto"}}
         labelCol={{
           span: 8,
         }}
@@ -176,7 +180,7 @@ const ChangePassword = () => {
             <Button
               type="primary"
               htmlType="submit"
-              className={classes.btn}
+              style={{}}
               disabled={isChanging}
               loading={isChanging}
             >

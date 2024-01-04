@@ -35,7 +35,7 @@ function getItem(
 }
 
 export type Props = {
-  active: "" | "center" | "car" | "inspection" | "statistic" | "setting/profile";
+  active: "" | "center" | "car" | "inspection" | "statistic" | "setting/profile"|"setting/password";
   openMenu: "" | "carOpen" | "accountOpen" | string;
 };
 

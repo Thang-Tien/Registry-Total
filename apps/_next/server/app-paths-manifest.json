@@ -1,8 +1,8 @@
 {
   "/settings/profile/page": "app/settings/profile/page.js",
-  "/inspections/all/page": "app/inspections/all/page.js",
   "/auth/page": "app/auth/page.js",
-  "/cars/search/page": "app/cars/search/page.js",
-  "/inspections/create/page": "app/inspections/create/page.js",
-  "/inspections/[id]/page": "app/inspections/[id]/page.js"
+  "/dashboard/page": "app/dashboard/page.js",
+  "/setting/profile/page": "app/setting/profile/page.js",
+  "/dashboards/page": "app/dashboards/page.js",
+  "/settings/password/page": "app/settings/password/page.js"
 }
