@@ -141,7 +141,7 @@ const InspectionPDF = ({ inspectionData }) => {
                     </Text>
                     <Text style={styles.data}>
                         Design/Authorized towed_mass:{" "}
-                        {inspectionData.designed_and_authorized_towing_mass}
+                        {inspectionData.designed_and_authorized_towed_mass}
                     </Text>
                     <Text style={styles.data}>
                         Permissible No.of Pers Carried: seat, stood place,
