@@ -20,7 +20,7 @@ export default function ChartPie(props) {
         const year = date.getFullYear();
         const month = 12;
         let response = await fetch(
-          `http://fall2324w3g10.int3306.freeddns.org/api/v1/inspections/stat/all_centre/count/by_year?year=${2023}`,
+          `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/stat/all_centre/count/by_year?year=${2023}`,
           {  
             headers: {
               "Content-Type": "application/json",
@@ -46,7 +46,7 @@ export default function ChartPie(props) {
         console.log(newly);
 
         response = await fetch(
-          `http://fall2324w3g10.int3306.freeddns.org/api/v1/inspections/stat/all_centre/prediction/about_to_inspect`,
+          `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/stat/all_centre/prediction/about_to_inspect`,
           {  
             headers: {
               "Content-Type": "application/json",

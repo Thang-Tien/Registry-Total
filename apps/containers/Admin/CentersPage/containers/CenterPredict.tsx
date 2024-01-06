@@ -19,7 +19,7 @@ const CenterPredict = (props) => {
       month = 12;
       try {
         const response = await fetch(
-          `http://fall2324w3g10.int3306.freeddns.org/api/v1/inspections/stat/${props.centerId}/count/every_month?year=${year}`,
+          `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/stat/${props.centerId}/count/every_month?year=${year}`,
           {  
             headers: {
               "Content-Type": "application/json",

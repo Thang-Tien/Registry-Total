@@ -197,7 +197,7 @@ const InspectionTable = (props) => {
       await delay(1500);
       try {
         const response = await fetch(
-          `http://fall2324w3g10.int3306.freeddns.org/api/v1/inspections?centre_id=${props.centerId}`,
+          `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections?centre_id=${props.centerId}`,
           {  
             headers: {
               "Content-Type": "application/json",

@@ -38,14 +38,17 @@ export type Props = {
     active:
         | ""
         | "dashboards"
-        | "inspections"
+        | "inspections/all"
+        | "inspections/me"
+        | "inspections/search"
         | "inspections/create"
         | "cars/search"
         | "statistics"
-        | "settings";
+        | "settings/profile";
+    openMenu: "" | "inspections" | "settings" | string;
 };
 
-export default function NavBar({ active }: Props) {
+export default function NavBar({ active, openMenu }: Props) {
     const items: MenuItem[] = [
         // <AppstoreOutlined />, <InboxOutlined />, <CarOutlined />, <SearchOutlined />, <LineChartOutlined />, <UserOutlined /> are icons
         getItem("Bảng điều khiển", "dashboards", <AppstoreOutlined />),
@@ -67,24 +70,21 @@ export default function NavBar({ active }: Props) {
         localStorage.clear();
     };
     // Array contain key of root submenu
-    const rootSubmenuKeys = ["cars", "account"];
+    const rootSubmenuKeys = ["inspections", "settings"];
 
-    const [openKeys, setOpenKeys] = useState([""]);
+    const [open, setOpen] = useState(false);
+    const [openKeys, setOpenKeys] = useState([openMenu]);
 
     const onOpenChange: MenuProps["onOpenChange"] = (keys) => {
         // Boolean indicate if closing a submenu
-        const isSubMenuOpen = keys.length > openKeys.length;
-
-        setOpenKeys(keys);
-
-        // If closing a submenu, and there are still open submenus, prevent closing others
-        if (!isSubMenuOpen && keys.length > 0) {
-            setOpenKeys((prevOpenKeys) => [...prevOpenKeys, ...keys]);
+        const latestOpenKey = keys.find((key) => openKeys.indexOf(key) === -1);
+        if (latestOpenKey && rootSubmenuKeys.indexOf(latestOpenKey!) === -1) {
+            setOpenKeys(keys);
+        } else {
+            setOpenKeys(latestOpenKey ? [latestOpenKey] : []);
         }
-
-        console.log(keys);
+        console.log(latestOpenKey + " " + keys);
     };
-
     const router = useRouter();
 
     const onClick: MenuProps["onClick"] = (e) => {

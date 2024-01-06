@@ -19,7 +19,6 @@ const ChartLine: React.FC = () => {
     const delay = (ms) =>
         new Promise((res) => {
             setTimeout(res, ms);
-            console.log("delayed");
         });
 
     useEffect(() => {
@@ -30,12 +29,13 @@ const ChartLine: React.FC = () => {
             try {
                 const response = await fetch(
                     `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/stat/each_centre/count/last_twelve_months/${user.centre_id}`,
-                    {  
+                    {
                         headers: {
-                          "Content-Type": "application/json",
-                          Authorization: "Bearer " + localStorage.getItem("accessToken"),
+                            "Content-Type": "application/json",
+                            Authorization:
+                                "Bearer " + localStorage.getItem("accessToken"),
                         },
-                      }
+                    }
                 );
 
                 const data = await response.json();

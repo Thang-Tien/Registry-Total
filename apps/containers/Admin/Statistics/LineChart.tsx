@@ -15,7 +15,7 @@ const LineChart = () => {
 
       try {
         const response = await fetch(
-          "http://fall2324w3g10.int3306.freeddns.org/api/v1/inspections/stat/all_centre/count/by_year?year=2023",
+          `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/stat/all_centre/count/by_year?year=2023`,
           {  
             headers: {
               "Content-Type": "application/json",

@@ -19,7 +19,7 @@ export default function CarInformationPage({ className, style, carId }: Props) {
     return (
         <div className={cx(className, styles.container)} style={style}>
             <Flex.Row style={{ width: "100%", minHeight: "100vh" }}>
-                <NavBar active="" />
+                <NavBar active="" openMenu="" />
                 <div
                     style={{
                         flex: "1",

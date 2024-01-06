@@ -18,7 +18,7 @@ export default function SettingsPage({ className, style, mode}: Props) {
     return (
         <div className={cx(className, styles.container)} style={style}>
             <Flex.Row style={{ width: "100%", minHeight: "100vh" }}>
-                <NavBar active="setting/profile" openMenu=""/>
+                <NavBar active="setting/profile" openMenu="accountOpen"/>
                 <div
                     style={{
                         flex: "1",

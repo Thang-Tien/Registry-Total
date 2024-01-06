@@ -18,7 +18,7 @@ const SearchInput = (props) => {
       await delay(100);
       try {
         const response = await fetch(
-          `http://fall2324w3g10.int3306.freeddns.org/api/v1/${searchCar ? "cars" : "inspections"
+          `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/${searchCar ? "cars" : "inspections"
           }/search?${searchCar ? "number_plate" : "inspection_number"
           }=${inputValue}`,
           {
@@ -71,7 +71,7 @@ const SearchInput = (props) => {
 
           try {
             const response = await fetch(
-              `http://fall2324w3g10.int3306.freeddns.org/api/v1/${searchCar ? "cars" : "inspections"
+              `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/${searchCar ? "cars" : "inspections"
               }/search?${searchCar ? "number_plate" : "inspection_number"
               }=${inputValue}`, 
               {

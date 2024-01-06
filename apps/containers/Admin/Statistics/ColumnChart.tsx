@@ -40,7 +40,7 @@ const ColumnChart = () => {
         if (area != "all") url += `&area=${area}`;
         if (address != "all") url += `&address=${address}`;
         const response = await fetch(
-          `http://fall2324w3g10.int3306.freeddns.org/api/v1/inspections/stat/all_centre/count/every_month${url}`,
+          `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/stat/all_centre/count/every_month${url}`,
           {  
             headers: {
               "Content-Type": "application/json",
@@ -92,7 +92,7 @@ const ColumnChart = () => {
       await delay(1000);
       try {
         const response = await fetch(
-          `http://fall2324w3g10.int3306.freeddns.org${url}`,
+          `${process.env.NEXT_PUBLIC_HOSTNAME}${url}`,
           {  
             headers: {
               "Content-Type": "application/json",

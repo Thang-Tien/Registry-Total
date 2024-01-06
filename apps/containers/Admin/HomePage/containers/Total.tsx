@@ -23,7 +23,7 @@ export default function Total({ className, style }: Props) {
 
       try {
         const response = await fetch(
-          "http://fall2324w3g10.int3306.freeddns.org/api/v1/inspections/stat/all_centre/count/",
+          `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v1/inspections/stat/all_centre/count/`,
           {  
             headers: {
               "Content-Type": "application/json",
