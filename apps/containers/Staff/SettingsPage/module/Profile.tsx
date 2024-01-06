@@ -258,19 +258,30 @@ const Profile = () => {
               </Descriptions.Item>
               <Descriptions.Item
                 label={
-                  <TextWithIcon Icon={IoCalendarOutline} text="Ngày sinh" />
-                }
-                style={{padding:"2px",marginLeft:"100rem"}}
-              >
-                {processBirthDate(me.date_of_birth)}
-              </Descriptions.Item>
-              <Descriptions.Item
-                label={
-                  <TextWithIcon Icon={IoCallOutline} text="Số điện thoại" />
+                  <div style={{ marginLeft: "2rem"}}>
+                    <TextWithIcon Icon={IoCalendarOutline} text="Ngày sinh" />
+                  </div>
                 }
                 style={marginSmall}
               >
+                <div style={{marginLeft: "2rem"}}>
+                {processBirthDate(me.date_of_birth)}
+                </div>
+                
+              </Descriptions.Item>
+              <Descriptions.Item
+                label={
+                  <div style={{ marginLeft: "2rem"}}>
+                    <TextWithIcon Icon={IoCallOutline} text="Số điện thoại" />
+                  </div>
+                  
+                }
+                style={marginSmall}
+              >
+                <div style={{marginLeft: "2rem"}}>
                 +84 {me.phone}
+                </div>
+                
               </Descriptions.Item>
               <Descriptions.Item
                 label={
@@ -314,22 +325,34 @@ const Profile = () => {
               </Descriptions.Item>
               <Descriptions.Item
                 label={
-                  <TextWithIcon
+                  <div style={{ marginLeft: "2rem"}}>
+                    <TextWithIcon
                     Icon={IoLocationOutline}
                     text="Tỉnh / Thành phố"
                   />
+                  </div>
+                  
                 }
                 style={marginSmall}
               >
+                <div style={{ marginLeft: "2rem"}}>
                 {user.address}
+                  </div>
+                
               </Descriptions.Item>
               <Descriptions.Item
                 label={
-                  <TextWithIcon Icon={IoCallOutline} text="Số điện thoại" />
+                  <div style={{ marginLeft: "2rem"}}>
+                    <TextWithIcon Icon={IoCallOutline} text="Số điện thoại" />
+                  </div>
+                  
                 }
                 style={marginSmall}
               >
+                <div style={{ marginLeft: "2rem"}}>
                 +84 {user.phone}
+                  </div>
+                
               </Descriptions.Item>
               <Descriptions.Item
                 label={
