@@ -413,7 +413,7 @@ const Profile = () => {
             newUser.phone = datas.phone;
 
             setMe(newUser);
-
+            localStorage.setItem("data", JSON.stringify(me));
             setOpen(false);
             setSubmitting(false);
             openMessage();
