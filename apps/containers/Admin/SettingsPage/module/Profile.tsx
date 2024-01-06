@@ -412,7 +412,7 @@ const Profile = () => {
             newUser.date_of_birth = datas.date_of_birth;
             newUser.phone = datas.phone;
 
-            setUser(newUser);
+            setMe(newUser);
 
             setOpen(false);
             setSubmitting(false);

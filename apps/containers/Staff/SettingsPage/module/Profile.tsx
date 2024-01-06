@@ -92,13 +92,13 @@ const Profile = () => {
   const [submitting, setSubmitting] = useState(false);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState({
-    name: '', address: '', phone: 0, email: '', date_of_birth: ''
+    name: '', address: '', phone: 0, email: '',
   });
   const [me, setMe] = useState({
     name: '', address: '', phone: 0, email: '', date_of_birth: '', role: '', ssn: '', centre_id: 0,
   });
   const df = { name: "Thiện pờ rồ", age: 18 }
-  useEffect(() => { console.log(me) }, [me])
+  // useEffect(() => { console.log(me) }, [me])
   useEffect(() => { console.log(user) }, [user])
   const delay = (ms) => new Promise((res) => setTimeout(res,ms));
   // 
@@ -260,7 +260,7 @@ const Profile = () => {
                 label={
                   <TextWithIcon Icon={IoCalendarOutline} text="Ngày sinh" />
                 }
-                style={marginSmall}
+                style={{padding:"2px",marginLeft:"100rem"}}
               >
                 {processBirthDate(me.date_of_birth)}
               </Descriptions.Item>
@@ -411,9 +411,9 @@ const Profile = () => {
             newUser.name = datas.name;
             newUser.date_of_birth = datas.date_of_birth;
             newUser.phone = datas.phone;
-
-            setUser(newUser);
-
+            console.log(newUser);
+            setMe(newUser);
+            localStorage.setItem("data", JSON.stringify(me));
             setOpen(false);
             setSubmitting(false);
             openMessage();
