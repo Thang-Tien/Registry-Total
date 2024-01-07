@@ -5,7 +5,7 @@
 - Hệ thống phục vụ hai đối tượng sử dụng là Cục đăng kiểm và các trung tâm đăng kiểm
 - [Slide](https://www.canva.com/design/DAF474kx6Lw/T9r0opGOm3C6MNDURmiyrA/edit)
 - [Project feature hierarchy](https://docs.google.com/spreadsheets/d/15_5QROYFv3RlXJsA6zS48Q3BGQcpgv6X-cOvfOQbU7Q/edit#gid=0) 
-## Table of Contents (Optional)
+## Table of Contents
 - [Installation](#installation)
 - [Credits](#credits)
 
